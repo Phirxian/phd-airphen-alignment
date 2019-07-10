@@ -8,6 +8,9 @@ Allignement is refined at different stage
 + each detected point is saved on data/
 
 ## Phase 1 (Affine Correction):
+
+![alt text](figures/math-affine-correction.png "equation of the affine correction")
+
 + selecte the detected points of the nearest height (know by the user or using sensor)
 + compute the centroid grid (each point mean)
 + compute affine transfrom from each spectral band to this centroid grid
@@ -16,6 +19,9 @@ Allignement is refined at different stage
 ![alt text](figures/affine_5.0_false_color.jpg "False Color Corrected Image")
 
 ## Phase 2 (Perspective Correction):
+
+![alt text](figures/math-perspective-correction.png "equation of the perspective correction")
+
 + detect keypoints on all spectral bands using SURF (for time performance)
 + extract descriptor using ORB (for matche performance)
 + match keypoint of each spectral band to a reference (570:green seem the most valuable -> number of matches)
@@ -28,6 +34,9 @@ Allignement is refined at different stage
 ![alt text](figures/prespective_5.0_false_color.jpg "False Color Corrected Image")
 
 ## Phase 3 (Radial/Tangential Correction):
+
+![alt text](figures/math-lens-correction.png "equation of the lens correction")
+
 + TODO (potentiel refinement idea)
 + using the estimated reprojection error of each matches to estimate a displacement grid (spline)
 + estimate radial/tangential correction for each band to the reference
