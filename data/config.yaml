@@ -1,0 +1,40 @@
+# Wavelength of the image that will be used as referential for long range mode
+master_wavelength : 530
+
+# Affinity sequence for the wavelengths.
+# Wavelength are sequenced in a way that minimize contrast changes from one to one.
+# Note : You can add as many wavelength you want, you just need to find a place that minimize contrast differential from an image to the next.
+wavelength_sequence : [675, 450, 570, 560, 530, 730, 850]
+
+# List of focal lengths to ignore.
+# Images with focal length in this list will simply be ignored.
+# Note : if the program is not able to determine the focal length from an image metadata, it will also ignore it.
+ignored_focals : [4.2]
+
+# Define the range of disparity covered in near field registration.
+# 0 correspond to infinity.
+# The computation time is directly link to the disparity range size.
+# Taking the smallest possible range will be faster, but artefact will appear if the image contains objects that are outside that depth range.
+min_disparity : 10
+max_disparity : 75
+
+# Define the minimal and maximal size for tags in pixels (it apply for both inner and outer circles).
+# The max deviation corresponds to the maximal distance between circle centers.
+tag_min_radius : 5
+tag_max_radius : 100
+tag_ratio : 1.4
+tag_max_deviation : 6
+
+# Reflectances of the reference surface.
+tag_reflectances : [ [450, 0.07008],
+                     [530, 0.07291],
+                     [560, 0.07282],
+                     [570, 0.07239],
+                     [675, 0.07442],
+                     [710, 0.07511],
+                     [730, 0.07667],
+                     [750, 0.07909],
+                     [850, 0.08433]]
+
+# threshold to be applied on NDVI to compute leaf segmentation
+leaf_threshold : 0.6
