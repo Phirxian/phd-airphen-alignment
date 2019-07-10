@@ -65,16 +65,12 @@ def load_spectral_bands(S, set, subset, prefix='', height=None):
     
     # alligne trough affine transfrom using pre-callibration
     loaded, transform = affine_transform(S, current, loaded)
-    
-    # crop first allignement
     max_xy = np.min(transform[:,:,2], axis=0).astype('int')
     min_xy = np.max(transform[:,:,2], axis=0).astype('int')
     crop_all(S, loaded, np.flip(min_xy), np.flip(max_xy))
     
     # refine allignment with homography
     loaded, bbox = refine_allignement(loaded)
-    
-    # crop refinement
     min_xy = np.max(bbox[:, :2], axis=0).astype('int')
     max_xy = np.min(bbox[:, 2:], axis=0).astype('int')
     crop_all(S, loaded, min_xy, max_xy)

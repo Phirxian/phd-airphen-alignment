@@ -13,6 +13,8 @@ Allignement is refined at different stage
 + compute affine transfrom from each spectral band to this centroid grid
 + crop each spectral bands to the minimal bbox
 
+![alt text](figures/affine_5.0_false_color.jpg "False Color Corrected Image")
+
 ## Phase 2 (Perspective Correction):
 + detect keypoints on all spectral bands using SURF (for time performance)
 + extract descriptor using ORB (for matche performance)
@@ -23,6 +25,7 @@ Allignement is refined at different stage
 + crop each spectral bands to the minimal bbox
 
 ![alt text](figures/prespective-allignement-rmse.jpg "Prespective Reprojection Error")
+![alt text](figures/prespective_5.0_false_color.jpg "False Color Corrected Image")
 
 ## Phase 3 (Radial/Tangential Correction):
 + TODO (potentiel refinement idea)
@@ -31,7 +34,7 @@ Allignement is refined at different stage
 + estimate reprojection error (rmse+std)
 + crop each spectral bands to the minimal bbox
 
-![alt text](figures/lens-correction-complet.jpg "lens-correction-model")
+![alt text](figures/lens-correction-complet.jpg "lens correction model")
 
 # Potential related article:
 + https://www.tandfonline.com/doi/abs/10.1080/2150704X.2018.1446564
