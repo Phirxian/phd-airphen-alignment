@@ -16,6 +16,7 @@ Allignement is refined at different stage
 + compute affine transfrom from each spectral band to this centroid grid
 + crop each spectral bands to the minimal bbox
 
+![alt text](figures/affine-allignement-rmse.jpg "Affine Reprojection Error")
 ![alt text](figures/affine_5.0_false_color.jpg "False Color Corrected Image")
 
 ## Phase 2 (Perspective Correction):
