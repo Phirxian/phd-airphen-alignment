@@ -4,7 +4,7 @@ import rasterio
 import cv2
 import os
 
-from settings import *
+from src.settings import *
 
 class SpectralImage:
     def __init__(self):

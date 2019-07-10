@@ -5,7 +5,7 @@ import cv2
 import os
 import time
 
-from settings import *
+from src.settings import *
 
 class SpectralImage:
     def __init__(self):
