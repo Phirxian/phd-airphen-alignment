@@ -22,7 +22,7 @@ Allignement is refined at different stage
 + estimate reprojection error (rmse+std near to 1 pixel)
 + crop each spectral bands to the minimal bbox
 
-![alt text](tmp/prespective-allignement-rmse.jpg "Prespective Reprojection Error")
+![alt text](figures/prespective-allignement-rmse.jpg "Prespective Reprojection Error")
 
 ## Phase 3 (Radial/Tangential Correction):
 + TODO (potentiel refinement idea)
@@ -30,6 +30,8 @@ Allignement is refined at different stage
 + estimate radial/tangential correction for each band to the reference
 + estimate reprojection error (rmse+std)
 + crop each spectral bands to the minimal bbox
+
+![alt text](figures/lens-correction-complet.jpg "lens-correction-model")
 
 # Potential related article:
 + https://www.tandfonline.com/doi/abs/10.1080/2150704X.2018.1446564

@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 from src.data import *
 
-with open('tmp/prespective-error.txt') as f:
+with open('figures/prespective-error.txt') as f:
     content = f.readlines()
 
 data = [None] * len(content)
@@ -34,5 +34,5 @@ plt.ylabel('L2 distance in pixel (error)')
 plt.xticks(np.arange(height.shape[0]), height)
 plt.legend()
 plt.tight_layout()
-plt.savefig('tmp/prespective-allignement-rmse.jpg')
+plt.savefig('figures/prespective-allignement-rmse.jpg')
 plt.show()
