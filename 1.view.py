@@ -1,28 +1,9 @@
 #!/usr/bin/python3
 import numpy as np
-import rasterio
 import cv2
-import os
 
 from src.settings import *
-
-class SpectralImage:
-    def __init__(self):
-        pass
-    pass
-    
-    def read_tiff(self, fname):
-        if not os.path.exists(fname): return None
-        # skep detection if the corresponding output exist
-        #if os.path.exists(csv): continue
-        
-        geotiff = rasterio.open(fname)
-        data = geotiff.read()
-        tr = geotiff.transform
-        
-        return data[0]
-    pass
-pass
+from src.spectral_image import *
 
 height = [
     '1.6', '1.8', '2.0',
@@ -31,11 +12,9 @@ height = [
     '4.2', '4.4', '4.6', '4.8', '5.0'
 ]
 
-path = '/media/ovan/6d1bbc2c-2d2d-4126-960f-d57d6de8ae10/'
-
 for h in height:
     x = SpectralImage()
-    load_spectral_bands(x, path+'portique/steep/', h)
+    load_spectral_bands(x, './data/steep/', h)
     
     print('-------------------')
     print(h, 'loaded')

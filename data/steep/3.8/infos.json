@@ -1,0 +1,22 @@
+{
+   "record path": "/media/card/20190405_151228",
+   "camera serial number": "C1601-0120818005012",
+   "sw version": "pxn 2.1.6",
+   "record description": "Test SITIA",
+   "operator": "JA JN",
+   "recording mode": "SD card",
+   "exposure mode": "auto",
+   "trigger in": "disabled",
+   "trigger out": "rising edge",
+   "low jitter mode": "disabled",
+   "lwir camera": "no",
+   "recording_thread_fct": "capture frequency is N/A",
+   "record start time": "2019:04:05 15:12:28.710",
+   "gps source": "internal",
+   "gps": "invalid",
+   "record stop time": "2019:04:05 15:12:31.371",
+   "acquisition time in seconds": 3,
+   "image sets": 1,
+   "filters ID": ["730nm", "675nm", "850nm", "570nm", "450nm", "710nm"],
+   "recorded images": [1, 1, 1, 1, 1, 1]
+}

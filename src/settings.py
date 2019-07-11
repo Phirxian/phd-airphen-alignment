@@ -28,15 +28,6 @@ pass
 
 def affine_transform(S, current, loaded):
     dsize = (loaded[0].shape[1], loaded[0].shape[0])
-    
-    # order points !!! fix rotation error
-    # because findChessboardCorners can order at 90° depending on the moon
-    
-    for i in range(current.shape[0]):
-        current[i] = current[i, np.argsort(current[i,:,0,0]), :, :]
-        current[i] = current[i, np.argsort(current[i,:,0,1]), :, :]
-    pass
-    
     centroid = current[:,:,0,:].mean(axis=0).astype('float32') 
     transform = [None] * len(loaded)
     

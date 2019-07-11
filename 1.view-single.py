@@ -1,29 +1,10 @@
 #!/usr/bin/python3
 import numpy as np
-import rasterio
-import cv2
-import os
 import time
+import cv2
 
 from src.settings import *
-
-class SpectralImage:
-    def __init__(self):
-        pass
-    pass
-    
-    def read_tiff(self, fname):
-        if not os.path.exists(fname): return None
-        # skep detection if the corresponding output exist
-        #if os.path.exists(csv): continue
-        
-        geotiff = rasterio.open(fname)
-        data = geotiff.read()
-        tr = geotiff.transform
-        
-        return data[0]
-    pass
-pass
+from src.spectral_image import *
 
 x = SpectralImage()
 path = '/media/ovan/684C-0692/'
