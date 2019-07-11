@@ -20,7 +20,7 @@ data = np.array(data)
     
 plt.figure(figsize=(15,4))
 axes = plt.gca()
-axes.set_ylim([0,2])
+axes.set_ylim([0.8,1.3])
 
 for i in range(len(bands)):
     l2 = data[i::5,1]
