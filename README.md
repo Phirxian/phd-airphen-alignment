@@ -52,8 +52,6 @@ to find similarity in gradient break of those ones.
 + opencl implementation of some element (keypoint extraction/filtering/matching)
 + radiance correction (vignette/row)
 
-![alt text](figures/lens-correction-complet.jpg "lens correction model")
-
 # Potential related article:
 
 + https://www.tandfonline.com/doi/abs/10.1080/2150704X.2018.1446564
