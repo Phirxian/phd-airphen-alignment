@@ -44,19 +44,19 @@ to find similarity in gradient break of those ones.
 ![alt text](figures/prespective_5.0_false_color.jpg "False Color Corrected Image")
 ![alt text](figures/perspective-features-matching-scatter.png "Corrected Keypoint")
 
-## Phase 3 (Radial/Tangential Correction):
+# Todo/Idea:
 
-![alt text](figures/math-lens-correction.png "equation of the lens correction")
-
-+ TODO (potentiel refinement idea)
-+ using the estimated reprojection error of each matches to estimate a displacement grid (spline)
-+ estimate radial/tangential correction for each band to the reference
-+ estimate reprojection error (rmse+std)
-+ crop each spectral bands to the minimal bbox
++ some refactoring / code cleaning
++ https://github.com/karnival/simple-registration
++ https://github.com/4m4npr33t/Elastic-and-Diffeomorphic-Registration/blob/master/Codes/elastic_and_diffeomorphic_registration.ipynb
++ opencl implementation of some element (keypoint extraction/filtering/matching)
++ radiance correction (vignette/row)
 
 ![alt text](figures/lens-correction-complet.jpg "lens correction model")
 
 # Potential related article:
+
 + https://www.tandfonline.com/doi/abs/10.1080/2150704X.2018.1446564
 + https://citius.usc.es/sites/default/files/publicacions_publicaciones/Alignment%20of%20Hyperspectral%20Images%20Using%20KAZE_Features_v2.pdf
 + https://pdfs.semanticscholar.org/25b6/4d89abdd36e0800da4679813935f055846dd.pdf
++ https://citius.usc.es/sites/default/files/publicacions_publicaciones/Alignment%20of%20Hyperspectral%20Images%20Using%20KAZE_Features_v2.pdf
