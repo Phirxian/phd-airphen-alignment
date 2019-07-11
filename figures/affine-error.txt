@@ -1,90 +1,90 @@
-points=197  ; rmse=1.67468 ; std=1.62659
-points=106  ; rmse=1.58114 ; std=1.5    
-points=916  ; rmse=1.58114 ; std=1.55174
-points=167  ; rmse=3.50363 ; std=1.36323
-points=80   ; rmse=2.0     ; std=0.0    
-points=204  ; rmse=1.51463 ; std=1.45191
-points=120  ; rmse=1.43033 ; std=1.14102
-points=922  ; rmse=1.37454 ; std=1.04804
-points=181  ; rmse=1.63778 ; std=1.15871
-points=75   ; rmse=1.48997 ; std=1.4334 
-points=207  ; rmse=0.97802 ; std=0.97705
-points=134  ; rmse=1.45325 ; std=1.15034
-points=900  ; rmse=1.55027 ; std=0.65878
-points=171  ; rmse=1.97277 ; std=1.56896
-points=74   ; rmse=1.4887  ; std=1.43243
-points=236  ; rmse=0.95447 ; std=0.95447
-points=123  ; rmse=1.23466 ; std=1.11777
-points=946  ; rmse=1.29072 ; std=0.41558
-points=155  ; rmse=2.03041 ; std=1.87435
-points=52   ; rmse=1.75412 ; std=1.64263
-points=292  ; rmse=0.70711 ; std=0.5    
-points=116  ; rmse=1.32938 ; std=0.95728
-points=877  ; rmse=1.99272 ; std=0.09797
-points=167  ; rmse=1.44147 ; std=1.10791
-points=76   ; rmse=2.00984 ; std=1.43433
-points=254  ; rmse=0.70711 ; std=0.55897
-points=103  ; rmse=1.55482 ; std=0.63894
-points=941  ; rmse=2.01086 ; std=0.20874
-points=123  ; rmse=2.93839 ; std=1.25153
-points=49   ; rmse=2.77378 ; std=2.19651
-points=259  ; rmse=0.43496 ; std=0.39166
-points=92   ; rmse=1.68916 ; std=0.62154
-points=875  ; rmse=1.98883 ; std=0.12098
-points=128  ; rmse=1.73768 ; std=1.1065 
-points=55   ; rmse=2.00681 ; std=1.85955
-points=278  ; rmse=0.75627 ; std=0.4948 
-points=91   ; rmse=1.58114 ; std=0.5    
-points=880  ; rmse=1.0     ; std=0.0    
-points=164  ; rmse=2.21483 ; std=1.92549
-points=63   ; rmse=3.60445 ; std=3.31268
-points=270  ; rmse=1.37235 ; std=1.05026
-points=80   ; rmse=1.98116 ; std=1.29422
-points=859  ; rmse=1.58114 ; std=0.5    
-points=122  ; rmse=1.60812 ; std=1.13898
-points=45   ; rmse=2.23607 ; std=2.0    
-points=275  ; rmse=0.16514 ; std=0.16288
-points=90   ; rmse=1.55991 ; std=0.61554
-points=912  ; rmse=2.88057 ; std=1.46955
-points=127  ; rmse=2.23607 ; std=1.0    
-points=52   ; rmse=2.23607 ; std=2.0    
-points=264  ; rmse=1.0     ; std=0.0    
-points=89   ; rmse=2.80048 ; std=1.52582
-points=934  ; rmse=1.68092 ; std=0.56987
-points=150  ; rmse=2.67519 ; std=1.53641
-points=57   ; rmse=3.03777 ; std=2.70318
-points=259  ; rmse=1.0     ; std=0.0    
-points=70   ; rmse=2.21359 ; std=1.41774
-points=940  ; rmse=2.21875 ; std=0.99214
-points=113  ; rmse=2.22118 ; std=1.09303
-points=51   ; rmse=3.72985 ; std=3.41493
-points=246  ; rmse=0.77695 ; std=0.56384
-points=61   ; rmse=1.7178  ; std=0.64977
-points=875  ; rmse=1.58114 ; std=0.5    
-points=134  ; rmse=2.04611 ; std=1.54342
-points=42   ; rmse=2.24669 ; std=1.77217
-points=245  ; rmse=0.31298 ; std=0.29726
-points=63   ; rmse=1.67853 ; std=0.6107 
-points=857  ; rmse=2.02392 ; std=0.13741
-points=114  ; rmse=1.54324 ; std=0.68762
-points=48   ; rmse=3.3665  ; std=2.54098
-points=236  ; rmse=1.0     ; std=0.0    
-points=64   ; rmse=2.5078  ; std=0.62103
-points=904  ; rmse=1.58114 ; std=0.5    
-points=97   ; rmse=1.72907 ; std=0.66052
-points=38   ; rmse=2.66063 ; std=1.89419
-points=239  ; rmse=0.70711 ; std=0.5    
-points=60   ; rmse=1.36626 ; std=0.6216 
-points=947  ; rmse=2.0     ; std=0.0    
-points=100  ; rmse=1.53623 ; std=1.05148
-points=34   ; rmse=3.4364  ; std=2.24355
-points=241  ; rmse=0.97903 ; std=0.19943
-points=66   ; rmse=1.54968 ; std=0.66126
-points=905  ; rmse=2.0     ; std=0.0    
-points=99   ; rmse=2.69118 ; std=1.80067
-points=42   ; rmse=3.1053  ; std=2.85804
-points=245  ; rmse=0.24328 ; std=0.23597
-points=66   ; rmse=1.95789 ; std=1.09773
-points=927  ; rmse=1.58114 ; std=0.5    
-points=92   ; rmse=2.23607 ; std=1.0    
-points=32   ; rmse=3.44601 ; std=2.89126
+points=157  ; l2=1.63692 ; std=0.79133 ; min=0.0     ; max=4.12311
+points=93   ; l2=1.84176 ; std=0.97019 ; min=0.0     ; max=4.47214
+points=736  ; l2=2.60469 ; std=0.84029 ; min=0.0     ; max=5.0    
+points=129  ; l2=3.19577 ; std=1.06943 ; min=0.0     ; max=7.2111 
+points=69   ; l2=2.36082 ; std=1.48144 ; min=0.0     ; max=7.2111 
+points=176  ; l2=1.40184 ; std=0.77654 ; min=0.0     ; max=3.16228
+points=109  ; l2=1.78675 ; std=0.98157 ; min=0.0     ; max=4.47214
+points=820  ; l2=1.7406  ; std=0.7751  ; min=0.0     ; max=4.24264
+points=162  ; l2=2.61795 ; std=1.10193 ; min=0.0     ; max=7.07107
+points=61   ; l2=2.67064 ; std=1.50915 ; min=1.0     ; max=8.06226
+points=189  ; l2=1.26434 ; std=0.7449  ; min=0.0     ; max=3.60555
+points=104  ; l2=1.82117 ; std=0.92022 ; min=0.0     ; max=5.0    
+points=726  ; l2=1.80931 ; std=0.7885  ; min=0.0     ; max=4.47214
+points=145  ; l2=2.30548 ; std=1.0612  ; min=0.0     ; max=6.32456
+points=60   ; l2=2.90018 ; std=1.098   ; min=0.0     ; max=5.83095
+points=215  ; l2=1.15495 ; std=0.69954 ; min=0.0     ; max=3.16228
+points=84   ; l2=1.84496 ; std=0.85964 ; min=0.0     ; max=4.12311
+points=736  ; l2=1.89153 ; std=0.87437 ; min=0.0     ; max=5.83095
+points=121  ; l2=2.27254 ; std=0.93643 ; min=0.0     ; max=5.0    
+points=40   ; l2=2.83558 ; std=1.2081  ; min=1.0     ; max=6.7082 
+points=202  ; l2=1.20728 ; std=0.69503 ; min=0.0     ; max=4.24264
+points=98   ; l2=2.6375  ; std=1.23004 ; min=0.0     ; max=7.07107
+points=860  ; l2=2.21517 ; std=0.8415  ; min=0.0     ; max=5.0    
+points=141  ; l2=2.62528 ; std=1.18266 ; min=0.0     ; max=6.7082 
+points=62   ; l2=3.75726 ; std=1.33044 ; min=1.0     ; max=7.28011
+points=237  ; l2=1.09006 ; std=0.68556 ; min=0.0     ; max=3.16228
+points=86   ; l2=2.82176 ; std=1.1062  ; min=1.0     ; max=5.83095
+points=900  ; l2=2.48317 ; std=0.78987 ; min=0.0     ; max=5.09902
+points=102  ; l2=2.72884 ; std=0.96736 ; min=0.0     ; max=6.32456
+points=39   ; l2=3.72845 ; std=1.02343 ; min=2.0     ; max=7.28011
+points=210  ; l2=1.2012  ; std=0.73677 ; min=0.0     ; max=3.60555
+points=79   ; l2=2.8099  ; std=0.81329 ; min=1.0     ; max=5.09902
+points=849  ; l2=2.63139 ; std=0.81602 ; min=0.0     ; max=5.65685
+points=99   ; l2=3.15505 ; std=1.09876 ; min=1.0     ; max=6.08276
+points=41   ; l2=4.01468 ; std=0.97749 ; min=2.23607 ; max=6.7082 
+points=238  ; l2=1.14495 ; std=0.71598 ; min=0.0     ; max=5.0    
+points=70   ; l2=2.47248 ; std=0.903   ; min=1.0     ; max=5.38516
+points=779  ; l2=2.37325 ; std=0.71247 ; min=0.0     ; max=5.09902
+points=133  ; l2=2.73314 ; std=0.78272 ; min=1.0     ; max=5.09902
+points=53   ; l2=3.81211 ; std=1.21152 ; min=1.0     ; max=6.08276
+points=249  ; l2=1.18343 ; std=0.70076 ; min=0.0     ; max=3.16228
+points=57   ; l2=2.72751 ; std=1.01705 ; min=1.0     ; max=6.0    
+points=839  ; l2=2.5797  ; std=0.77858 ; min=1.0     ; max=5.0    
+points=111  ; l2=2.88146 ; std=1.02838 ; min=1.0     ; max=7.0    
+points=34   ; l2=3.78463 ; std=0.9702  ; min=2.23607 ; max=6.08276
+points=260  ; l2=1.19885 ; std=0.69425 ; min=0.0     ; max=3.60555
+points=78   ; l2=3.02053 ; std=0.85004 ; min=1.41421 ; max=5.38516
+points=871  ; l2=2.75744 ; std=0.80994 ; min=0.0     ; max=5.38516
+points=98   ; l2=2.98238 ; std=0.88829 ; min=1.0     ; max=6.32456
+points=46   ; l2=4.01871 ; std=1.07438 ; min=2.0     ; max=6.7082 
+points=252  ; l2=1.25285 ; std=0.76753 ; min=0.0     ; max=4.12311
+points=80   ; l2=2.97808 ; std=0.8022  ; min=1.0     ; max=5.38516
+points=858  ; l2=2.56934 ; std=0.73371 ; min=0.0     ; max=5.0    
+points=119  ; l2=3.06786 ; std=0.91209 ; min=1.0     ; max=6.32456
+points=35   ; l2=3.60305 ; std=1.07745 ; min=1.41421 ; max=6.32456
+points=223  ; l2=1.17113 ; std=0.74912 ; min=0.0     ; max=3.16228
+points=56   ; l2=3.21053 ; std=0.94283 ; min=2.0     ; max=6.40312
+points=911  ; l2=2.7008  ; std=0.80401 ; min=0.0     ; max=5.38516
+points=98   ; l2=2.98588 ; std=0.92738 ; min=1.0     ; max=6.32456
+points=46   ; l2=3.98436 ; std=1.24014 ; min=1.0     ; max=7.07107
+points=229  ; l2=1.1564  ; std=0.7262  ; min=0.0     ; max=3.16228
+points=50   ; l2=2.87469 ; std=0.74576 ; min=1.0     ; max=5.09902
+points=842  ; l2=2.74463 ; std=0.74887 ; min=1.0     ; max=5.38516
+points=113  ; l2=2.95807 ; std=0.79393 ; min=1.41421 ; max=5.09902
+points=34   ; l2=3.94872 ; std=1.01253 ; min=2.0     ; max=6.0    
+points=197  ; l2=1.31208 ; std=0.6939  ; min=0.0     ; max=3.60555
+points=55   ; l2=2.74035 ; std=0.80879 ; min=0.0     ; max=4.47214
+points=824  ; l2=2.75743 ; std=0.77566 ; min=0.0     ; max=5.83095
+points=87   ; l2=3.32684 ; std=0.93524 ; min=1.0     ; max=6.08276
+points=34   ; l2=4.1145  ; std=0.79354 ; min=2.0     ; max=5.38516
+points=190  ; l2=1.22875 ; std=0.73318 ; min=0.0     ; max=3.16228
+points=55   ; l2=3.0954  ; std=0.77479 ; min=1.0     ; max=5.09902
+points=823  ; l2=2.69948 ; std=0.69508 ; min=1.0     ; max=5.38516
+points=78   ; l2=3.16942 ; std=0.85089 ; min=1.0     ; max=5.38516
+points=28   ; l2=3.41573 ; std=1.00567 ; min=2.0     ; max=6.7082 
+points=206  ; l2=1.18592 ; std=0.69071 ; min=0.0     ; max=3.16228
+points=47   ; l2=2.977   ; std=0.84378 ; min=1.41421 ; max=4.47214
+points=844  ; l2=2.83604 ; std=0.7663  ; min=1.0     ; max=5.83095
+points=88   ; l2=2.97509 ; std=0.80551 ; min=1.41421 ; max=5.83095
+points=25   ; l2=4.16623 ; std=0.85001 ; min=3.0     ; max=5.83095
+points=221  ; l2=1.2935  ; std=0.66672 ; min=0.0     ; max=3.16228
+points=53   ; l2=3.06829 ; std=0.92183 ; min=1.0     ; max=6.08276
+points=833  ; l2=2.83822 ; std=0.71913 ; min=0.0     ; max=5.09902
+points=74   ; l2=3.19518 ; std=0.85045 ; min=1.0     ; max=5.38516
+points=30   ; l2=4.12954 ; std=0.82474 ; min=3.0     ; max=6.08276
+points=216  ; l2=1.14134 ; std=0.68929 ; min=0.0     ; max=3.16228
+points=50   ; l2=2.71864 ; std=0.74093 ; min=1.0     ; max=4.24264
+points=917  ; l2=2.76476 ; std=0.75124 ; min=0.0     ; max=5.65685
+points=86   ; l2=3.35734 ; std=0.76728 ; min=2.0     ; max=5.38516
+points=24   ; l2=4.03666 ; std=0.97745 ; min=1.0     ; max=5.38516

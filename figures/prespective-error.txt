@@ -1,90 +1,90 @@
-points=197  ; rmse=0.70318 ; std=0.51571
-points=106  ; rmse=1.2028  ; std=1.11214
-points=916  ; rmse=0.33729 ; std=0.32723
-points=167  ; rmse=1.62756 ; std=0.58941
-points=80   ; rmse=1.75638 ; std=0.44344
-points=204  ; rmse=0.82584 ; std=0.78429
-points=120  ; rmse=0.94764 ; std=0.68841
-points=922  ; rmse=0.40499 ; std=0.2717 
-points=181  ; rmse=0.77696 ; std=0.6157 
-points=75   ; rmse=0.51745 ; std=0.35196
-points=207  ; rmse=0.77732 ; std=0.76967
-points=134  ; rmse=0.83682 ; std=0.54181
-points=900  ; rmse=0.54947 ; std=0.47804
-points=171  ; rmse=1.47928 ; std=0.82924
-points=74   ; rmse=0.6034  ; std=0.60317
-points=236  ; rmse=0.567   ; std=0.56699
-points=123  ; rmse=0.63156 ; std=0.63011
-points=946  ; rmse=0.60498 ; std=0.58933
-points=155  ; rmse=0.40203 ; std=0.32811
-points=52   ; rmse=0.36537 ; std=0.34409
-points=292  ; rmse=0.29237 ; std=0.15244
-points=116  ; rmse=0.53581 ; std=0.22243
-points=877  ; rmse=0.41131 ; std=0.35664
-points=167  ; rmse=0.327   ; std=0.29913
-points=76   ; rmse=0.52056 ; std=0.39725
-points=254  ; rmse=0.75669 ; std=0.62091
-points=103  ; rmse=0.40745 ; std=0.35392
-points=941  ; rmse=0.46686 ; std=0.30607
-points=123  ; rmse=0.71169 ; std=0.52204
-points=49   ; rmse=0.55362 ; std=0.47256
-points=259  ; rmse=0.18645 ; std=0.17883
-points=92   ; rmse=1.24516 ; std=1.24511
-points=875  ; rmse=0.18337 ; std=0.07364
-points=128  ; rmse=0.58288 ; std=0.49657
-points=55   ; rmse=0.80944 ; std=0.75452
-points=278  ; rmse=0.21953 ; std=0.20344
-points=91   ; rmse=0.60639 ; std=0.60603
-points=880  ; rmse=0.55677 ; std=0.24562
-points=164  ; rmse=0.90097 ; std=0.88663
-points=63   ; rmse=0.3793  ; std=0.36792
-points=270  ; rmse=0.87644 ; std=0.79483
-points=80   ; rmse=0.77941 ; std=0.77939
-points=859  ; rmse=0.39655 ; std=0.15001
-points=122  ; rmse=0.3491  ; std=0.28278
-points=45   ; rmse=0.61005 ; std=0.25394
-points=275  ; rmse=0.35661 ; std=0.18581
-points=90   ; rmse=0.65356 ; std=0.52398
-points=912  ; rmse=1.05437 ; std=0.56198
-points=127  ; rmse=0.92946 ; std=0.85025
-points=52   ; rmse=0.31829 ; std=0.27527
-points=264  ; rmse=0.29489 ; std=0.13206
-points=89   ; rmse=0.51413 ; std=0.35621
-points=934  ; rmse=0.88911 ; std=0.70723
-points=150  ; rmse=0.65824 ; std=0.57506
-points=57   ; rmse=0.56517 ; std=0.565  
-points=259  ; rmse=0.63689 ; std=0.28038
-points=70   ; rmse=0.62544 ; std=0.50727
-points=940  ; rmse=0.4832  ; std=0.37779
-points=113  ; rmse=0.32056 ; std=0.29271
-points=51   ; rmse=0.53241 ; std=0.45748
-points=246  ; rmse=0.42891 ; std=0.42275
-points=61   ; rmse=0.37465 ; std=0.35283
-points=875  ; rmse=0.32976 ; std=0.05945
-points=134  ; rmse=0.82693 ; std=0.67592
-points=42   ; rmse=1.23787 ; std=1.20711
-points=245  ; rmse=0.61446 ; std=0.47477
-points=63   ; rmse=0.31704 ; std=0.31536
-points=857  ; rmse=0.49248 ; std=0.4354 
-points=114  ; rmse=0.60024 ; std=0.1654 
-points=48   ; rmse=1.03474 ; std=0.92355
-points=236  ; rmse=0.32927 ; std=0.10966
-points=64   ; rmse=0.64673 ; std=0.41322
-points=904  ; rmse=0.32599 ; std=0.26345
-points=97   ; rmse=0.23019 ; std=0.13328
-points=38   ; rmse=0.80689 ; std=0.64649
-points=239  ; rmse=0.52101 ; std=0.52033
-points=60   ; rmse=1.04066 ; std=0.96087
-points=947  ; rmse=0.50261 ; std=0.50251
-points=100  ; rmse=0.86065 ; std=0.76475
-points=34   ; rmse=1.55781 ; std=1.07529
-points=241  ; rmse=0.37796 ; std=0.25259
-points=66   ; rmse=0.90871 ; std=0.41202
-points=905  ; rmse=0.83997 ; std=0.83988
-points=99   ; rmse=0.70598 ; std=0.64511
-points=42   ; rmse=0.98495 ; std=0.93618
-points=245  ; rmse=0.58891 ; std=0.34698
-points=66   ; rmse=0.81755 ; std=0.80382
-points=927  ; rmse=0.41375 ; std=0.29414
-points=92   ; rmse=0.06833 ; std=0.06816
-points=32   ; rmse=0.97504 ; std=0.7784 
+points=157  ; l2=0.96464 ; std=0.51996 ; min=0.09609 ; max=2.59116
+points=93   ; l2=1.11972 ; std=0.57534 ; min=0.20812 ; max=3.1143 
+points=736  ; l2=0.92649 ; std=0.52489 ; min=0.02105 ; max=2.83359
+points=129  ; l2=1.00047 ; std=0.62973 ; min=0.046   ; max=2.95177
+points=69   ; l2=1.07897 ; std=0.66789 ; min=0.04741 ; max=2.9422 
+points=176  ; l2=0.97509 ; std=0.50057 ; min=0.08032 ; max=2.29392
+points=109  ; l2=0.93723 ; std=0.57453 ; min=0.03206 ; max=3.58005
+points=820  ; l2=0.92599 ; std=0.50668 ; min=0.04528 ; max=2.98224
+points=162  ; l2=1.04372 ; std=0.60701 ; min=0.09348 ; max=3.23541
+points=61   ; l2=1.03687 ; std=0.56662 ; min=0.21345 ; max=2.94905
+points=189  ; l2=0.99397 ; std=0.5512  ; min=0.09318 ; max=3.0044 
+points=104  ; l2=0.92166 ; std=0.52633 ; min=0.04556 ; max=2.88856
+points=726  ; l2=0.88912 ; std=0.51996 ; min=0.02239 ; max=3.6874 
+points=145  ; l2=1.00748 ; std=0.56568 ; min=0.05206 ; max=2.64153
+points=60   ; l2=0.98931 ; std=0.53426 ; min=0.04917 ; max=2.79674
+points=215  ; l2=0.93158 ; std=0.52664 ; min=0.05116 ; max=2.52043
+points=84   ; l2=0.99818 ; std=0.56515 ; min=0.07112 ; max=2.94601
+points=736  ; l2=0.89763 ; std=0.49838 ; min=0.01385 ; max=3.33928
+points=121  ; l2=0.95608 ; std=0.56996 ; min=0.03274 ; max=2.58427
+points=40   ; l2=0.89368 ; std=0.55326 ; min=0.06123 ; max=2.26099
+points=202  ; l2=0.89199 ; std=0.53942 ; min=0.08148 ; max=3.41231
+points=98   ; l2=0.9404  ; std=0.60978 ; min=0.06082 ; max=2.88587
+points=860  ; l2=0.90945 ; std=0.5246  ; min=0.03746 ; max=2.67901
+points=141  ; l2=1.01999 ; std=0.51903 ; min=0.01456 ; max=2.19489
+points=62   ; l2=1.02434 ; std=0.56255 ; min=0.1951  ; max=2.43746
+points=237  ; l2=0.89313 ; std=0.56514 ; min=0.02642 ; max=3.41144
+points=86   ; l2=0.97272 ; std=0.57549 ; min=0.07329 ; max=3.0419 
+points=900  ; l2=0.89535 ; std=0.51447 ; min=0.02276 ; max=3.25663
+points=102  ; l2=0.92459 ; std=0.52182 ; min=0.07646 ; max=2.50854
+points=39   ; l2=1.00654 ; std=0.44735 ; min=0.03134 ; max=2.0306 
+points=210  ; l2=0.89757 ; std=0.50769 ; min=0.10505 ; max=3.02742
+points=79   ; l2=0.92917 ; std=0.46085 ; min=0.0688  ; max=2.10458
+points=849  ; l2=0.89944 ; std=0.50422 ; min=0.01529 ; max=3.80374
+points=99   ; l2=0.91126 ; std=0.49908 ; min=0.1147  ; max=2.9217 
+points=41   ; l2=0.85201 ; std=0.40923 ; min=0.11677 ; max=1.89362
+points=238  ; l2=0.86789 ; std=0.46236 ; min=0.02729 ; max=3.04281
+points=70   ; l2=0.88885 ; std=0.52066 ; min=0.14226 ; max=3.42012
+points=779  ; l2=0.84839 ; std=0.46907 ; min=0.04077 ; max=2.97475
+points=133  ; l2=0.94937 ; std=0.52043 ; min=0.08347 ; max=3.18451
+points=53   ; l2=1.04294 ; std=0.57933 ; min=0.11787 ; max=3.38625
+points=249  ; l2=0.94869 ; std=0.58624 ; min=0.08781 ; max=2.83235
+points=57   ; l2=1.01912 ; std=0.58365 ; min=0.06185 ; max=2.38395
+points=839  ; l2=0.84992 ; std=0.49212 ; min=0.01066 ; max=2.9015 
+points=111  ; l2=1.027   ; std=0.59818 ; min=0.04092 ; max=2.98008
+points=34   ; l2=0.98373 ; std=0.54115 ; min=0.12444 ; max=2.8031 
+points=260  ; l2=0.9017  ; std=0.51024 ; min=0.06965 ; max=3.10294
+points=78   ; l2=0.8596  ; std=0.42424 ; min=0.04937 ; max=2.01674
+points=871  ; l2=0.86484 ; std=0.48231 ; min=0.02352 ; max=3.16329
+points=98   ; l2=0.95662 ; std=0.50502 ; min=0.04615 ; max=2.50437
+points=46   ; l2=0.84583 ; std=0.51229 ; min=0.11408 ; max=3.08901
+points=252  ; l2=1.03216 ; std=0.59845 ; min=0.03035 ; max=3.62546
+points=80   ; l2=0.93793 ; std=0.5291  ; min=0.17566 ; max=2.82104
+points=858  ; l2=0.8287  ; std=0.47608 ; min=0.04138 ; max=3.48986
+points=119  ; l2=0.9353  ; std=0.41048 ; min=0.24933 ; max=2.23359
+points=35   ; l2=1.04292 ; std=0.45513 ; min=0.37994 ; max=2.32773
+points=223  ; l2=0.93074 ; std=0.56336 ; min=0.14233 ; max=3.51794
+points=56   ; l2=1.0637  ; std=0.55641 ; min=0.1464  ; max=2.32143
+points=911  ; l2=0.90165 ; std=0.50166 ; min=0.00354 ; max=3.10678
+points=98   ; l2=0.95523 ; std=0.50467 ; min=0.13342 ; max=2.48577
+points=46   ; l2=1.07356 ; std=0.65969 ; min=0.08488 ; max=2.69401
+points=229  ; l2=0.94528 ; std=0.53731 ; min=0.0416  ; max=3.09043
+points=50   ; l2=0.90835 ; std=0.50413 ; min=0.13839 ; max=2.39789
+points=842  ; l2=0.86123 ; std=0.4871  ; min=0.00785 ; max=2.92231
+points=113  ; l2=0.94917 ; std=0.52523 ; min=0.08829 ; max=3.25189
+points=34   ; l2=0.91988 ; std=0.4731  ; min=0.21192 ; max=2.07919
+points=197  ; l2=0.8684  ; std=0.50687 ; min=0.10432 ; max=2.35031
+points=55   ; l2=0.8828  ; std=0.55217 ; min=0.22679 ; max=2.58458
+points=824  ; l2=0.86084 ; std=0.49083 ; min=0.03761 ; max=2.69994
+points=87   ; l2=1.06245 ; std=0.62303 ; min=0.07338 ; max=3.04568
+points=34   ; l2=1.06035 ; std=0.61238 ; min=0.30841 ; max=3.00302
+points=190  ; l2=0.88243 ; std=0.51515 ; min=0.26669 ; max=3.55378
+points=55   ; l2=0.83067 ; std=0.56096 ; min=0.08035 ; max=2.20063
+points=823  ; l2=0.85759 ; std=0.46506 ; min=0.19343 ; max=3.09088
+points=78   ; l2=0.89897 ; std=0.48317 ; min=0.10378 ; max=2.56446
+points=28   ; l2=0.82847 ; std=0.46112 ; min=0.043   ; max=1.86809
+points=206  ; l2=1.01734 ; std=0.49512 ; min=0.30223 ; max=2.79973
+points=47   ; l2=0.97134 ; std=0.52915 ; min=0.09096 ; max=2.89422
+points=844  ; l2=0.8609  ; std=0.46828 ; min=0.21044 ; max=3.21236
+points=88   ; l2=1.00012 ; std=0.60254 ; min=0.12691 ; max=2.85266
+points=25   ; l2=1.14015 ; std=0.56892 ; min=0.20222 ; max=2.51318
+points=221  ; l2=0.95227 ; std=0.48717 ; min=0.18166 ; max=2.64338
+points=53   ; l2=0.90384 ; std=0.57634 ; min=0.21264 ; max=3.24257
+points=833  ; l2=0.83496 ; std=0.46629 ; min=0.08473 ; max=3.43695
+points=74   ; l2=1.00689 ; std=0.62045 ; min=0.07265 ; max=2.44531
+points=30   ; l2=1.01032 ; std=0.53512 ; min=0.20599 ; max=2.32543
+points=216  ; l2=0.92816 ; std=0.5354  ; min=0.04566 ; max=2.94359
+points=50   ; l2=0.86298 ; std=0.51986 ; min=0.05491 ; max=2.0947 
+points=917  ; l2=0.84556 ; std=0.49262 ; min=0.04091 ; max=2.95632
+points=86   ; l2=0.93332 ; std=0.58605 ; min=0.0367  ; max=2.73661
+points=24   ; l2=1.12255 ; std=0.41702 ; min=0.37651 ; max=2.0599 

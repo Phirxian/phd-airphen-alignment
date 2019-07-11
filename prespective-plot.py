@@ -23,9 +23,11 @@ axes = plt.gca()
 axes.set_ylim([0,2])
 
 for i in range(len(bands)):
-    rmse = data[i::5,1]
-    std = data[i::5,2]
-    plt.plot(rmse, label=bands_text[i])
+    l2 = data[i::5,1]
+    std = data[i::5,2]/2
+    x = np.arange(len(l2))
+    plt.plot(x, l2, label=bands_text[i])
+    #plt.fill_between(x, l2-std, l2+std, alpha=.2)
 pass
     
 plt.title('Allignement error at different height')

@@ -64,11 +64,6 @@ def refine_allignement(loaded, verbose=True):
         matches, kp1, kp2 = keypoint_detect(grad[mid], grad[i])
         matches = keypoint_filter(matches, kp1, kp2, max_dist)
         
-        #kp = keypoint_draw(grad[mid], grad[i], kp1, kp2, matches)
-        #cv2.namedWindow(str(i), cv2.WINDOW_NORMAL)
-        #cv2.imshow(str(i), kp)
-        #cv2.waitKey(1)
-        
         if len(matches) < 2:
             continue
             
@@ -91,15 +86,38 @@ def refine_allignement(loaded, verbose=True):
         bbox.append(get_perspective_min_bbox(M, loaded[mid]))
         
         if verbose:
-            mask = mask.flatten()
-            target = target[:,mask,:]
-            source = source[:,mask,:]
-            corrected = cv2.perspectiveTransform(target.astype('float32'),M)
+            mask = np.where(mask.flatten())
+            target = np.float32(target[0,mask,:])
+            source = np.float32(source[0,mask,:])
+            
+            if False:
+                kp1 = [cv2.KeyPoint(i[0], i[1], 0) for i in source[0]]
+                kp2 = [cv2.KeyPoint(i[0], i[1], 0) for i in target[0]]
+                matches = [cv2.DMatch(i,i,0) for i in range(source.shape[1])]
+                kp = keypoint_draw(grad[mid], grad[i], kp1, kp2, matches)
+                cv2.namedWindow(str(i), cv2.WINDOW_NORMAL)
+                cv2.imshow(str(i), kp)
+                cv2.waitKey(1)
+            pass
+        
+            corrected = cv2.perspectiveTransform(target,M)
             diff = target-source
             count = str(target.shape[1]).ljust(4)
-            rmse = str(np.round(np.sqrt((diff**2).mean()), 5)).ljust(7)
-            std = str(np.round(diff.std(), 5)).ljust(7)
-            print(f'points={count} ; rmse={rmse} ; std={std}')
+            
+            l2 = (diff**2)[0].sum(axis=1)
+            l2 = np.sqrt(l2)
+            #rmse = np.sqrt((diff**2).mean())
+            min = l2.min()
+            max = l2.max()
+            std = l2.std()
+            
+            print(
+                f'points={count} ; '
+                f'l2={str(np.round(l2.mean(), 5)).ljust(7)} ; '
+                f'std={str(np.round(std, 5)).ljust(7)} ; '
+                f'min={str(np.round(min, 5)).ljust(7)} ; '
+                f'max={str(np.round(max, 5)).ljust(7)}'
+            )
         pass
     pass
         
