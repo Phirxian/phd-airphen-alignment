@@ -35,6 +35,7 @@ to find similarity in gradient break of those ones.
 + findHomography
 
 ![alt text](figures/prespective-feature-matching.jpg "feature matching")
+![alt text](figures/perspective-features-matching-scatter.png "Detected Keypoint")
 
 + perspective correction between each matches (current to reference)
 + estimate reprojection error (rmse+std near to 1 pixel)
@@ -42,6 +43,7 @@ to find similarity in gradient break of those ones.
 
 ![alt text](figures/prespective-allignement-rmse.jpg "Prespective Reprojection Error")
 ![alt text](figures/prespective_5.0_false_color.jpg "False Color Corrected Image")
+![alt text](figures/perspective-features-matching-scatter-corrected.png "Corrected Keypoint")
 
 ## Phase 3 (Radial/Tangential Correction):
 

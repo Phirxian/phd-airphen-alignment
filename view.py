@@ -49,13 +49,29 @@ for h in height:
         img = img/img.max()*255
         images.append(img)
     pass
+
+    stereo = cv2.StereoBM_create()
+    stereo.setPreFilterSize(9)     # 63
+    stereo.setPreFilterCap(31)      # 11
+    stereo.setBlockSize(15)         # 39
+    stereo.setMinDisparity(0)       # 0
+    stereo.setNumDisparities(16)    # 80
+    stereo.setTextureThreshold(10)  # 16
+    stereo.setUniquenessRatio(15)    # 5
+    stereo.setSpeckleWindowSize(100) # 41
+    stereo.setSpeckleRange(4)      # 11
+    disparity = stereo.compute(images[0].astype('uint8'),images[2].astype('uint8'))
+    disparity = disparity/disparity.max()*255
+    disparity = disparity.astype('uint8')
     
     images = np.array(images).mean(axis=0).astype('uint8')
     images = cv2.applyColorMap(images, cv2.COLORMAP_JET)
         
     cv2.imshow('mean', images)
+    cv2.imshow('disparity', disparity)
     cv2.imshow('false color', x.false_color)
     cv2.imwrite('results/' + h + '_mean' + '.jpg', images)
+    cv2.imwrite('results/' + h + '_disparity' + '.jpg', disparity)
     cv2.imwrite('results/' + h + '_false_color' + '.jpg', x.false_color)
     cv2.waitKey(1)
     
