@@ -101,7 +101,7 @@ def refine_allignement(loaded, verbose=True):
             pass
         
             corrected = cv2.perspectiveTransform(target,M)
-            diff = target-source
+            diff = corrected-source
             count = str(target.shape[1]).ljust(4)
             
             l2 = (diff**2)[0].sum(axis=1)

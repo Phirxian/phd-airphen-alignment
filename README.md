@@ -21,13 +21,22 @@ Allignement is refined at different stage
 
 ## Phase 2 (Perspective Correction):
 
+Each spectral band have different properties and value by nature,
+but we can extract corresponding similarity by transforming each spectral band to it's derivative
+to find similarity in gradient break of those ones.
+
 ![alt text](figures/math-perspective-correction.png "equation of the perspective correction")
 
-+ detect keypoints on all spectral bands using SURF (for time performance)
++ compute gradient using Sharr in each spectral band and normalize it
++ detect keypoints on all spectral bands gradient using SURF (for time performance)
 + extract descriptor using ORB (for matche performance)
 + match keypoint of each spectral band to a reference (570:green seem the most valuable -> number of matches)
 + filter matches (distance, position, angle) to remove false positive one (pre-affine transform give epipolar line properties)
-+ findHomography and perspective correction between each matches (current to reference)
++ findHomography
+
+![alt text](figures/prespective-feature-matching.jpg "feature matching")
+
++ perspective correction between each matches (current to reference)
 + estimate reprojection error (rmse+std near to 1 pixel)
 + crop each spectral bands to the minimal bbox
 
