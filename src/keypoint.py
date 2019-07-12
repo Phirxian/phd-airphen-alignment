@@ -75,7 +75,7 @@ def keypoint_detect(img1, img2):
     #detector = cv2.xfeatures2d.SIFT_create(nfeatures=1000) # good ~5s
     
     # exact ~5s (increase parameter for higher precision)
-    detector = cv2.xfeatures2d.SURF_create(nOctaves=1, nOctaveLayers=1, upright=False)
+    detector = cv2.xfeatures2d.SURF_create(nOctaves=1, nOctaveLayers=2, upright=False)
     kp1 = detector.detect(img1,None)
     kp2 = detector.detect(img2,None)
     
