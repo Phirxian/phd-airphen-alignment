@@ -3,19 +3,16 @@ import numpy as np
 import math
 import cv2
 
-import matplotlib.pyplot as plt
-
 from .keypoint import *
-
-clahe = cv2.createCLAHE(clipLimit=1.0, tileGridSize=(8,8))
+from .debug import *
 
 def normalize(i):
     G = cv2.GaussianBlur(i,(9,9),cv2.BORDER_DEFAULT)
-    #G = clahe.apply((G * 255).astype('uint8'))
     return i/(G+1)*255
 pass
 
 def build_gradient(img, scale = 0.15, delta=0, ddepth = cv2.CV_32F):
+    clahe = cv2.createCLAHE(clipLimit=1.0, tileGridSize=(8,8))
     grad_x = cv2.Scharr(img, ddepth, 1, 0, scale=scale, delta=delta, borderType=cv2.BORDER_DEFAULT)
     grad_y = cv2.Scharr(img, ddepth, 0, 1, scale=scale, delta=delta, borderType=cv2.BORDER_DEFAULT)
     abs_grad_x = cv2.convertScaleAbs(grad_x)
@@ -95,43 +92,21 @@ def refine_allignement(loaded, verbose=True):
             corrected = target
             corrected = cv2.perspectiveTransform(corrected,M)
             diff = corrected-source
-            count = str(target.shape[1]).ljust(4)
             
-            if False:
-                fig = plt.figure()
-                ax = fig.add_subplot(111)
-                ax.scatter(corrected[0,:,0], corrected[0,:,1], s=0.5)
-                ax.scatter(source[0,:,0], source[0,:,1], s=0.5)
-                ax.quiver(
-                    corrected[0,:,0], corrected[0,:,1],
-                    diff[0,:,0], diff[0,:,1],
-                    scale_units='xy', scale=0.1,
-                    units='xy', width=2
-                )
-                ax.set_aspect('equal', adjustable='box')
-                plt.tight_layout()
-                plt.savefig('figures/perspective-features-matching-scatter-corrected.png')
-                plt.show()
-            elif False:
-                kp1 = [cv2.KeyPoint(i[0], i[1], 0) for i in source[0]]
-                kp2 = [cv2.KeyPoint(i[0], i[1], 0) for i in target[0]]
-                matches = [cv2.DMatch(i,i,0) for i in range(source.shape[1])]
-                kp = keypoint_draw(grad[mid], grad[i], kp1, kp2, matches)
-                cv2.namedWindow(str(i), cv2.WINDOW_NORMAL)
-                cv2.imshow(str(i), kp)
-                cv2.waitKey(1)
-            pass
-            
-            l2 = (diff**2)[0].sum(axis=1)
-            l2 = np.sqrt(l2)
+            l2 = np.sqrt((diff**2)[0].sum(axis=1))
             #rmse = np.sqrt((diff**2).mean())
+            mean = l2.mean()
             min = l2.min()
             max = l2.max()
             std = l2.std()
             
+            if False and i == 3:
+                scatter_plot_residual(source, target, corrected)
+                #draw_final_keypoint_matching(source, target, grad[mid], grad[i])
+            
             print(
-                f'points={count} ; '
-                f'l2={str(np.round(l2.mean(), 5)).ljust(7)} ; '
+                f'points={str(target.shape[1]).ljust(4)} ; '
+                f'l2={str(np.round(mean, 5)).ljust(7)} ; '
                 f'std={str(np.round(std, 5)).ljust(7)} ; '
                 f'min={str(np.round(min, 5)).ljust(7)} ; '
                 f'max={str(np.round(max, 5)).ljust(7)}'
