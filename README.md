@@ -1,5 +1,6 @@
 # Airphen Camera Spectral Band Alignment
 
+![alt text](https://www.hiphen-plant.com/wp-content/webp-express/webp-images/doc-root/wp-content/uploads/2019/05/airphen-detail3.png.webp "the airphen camera")
 Allignement is refined at different stage
 
 ## Phase 0 (Callibration):
@@ -42,7 +43,18 @@ to find similarity in gradient break of those ones.
 
 ![alt text](figures/prespective-allignement-rmse.jpg "Prespective Reprojection Error")
 ![alt text](figures/prespective_5.0_false_color.jpg "False Color Corrected Image")
+
+The following figure show the difference between detected point for two bands (red-green)
+before (left) and after (right) the perspective correction.
+
 ![alt text](figures/perspective-features-matching-scatter.png "Corrected Keypoint")
+
+You can notive in the above figure that the spatial distribution of the residual angle is equaly distributed.
+Our hypothesis is that the nature of the base information (spectral band + different lens) make little difference on the gradient break,
+who is detected by the SURF features detector and propagated to the final correction (observed residual).
+This is interesting stuff because this equaly distributed residual by angle in the space tend to minimize the resulted correction to his center (gradient).
+
+![alt text](figures/perspective-features-residual.png "Residual Distribution Again Angle")
 
 # Todo/Idea:
 
