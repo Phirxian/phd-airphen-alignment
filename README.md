@@ -1,12 +1,25 @@
 # Airphen Camera Spectral Band Alignment
 
+# Materiel and Data
+
 ![alt text](https://www.hiphen-plant.com/wp-content/webp-express/webp-images/doc-root/wp-content/uploads/2019/05/airphen-detail3.png.webp "the airphen camera")
-Allignement is refined at different stage
+
+For the calibration one shot of a chessboard is taken at different height  (0.8 to 5.0 meter with 20cm steep)
+The corresponding data can by found in data/steep-chess/
+
+For the alignment verification one shot of a grassland is taken at different height (0.8 to 5.0 meter with 20cm steep)
+The corresponding data can by found in data/steep/
+
+# Method
+
+Allignement is refined at different stage (calibration, affine, prespective)
+Each steep is explained here with corresponding figures and metrics.
 
 ## Phase 0 (Callibration):
-+ detecte chessboard at different height of acquisition (0.8 to 5.0 meter with 20cm steep)
+
++ detecte chessboard at different height of acquisition
 + order detected points by x/y (detection can be fliped depending of the moon position)
-+ each detected point is saved on data/
++ each detected point is saved on data/*.npy
 
 ## Phase 1 (Affine Correction):
 
@@ -24,7 +37,7 @@ Allignement is refined at different stage
 
 Each spectral band have different properties and value by nature,
 but we can extract corresponding similarity by transforming each spectral band to it's derivative
-to find similarity in gradient break of those ones.
+to find similarity in gradient break of those ones. The Sharr filter are used in this steep for is precision.
 
 ![alt text](figures/math-perspective-correction.png "equation of the perspective correction")
 
@@ -49,20 +62,14 @@ before (left) and after (right) the perspective correction.
 
 ![alt text](figures/perspective-features-matching-scatter.png "Corrected Keypoint")
 
+# Conclusion
+
 You can notive in the above figure that the spatial distribution of the residual angle is equaly distributed.
 Our hypothesis is that the nature of the base information (spectral band + different lens) make little difference on the gradient break,
 who is detected by the SURF features detector and propagated to the final correction (observed residual).
 This is interesting stuff because this equaly distributed residual by angle in the space tend to minimize the resulted correction to his center (gradient).
 
 ![alt text](figures/perspective-features-residual.png "Residual Distribution Again Angle")
-
-# Todo/Idea:
-
-+ some refactoring / code cleaning
-+ https://github.com/karnival/simple-registration
-+ https://github.com/4m4npr33t/Elastic-and-Diffeomorphic-Registration/blob/master/Codes/elastic_and_diffeomorphic_registration.ipynb
-+ opencl implementation of some element (keypoint extraction/filtering/matching)
-+ radiance correction (vignette/row)
 
 # Potential related article:
 
