@@ -41,7 +41,8 @@ def get_perspective_min_bbox(M, img, p=2):
     return np.int32([ymin,xmin,ymax,xmax])
 pass
 
-def refine_allignement(loaded, verbose=True):
+# @ref the best reference : default=1=570 !! (maximum number of matches)
+def refine_allignement(loaded, method='SURF', ref=1, verbose=True):
     img = [ i.astype('float32') for i in loaded]
     img = [ normalize(i) for i in img]
     grad = [ build_gradient(i).astype('uint8') for i in img]
@@ -52,18 +53,20 @@ def refine_allignement(loaded, verbose=True):
     
     # identify transformation for each band to the next one
     dsize = (loaded[0].shape[1], loaded[0].shape[0])
-    mid = 1 # the best reference !! (maximum number of matches)
     max_dist = 10
     bbox = []
+    keypoint_found = []
     
     for i in range(0, len(loaded)):
-        if i == mid:
+        if i == ref:
+            keypoint_found.append(-1)
             continue
     
-        matches, kp1, kp2 = keypoint_detect(grad[mid], grad[i])
+        matches, kp1, kp2 = keypoint_detect(grad[ref], grad[i], method)
         matches = keypoint_filter(matches, kp1, kp2, max_dist)
         
         if len(matches) < 2:
+            keypoint_found.append(-1)
             continue
             
         #print('estimate transformation ...')
@@ -80,17 +83,24 @@ def refine_allignement(loaded, verbose=True):
         #tr.estimateTransformation(source,target,matches)
         #loaded[i] = tr.warpImage(loaded[i])
         
-        M, mask = cv2.findHomography(target, source, cv2.RANSAC)
-        loaded[i] = cv2.warpPerspective(loaded[i], M, dsize)
-        bbox.append(get_perspective_min_bbox(M, loaded[mid]))
+        evaluators = [cv2.RANSAC, cv2.LMEDS, cv2.RHO]
+        M, mask = cv2.findHomography(target, source, evaluators[1])
         
-        if verbose:
-            mask = np.where(mask.flatten())
-            target = np.float32(target[0,mask,:])
-            source = np.float32(source[0,mask,:])
-            
-            corrected = target
-            corrected = cv2.perspectiveTransform(corrected,M)
+        if M is None:
+            keypoint_found.append(-1)
+            continue
+        
+        loaded[i] = cv2.warpPerspective(loaded[i], M, dsize)
+        bbox.append(get_perspective_min_bbox(M, loaded[ref]))
+        
+        mask = np.where(mask.flatten())
+        target = np.float32(target[0,mask,:])
+        source = np.float32(source[0,mask,:])
+        keypoint_found.append(len(mask[0]))
+        #keypoint_found.append(source.shape[1])
+        
+        if verbose > 0:
+            corrected = cv2.perspectiveTransform(target,M)
             diff = corrected-source
             
             l2 = np.sqrt((diff**2)[0].sum(axis=1))
@@ -100,9 +110,11 @@ def refine_allignement(loaded, verbose=True):
             max = l2.max()
             std = l2.std()
             
-            if False and i == 3:
+            if verbose > 1:
                 scatter_plot_residual(source, target, corrected)
-                #draw_final_keypoint_matching(source, target, grad[mid], grad[i])
+                
+            if verbose > 2:
+                draw_final_keypoint_matching(source, target, grad[ref], grad[i])
             
             print(
                 f'points={str(target.shape[1]).ljust(4)} ; '
@@ -114,5 +126,5 @@ def refine_allignement(loaded, verbose=True):
         pass
     pass
         
-    return loaded, np.array(bbox)
+    return loaded, np.array(bbox), keypoint_found
 pass

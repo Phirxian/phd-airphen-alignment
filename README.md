@@ -42,14 +42,25 @@ to find similarity in gradient break of those ones. The Sharr filter are used in
 ![alt text](figures/math-perspective-correction.png "equation of the perspective correction")
 
 + compute gradient using Sharr in each spectral band and normalize it
-+ detect keypoints on all spectral bands gradient using SURF (for time performance)
++ detect keypoints on all spectral bands gradient using FAST (for time performance)
 + extract descriptor using ORB (for matche performance)
-+ match keypoint of each spectral band to a reference (570:green seem the most valuable -> number of matches)
++ match keypoint of each spectral band to a reference (570 or 710 seem the most valuable -> number of matches)
 + filter matches (distance, position, angle) to remove false positive one (pre-affine transform give epipolar line properties)
-+ findHomography
 
 ![alt text](figures/prespective-feature-matching.jpg "feature matching")
 
+Different type of keypoint extractor has been tested {ORB, AKAZE, BRISK, SURF, FAST} all results can be found in figures/
+Two algorithms show great numbers of keypoint after filtering and homography association such as FAST and BRISK.
+
+![alt text](figures/comparaison-keypoint-performances.png "features performances")
+
+Unless BRISK show good number of matched keypoints there computation time is too huge (~79 sec) comparing to FAST (~8 sec) without notable benefits.
+SURF is also suitable and allow two parameter nOctaves and nOctaveLayers to increase the number of extracted features, but reducing performances.
+
+The following figure show the Minimum of number of matches between the reference spectra to all others using FAST algorithm.
+![alt text](figures/comparaison-keypoint-matching-reference-FAST.png "feature SURF performances")
+
++ findHomography between detected keypoints
 + perspective correction between each matches (current to reference)
 + estimate reprojection error (rmse+std near to 1 pixel)
 + crop each spectral bands to the minimal bbox

@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import math
+import cv2
 
 def scatter_plot_residual(source, target, corrected):
     fig = plt.figure(figsize=(17,5))

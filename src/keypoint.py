@@ -4,6 +4,7 @@ import math
 import cv2
 
 from scipy.spatial import distance
+from functools import partial
 
 class FilterDetection:
     
@@ -67,15 +68,20 @@ class FilterDetection:
     
 pass
 
-def keypoint_detect(img1, img2):
+def keypoint_detect(img1, img2, method='FAST'):
     #print('keypoint detection ...')
-    #detector = cv2.ORB_create(nfeatures=1000) # error
-    #detector = cv2.AKAZE_create() # good but slow ~15s
-    #detector = cv2.BRISK_create(patternScale=0.1)
-    #detector = cv2.xfeatures2d.SIFT_create(nfeatures=1000) # good ~5s
     
-    # exact ~5s (increase parameter for higher precision)
-    detector = cv2.xfeatures2d.SURF_create(nOctaves=1, nOctaveLayers=2, upright=False)
+    detectors = {
+        'ORB'   : partial(cv2.ORB_create, nfeatures=1000), # error
+        'AKAZE' : partial(cv2.AKAZE_create),
+        'BRISK' : partial(cv2.BRISK_create, patternScale=0.1),
+        #'SIFT'  : partial(cv2.xfeatures2d.SIFT_create, nfeatures=1000), # good ~5s
+        # exact ~5s (increase parameter for higher precision)
+        'SURF'  : partial(cv2.xfeatures2d.SURF_create, hessianThreshold=10, nOctaves=2, nOctaveLayers=1, upright=False),
+        'FAST' : partial(cv2.FastFeatureDetector_create, threshold=92, nonmaxSuppression=True),
+    }
+    
+    detector = detectors[method]()
     kp1 = detector.detect(img1,None)
     kp2 = detector.detect(img2,None)
     
@@ -108,7 +114,7 @@ def keypoint_filter(matches, kp1, kp2, alpha):
     matches = np.array(matches)[filter]
     
     filtering = FilterDetection(matches, kp1, kp2)
-    filter = np.where(filtering.filter_angle(1))
+    filter = np.where(filtering.filter_angle(2))
     matches = np.array(matches)[filter]
     
     #filtering = FilterDetection(matches, kp1, kp2)
