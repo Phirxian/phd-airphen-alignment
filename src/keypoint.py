@@ -74,6 +74,7 @@ def keypoint_detect(img1, img2, method='FAST'):
     detectors = {
         'ORB'   : partial(cv2.ORB_create, nfeatures=1000), # error
         'AKAZE' : partial(cv2.AKAZE_create),
+        'KAZE'  : partial(cv2.KAZE_create),
         'BRISK' : partial(cv2.BRISK_create, patternScale=0.1),
         #'SIFT'  : partial(cv2.xfeatures2d.SIFT_create, nfeatures=1000), # good ~5s
         # exact ~5s (increase parameter for higher precision)

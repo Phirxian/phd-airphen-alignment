@@ -9,7 +9,7 @@ from src.spectral_image import *
 from src.keypoint import *
 from src.settings import *
 
-for method in all_methods:
+for method in ['KAZE']:
     references_by_height = []
     
     print('--------------')

@@ -8,8 +8,10 @@ AIRPHEN is highly configurable (bands, fields of view), lightweight and compact.
 It can be operated wireless and combined with complementary thermal infrared channel and high resolution RGB cameras.
 The camera was configured using 450/570/675/710/730/850 nm with FWHM of 10nm. The focal lens is 8mm.
 It's raw resolution for each spectral band is 1280x960 px with 12 bit of precision.
+Finaly the camera also provide an internal GPS antenna.
 
 ![alt text](https://www.hiphen-plant.com/wp-content/webp-express/webp-images/doc-root/wp-content/uploads/2019/05/airphen-detail3.png.webp "the airphen camera")
+
 
 ## Data
 
@@ -32,7 +34,7 @@ Each steep is explained here with corresponding figures and metrics.
 
 ![alt text](figures/math-affine-correction.png "equation of the affine correction")
 
-+ selecte the detected points of the nearest height (know by the user or using sensor)
++ selecte the detected points of the nearest height (know by the user or using the internal GPS sensor)
 + compute the centroid grid (each point mean)
 + compute affine transfrom from each spectral band to this centroid grid
 + crop each spectral bands to the minimal bbox
