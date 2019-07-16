@@ -22,11 +22,14 @@ plt.figure(figsize=(15,4))
 axes = plt.gca()
 axes.set_ylim([0,5])
 
-for i in range(len(bands)):
+bands = all_bands.copy()
+bands.remove(570) # the reference
+
+for b,i in enumerate(bands):
     l2 = data[i::5,1]
     std = data[i::5,2]/2
     x = np.arange(len(l2))
-    plt.plot(x, l2, label=bands_text[i])
+    plt.plot(x, l2, label=bands_text[all_bands.index(b)])
     #plt.fill_between(x, l2-std, l2+std, alpha=.2)
 pass
     

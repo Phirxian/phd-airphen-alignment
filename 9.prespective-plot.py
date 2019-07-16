@@ -20,13 +20,17 @@ data = np.array(data)
     
 plt.figure(figsize=(15,4))
 axes = plt.gca()
-axes.set_ylim([0.8,1.3])
+axes.set_ylim([0.5,1.5])
 
-for i in range(len(bands)):
+bands = all_bands.copy()
+bands.remove(710) # the reference
+
+for i,b in enumerate(bands):
     l2 = data[i::5,1]
     std = data[i::5,2]/2
     x = np.arange(len(l2))
-    plt.plot(x, l2, label=bands_text[i])
+    c = all_bands.index(b)
+    plt.plot(x, l2, label=bands_text[c])
     #plt.fill_between(x, l2-std, l2+std, alpha=.2)
 pass
     
