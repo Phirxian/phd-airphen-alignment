@@ -15,4 +15,4 @@ height = np.array([
 bands_text = ['blue', 'green', 'red', 'redge', 'redge-max', 'nir']
 all_bands = [450, 570, 675, 710, 730, 850]
 
-all_methods = ['ORB', 'AKAZE', 'BRISK', 'SURF', 'FAST']
+all_methods = ['ORB', 'AKAZE', 'KAZE', 'BRISK', 'AGAST', 'MSER', 'SURF', 'FAST']

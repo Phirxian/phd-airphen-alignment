@@ -110,3 +110,4 @@ Future work on spectral correction :
 + https://citius.usc.es/sites/default/files/publicacions_publicaciones/Alignment%20of%20Hyperspectral%20Images%20Using%20KAZE_Features_v2.pdf
 + https://pdfs.semanticscholar.org/25b6/4d89abdd36e0800da4679813935f055846dd.pdf
 + https://www.insticc.org/Primoris/Resources/PaperPdf.ashx?idPaper=75802
++ https://arxiv.org/pdf/1606.03798.pdf
