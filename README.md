@@ -1,14 +1,21 @@
 # Airphen Camera Spectral Band Alignment
 
-# Materiel and Data
+## Material
+
+AIRPHEN is a scientific multispectral camera developed by agronomists for agricultural applications.
+It can be embedded in different types of platforms such as UAV, phenotyping robots, etc.
+AIRPHEN is highly configurable (bands, fields of view), lightweight and compact.
+It can be operated wireless and combined with complementary thermal infrared channel and high resolution RGB cameras.
+The camera was configured using 450/570/675/710/730/850 nm with FWHM of 10nm. The focal lens is 8mm.
+It's raw resolution for each spectral band is 1280x960 px with 12 bit of precision.
 
 ![alt text](https://www.hiphen-plant.com/wp-content/webp-express/webp-images/doc-root/wp-content/uploads/2019/05/airphen-detail3.png.webp "the airphen camera")
 
-For the calibration one shot of a chessboard is taken at different height  (0.8 to 5.0 meter with 20cm steep)
-The corresponding data can by found in data/steep-chess/
+## Data
 
-For the alignment verification one shot of a grassland is taken at different height (0.8 to 5.0 meter with 20cm steep)
-The corresponding data can by found in data/steep/
+Two dataset was taken at different height  (1.6 to 5.0 meter with 20cm steep).
++ One for the calibration a chessboard is taken at different height, the corresponding data can by found in data/steep-chess/.
++ One for the alignment verification one shot of a grassland is taken at different height, the corresponding data can by found in data/steep/
 
 # Method
 
@@ -55,7 +62,8 @@ Two algorithms show great numbers of keypoint after filtering and homography ass
 ![alt text](figures/comparaison-keypoint-performances.png "features performances")
 
 Unless BRISK show good number of matched keypoints there computation time is too huge (~79 sec) comparing to FAST (~8 sec) without notable benefits.
-SURF is also suitable and allow two parameter nOctaves and nOctaveLayers to increase the number of extracted features, but reducing performances.
+SURF is can also be suitable for small gain of performances, the number of detected feature can be enought to fit the perspective correction,
+but they reduce the residual precision to 1.1~1.2 px how is acceptable.
 
 The following figure show the Minimum of number of matches between the reference spectra to all others using FAST algorithm.
 ![alt text](figures/comparaison-keypoint-matching-reference-FAST.png "feature SURF performances")
@@ -73,18 +81,30 @@ before (left) and after (right) the perspective correction.
 
 ![alt text](figures/perspective-features-matching-scatter.png "Corrected Keypoint")
 
-# Conclusion
-
 You can notive in the above figure that the spatial distribution of the residual angle is equaly distributed.
 Our hypothesis is that the nature of the base information (spectral band + different lens) make little difference on the gradient break,
-who is detected by the SURF features detector and propagated to the final correction (observed residual).
+who is detected by the features detector and propagated to the final correction (observed residual).
 This is interesting stuff because this equaly distributed residual by angle in the space tend to minimize the resulted correction to his center (gradient).
 
 ![alt text](figures/perspective-features-residual.png "Residual Distribution Again Angle")
+
+# Conclusion
+
+In this work was explored the application of different technicues for the registration of multispectral images.
+We have tested different methodes of keypoint extraction at different height and the number of control point obtained.
+As seen on the method, the best suitable methods is FAST with sinificant number of matches with "resonable" computation time.
+Futhermore the best spectral reference was defined for each method, such as 710 for FAST.
+According to the last figure "Allignment error at different height" we observe a residual error less than 1 px,
+supposedly caused by the difference of the input (spectral range, lens).
+
+Future work on spectral correction :
++ reducing as much as possible the impact of the weather
++ radial gradient
++ row reflectance
 
 # Potential related article:
 
 + https://www.tandfonline.com/doi/abs/10.1080/2150704X.2018.1446564
 + https://citius.usc.es/sites/default/files/publicacions_publicaciones/Alignment%20of%20Hyperspectral%20Images%20Using%20KAZE_Features_v2.pdf
 + https://pdfs.semanticscholar.org/25b6/4d89abdd36e0800da4679813935f055846dd.pdf
-+ https://citius.usc.es/sites/default/files/publicacions_publicaciones/Alignment%20of%20Hyperspectral%20Images%20Using%20KAZE_Features_v2.pdf
++ https://www.insticc.org/Primoris/Resources/PaperPdf.ashx?idPaper=75802
