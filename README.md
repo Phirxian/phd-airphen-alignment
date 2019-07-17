@@ -1,5 +1,10 @@
 # Airphen Camera Spectral Band Alignment
 
+Image registration is the process of transforming different images of one scene into the same coordinate system.
+The spatial relationships between these images can be rigid (translations and rotations), affine (shears for example), homographies, or complex large deformations models.
+The main difficulty is that the Airphen camera took 6 spectral image (different value) without pixel alignement.
+This implies to search similaritie between image of the same scene to apply registration.
+
 ## Material
 
 AIRPHEN is a scientific multispectral camera developed by agronomists for agricultural applications.
@@ -72,7 +77,9 @@ to find similarity in gradient break of those ones. The Sharr filter are used in
 
 ![alt text](figures/prespective-feature-matching.jpg "feature matching")
 
+A keypoint is a point of interest. It defines what is important and distinctive in an image (corners, edges, etc).
 Different type of keypoint extractor has been tested {ORB, AKAZE, KAZE, BRISK, AGAST, MSER, SURF, FAST} all results can be found in figures/
+These algorithms are all available and easily usable in OpenCV.
 The following figure show the numbers of keypoint after filtering and homography association (minimum of all matches),
 the computation time and the performances ratio (matches/time) for each methods.
 
