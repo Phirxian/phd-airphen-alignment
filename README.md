@@ -30,6 +30,8 @@ As exemple this is each correction steep at 1.6 meter.
 
 ## Phase 0 (Callibration):
 
+![alt text](figures/calibration-height.jpg "Chessboard acquisitions at different height")
+
 + detecte chessboard at different height of acquisition
 + order detected points by x/y (detection can be fliped depending of the moon position)
 + each detected point is saved on data/*.npy
