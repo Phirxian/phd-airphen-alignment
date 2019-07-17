@@ -25,6 +25,7 @@ Two dataset was taken at different height  (1.6 to 5.0 meter with 20cm steep).
 
 Allignement is refined at different stage (calibration, affine, prespective)
 Each steep is explained here with corresponding figures and metrics.
+![alt text](figures/merged-correction.jpg "Each correction steep")
 
 ## Phase 0 (Callibration):
 
@@ -42,7 +43,6 @@ Each steep is explained here with corresponding figures and metrics.
 + crop each spectral bands to the minimal bbox
 
 ![alt text](figures/affine-allignement-rmse.jpg "Affine Reprojection Error")
-![alt text](figures/affine_5.0_false_color.jpg "False Color Corrected Image")
  
 ## Phase 2 (Perspective Correction):
 
@@ -58,6 +58,9 @@ to find similarity in gradient break of those ones. The Sharr filter are used in
 + match keypoint of each spectral band to a reference (570 or 710 seem the most valuable -> number of matches)
 + filter matches (distance, position, angle) to remove false positive one (pre-affine transform give epipolar line properties)
 + findHomography between detected/filtered keypoints with RANSAC
++ perspective correction between each spectral band to the reference
++ estimate reprojection error (rmse+std near to 1 pixel)
++ crop each spectral bands to the minimal bbox
 
 ![alt text](figures/prespective-feature-matching.jpg "feature matching")
 
@@ -75,7 +78,7 @@ All this methods works, the selection of the methods depends on how we want to b
 The other ones did not show improvement in terme of performanes or matches:
 + AKAZE and MSER did not show benefits comparing to FAST.
 + ORB could be excluded, the number of matches is near to ~20 how is the minimal to enssure that the homography is correct.
-+ BRISK show good number of matches, but there computation time is too huge (~79 sec) comparing to FAST (~8 sec) without notable benefits.
++ BRISK show good number of matches, but there computation time is too huge (~79 sec) comparing to FAST (~8 sec).
 
 Increasing the number of matched keypoints show tiny more precision. For exemple, moving from SURF (~30 matches) to FAST (~130 matches)
 show the final residual distances reduced from ~1.2px to ~0.9px and the computation time from ~5sec to ~8sec.
@@ -85,12 +88,9 @@ The following figure show the Minimum of number of matches between each referenc
 
 ![alt text](figures/comparaison-keypoint-matching-reference-FAST.png "feature SURF performances")
 
-+ perspective correction between each matches (current to reference)
-+ estimate reprojection error (rmse+std near to 1 pixel)
-+ crop each spectral bands to the minimal bbox
+The residuals of the perspective correction 
 
 ![alt text](figures/prespective-allignement-rmse.jpg "Prespective Reprojection Error")
-![alt text](figures/prespective_5.0_false_color.jpg "False Color Corrected Image")
 
 The following figure show the difference between detected point for two bands (red-green)
 before (left) and after (right) the perspective correction.
