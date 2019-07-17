@@ -24,6 +24,8 @@ Two dataset was taken at different height  (1.6 to 5.0 meter with 20cm steep).
 
 Allignement is refined at different stage (calibration, affine, prespective)
 Each steep is explained here with corresponding figures and metrics.
+As exemple this is each correction steep at 1.6 meter.
+
 ![alt text](figures/merged-correction.png "Each correction steep")
 
 ## Phase 0 (Callibration):
@@ -33,6 +35,11 @@ Each steep is explained here with corresponding figures and metrics.
 + each detected point is saved on data/*.npy
 
 ## Phase 1 (Affine Correction):
+
+It's important to notice that closer we taken the snapshot, bigest is the distance of the initial Afine Correction.
+On the other hand at a distance superior or equlas to 5 meter,
+the initial Affine Correction is near to few pixels (1-5) that is suffisant to take an identity matrix.
+And directly use prespective correction (Phase 2).
 
 ![alt text](figures/math-affine-correction.png "equation of the affine correction")
 
