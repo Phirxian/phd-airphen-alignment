@@ -14,7 +14,6 @@ It can be operated wireless and combined with complementary thermal infrared cha
 
 ![alt text](https://www.hiphen-plant.com/wp-content/webp-express/webp-images/doc-root/wp-content/uploads/2019/05/airphen-detail3.png.webp "the airphen camera")
 
-
 ## Data
 
 Two dataset was taken at different height  (1.6 to 5.0 meter with 20cm steep).
@@ -25,7 +24,7 @@ Two dataset was taken at different height  (1.6 to 5.0 meter with 20cm steep).
 
 Allignement is refined at different stage (calibration, affine, prespective)
 Each steep is explained here with corresponding figures and metrics.
-![alt text](figures/merged-correction.jpg "Each correction steep")
+![alt text](figures/merged-correction.png "Each correction steep")
 
 ## Phase 0 (Callibration):
 
