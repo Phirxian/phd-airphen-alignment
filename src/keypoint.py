@@ -126,21 +126,3 @@ def keypoint_filter(matches, kp1, kp2, alpha):
     
     return matches
 pass
-
-def keypoint_draw(img1, img2, kp1, kp2, matches):
-    img1 = cv2.cvtColor(img1, cv2.COLOR_GRAY2BGR)
-    img2 = cv2.cvtColor(img2, cv2.COLOR_GRAY2BGR)
-    
-    for i in kp1:
-        px = np.int0(i.pt)
-        img1[px[1], px[0], :] = [0,0,255]
-    
-    for i in kp2:
-        px = np.int0(i.pt)
-        img2[px[1], px[0], :] = [0,0,255]
-    
-    return cv2.drawMatches(
-        img1, kp1, img2, kp2, matches, None,
-        flags=cv2.DrawMatchesFlags_NOT_DRAW_SINGLE_POINTS
-    )
-pass

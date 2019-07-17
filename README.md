@@ -6,9 +6,11 @@ AIRPHEN is a scientific multispectral camera developed by agronomists for agricu
 It can be embedded in different types of platforms such as UAV, phenotyping robots, etc.
 AIRPHEN is highly configurable (bands, fields of view), lightweight and compact.
 It can be operated wireless and combined with complementary thermal infrared channel and high resolution RGB cameras.
-The camera was configured using 450/570/675/710/730/850 nm with FWHM of 10nm. The focal lens is 8mm.
-It's raw resolution for each spectral band is 1280x960 px with 12 bit of precision.
-Finaly the camera also provide an internal GPS antenna.
+
++ The camera was configured using 450/570/675/710/730/850 nm with FWHM of 10nm.
++ The focal lens is 8mm.
++ It's raw resolution for each spectral band is 1280x960 px with 12 bit of precision.
++ Finaly the camera also provide an internal GPS antenna.
 
 ![alt text](https://www.hiphen-plant.com/wp-content/webp-express/webp-images/doc-root/wp-content/uploads/2019/05/airphen-detail3.png.webp "the airphen camera")
 
@@ -41,7 +43,7 @@ Each steep is explained here with corresponding figures and metrics.
 
 ![alt text](figures/affine-allignement-rmse.jpg "Affine Reprojection Error")
 ![alt text](figures/affine_5.0_false_color.jpg "False Color Corrected Image")
-
+ 
 ## Phase 2 (Perspective Correction):
 
 Each spectral band have different properties and value by nature,
@@ -55,22 +57,34 @@ to find similarity in gradient break of those ones. The Sharr filter are used in
 + extract descriptor using ORB (for matche performance)
 + match keypoint of each spectral band to a reference (570 or 710 seem the most valuable -> number of matches)
 + filter matches (distance, position, angle) to remove false positive one (pre-affine transform give epipolar line properties)
++ findHomography between detected/filtered keypoints with RANSAC
 
 ![alt text](figures/prespective-feature-matching.jpg "feature matching")
 
-Different type of keypoint extractor has been tested {ORB, AKAZE, BRISK, SURF, FAST} all results can be found in figures/
-Two algorithms show great numbers of keypoint after filtering and homography association such as FAST and BRISK.
+Different type of keypoint extractor has been tested {ORB, AKAZE, KAZE, BRISK, AGAST, MSER, SURF, FAST} all results can be found in figures/
+The following figure show the numbers of keypoint after filtering and homography association (minimum of all matches),
+the computation time and the performances ratio (matches/time) for each methods.
 
 ![alt text](figures/comparaison-keypoint-performances.png "features performances")
 
-Unless BRISK show good number of matched keypoints there computation time is too huge (~79 sec) comparing to FAST (~8 sec) without notable benefits.
-SURF is can also be suitable for small gain of performances, the number of detected feature can be enought to fit the perspective correction,
-but they reduce the residual precision to 1.1~1.2 px how is acceptable.
+All this methods works, the selection of the methods depends on how we want to balance between computation time and precision:
++ FAST and AGAST is the most suitable, balanced between time and matches performances.
++ KAZE show the best number of matches (>200) but it's also 2.5 times slower than FAST/AGAST.
++ SURF can be suitable for small gain of performances, the number of detected feature can be enought to fit the perspective correction.
 
-The following figure show the Minimum of number of matches between the reference spectra to all others using FAST algorithm.
+The other ones did not show improvement in terme of performanes or matches:
++ AKAZE and MSER did not show benefits comparing to FAST.
++ ORB could be excluded, the number of matches is near to ~20 how is the minimal to enssure that the homography is correct.
++ BRISK show good number of matches, but there computation time is too huge (~79 sec) comparing to FAST (~8 sec) without notable benefits.
+
+Increasing the number of matched keypoints show tiny more precision. For exemple, moving from SURF (~30 matches) to FAST (~130 matches)
+show the final residual distances reduced from ~1.2px to ~0.9px and the computation time from ~5sec to ~8sec.
+
+All methods show that the best reference spectra is 710nm, execpted for SURF how is 570nm.
+The following figure show the Minimum of number of matches between each reference spectra to all others using FAST algorithm.
+
 ![alt text](figures/comparaison-keypoint-matching-reference-FAST.png "feature SURF performances")
 
-+ findHomography between detected keypoints
 + perspective correction between each matches (current to reference)
 + estimate reprojection error (rmse+std near to 1 pixel)
 + crop each spectral bands to the minimal bbox

@@ -93,12 +93,30 @@ def scatter_plot_residual(source, target, corrected):
     plt.show()
 pass
 
+def keypoint_draw(img1, img2, kp1, kp2, matches):
+    img1 = cv2.cvtColor(img1, cv2.COLOR_GRAY2BGR)
+    img2 = cv2.cvtColor(img2, cv2.COLOR_GRAY2BGR)
+    
+    for i in kp1:
+        px = np.int0(i.pt)
+        img1[px[1], px[0], :] = [0,0,255]
+    
+    for i in kp2:
+        px = np.int0(i.pt)
+        img2[px[1], px[0], :] = [0,0,255]
+    
+    return cv2.drawMatches(
+        img1, kp1, img2, kp2, matches, None,
+        flags=cv2.DrawMatchesFlags_NOT_DRAW_SINGLE_POINTS
+    )
+pass
+
 def draw_final_keypoint_matching(source, target, grad_mid, grad_i):
     kp1 = [cv2.KeyPoint(i[0], i[1], 0) for i in source[0]]
     kp2 = [cv2.KeyPoint(i[0], i[1], 0) for i in target[0]]
     matches = [cv2.DMatch(i,i,0) for i in range(source.shape[1])]
     kp = keypoint_draw(grad_mid, grad_i, kp1, kp2, matches)
-    cv2.namedWindow(str(i), cv2.WINDOW_NORMAL)
-    cv2.imshow(str(i), kp)
+    cv2.namedWindow('kp match', cv2.WINDOW_NORMAL)
+    cv2.imshow('kp match', kp)
     cv2.waitKey(1)
 pass
