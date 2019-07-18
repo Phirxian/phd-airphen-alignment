@@ -72,7 +72,7 @@ def keypoint_detect(img1, img2, method='FAST'):
     #print('keypoint detection ...')
     
     detectors = {
-        'ORB'   : partial(cv2.ORB_create, nfeatures=2000), # error
+        'ORB'   : partial(cv2.ORB_create, nfeatures=5000), # error
         'AGAST' : partial(cv2.AgastFeatureDetector_create, threshold=92, nonmaxSuppression=True),
         'AKAZE' : partial(cv2.AKAZE_create),
         'KAZE'  : partial(cv2.KAZE_create),
@@ -81,14 +81,13 @@ def keypoint_detect(img1, img2, method='FAST'):
         #'SIFT'  : partial(cv2.xfeatures2d.SIFT_create, nfeatures=1000), # good ~5s
         # exact ~5s (increase parameter for higher precision)
         'SURF'  : partial(cv2.xfeatures2d.SURF_create, hessianThreshold=10, nOctaves=2, nOctaveLayers=1, upright=False),
-        'FAST' : partial(cv2.FastFeatureDetector_create, threshold=92, nonmaxSuppression=True),
+        'FAST'  : partial(cv2.FastFeatureDetector_create, threshold=92, nonmaxSuppression=True),
+        'GFTT'  : partial(cv2.GFTTDetector_create, maxCorners=5000,useHarrisDetector=True),
     }
     
     detector = detectors[method]()
     kp1 = detector.detect(img1,None)
     kp2 = detector.detect(img2,None)
-    
-    #descriptor = detector
     descriptor = cv2.ORB_create()
     kp1, des1 = descriptor.compute(img1, kp1)
     kp2, des2 = descriptor.compute(img2, kp2)

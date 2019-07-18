@@ -12,8 +12,8 @@ for h in height:
     S = SpectralImage('./data/steep/', str(h))
     
     loaded, nb_kp = load_spectral_bands(
-        S, method='FAST',
-        reference=all_bands.index(710),
+        S, method='GFTT',
+        reference=all_bands.index(570),
         verbose=1
     )
     

@@ -66,7 +66,7 @@ to find similarity in gradient break of those ones. The Sharr filter are used in
 ![alt text](figures/math-perspective-correction.png "equation of the perspective correction")
 
 + compute gradient using Sharr in each spectral band and normalize it
-+ detect keypoints on all spectral bands gradient using FAST (for time performance)
++ detect keypoints on all spectral bands gradient using GFTT (for time performance)
 + extract descriptor using ORB (for matche performance)
 + match keypoint of each spectral band to a reference (570 or 710 seem the most valuable -> number of matches)
 + filter matches (distance, position, angle) to remove false positive one (pre-affine transform give epipolar line properties)
@@ -80,12 +80,24 @@ to find similarity in gradient break of those ones. The Sharr filter are used in
 A keypoint is a point of interest. It defines what is important and distinctive in an image (corners, edges, etc).
 Different type of keypoint extractor has been tested {ORB, AKAZE, KAZE, BRISK, AGAST, MSER, SURF, FAST} all results can be found in figures/
 These algorithms are all available and easily usable in OpenCV.
+
++ ORB : An efficient alternative to SIFT or SURF 
++ AKAZE : Fast explicit diffusion for accelerated features in nonlinear scale spaces
++ KAZE : A novel multiscale 2D feature detection and description algorithm in nonlinear scale spaces
++ BRISK : Binary robust invariant scalable keypoints.
++ AGAST : Adaptive and generic corner detection based on the accelerated segment test
++ MSER : maximally stable extremal regions
++ SURF : Speeded-Up Robust Features
++ FAST : FAST Algorithm for Corner Detection
++ GFTT : Good Features to Track
+
 The following figure show the numbers of keypoint after filtering and homography association (minimum of all matches),
 the computation time and the performances ratio (matches/time) for each methods.
 
 ![alt text](figures/comparaison-keypoint-performances.png "features performances")
 
 All this methods works, the selection of the methods depends on how we want to balance between computation time and precision:
++ GFTT show the best performance over all others both in computation time and number of matches
 + FAST and AGAST is the most suitable, balanced between time and matches performances.
 + KAZE show the best number of matches (>200) but it's also 2.5 times slower than FAST/AGAST.
 + SURF can be suitable for small gain of performances, the number of detected feature can be enought to fit the perspective correction.
@@ -98,12 +110,15 @@ The other ones did not show improvement in terme of performanes or matches:
 Increasing the number of matched keypoints show tiny more precision. For exemple, moving from SURF (~30 matches) to FAST (~130 matches)
 show the final residual distances reduced from ~1.2px to ~0.9px and the computation time from ~5sec to ~8sec.
 
-All methods show that the best reference spectra is 710nm, execpted for SURF how is 570nm.
+All methods show that the best reference spectra is 710nm, execpted for SURF and GFTT how is 570nm.
 The following figure show the Minimum of number of matches between each reference spectra to all others using FAST algorithm.
 
 ![alt text](figures/comparaison-keypoint-matching-reference-FAST.png "feature SURF performances")
 
-The residuals of the perspective correction 
+Once the best keypoints extractor and spectral reference are defined, we use there detection to estimate an homography.
+Homography is an isomorphism of perspectives. A 2D homography between A and B would give you the projection transformation
+between the two images. It is a 3x3 matrix that descibes the affine transformation.
+The residuals of the perspective correction.
 
 ![alt text](figures/prespective-allignement-rmse.jpg "Prespective Reprojection Error")
 
@@ -140,3 +155,5 @@ Future work on spectral correction :
 + https://pdfs.semanticscholar.org/25b6/4d89abdd36e0800da4679813935f055846dd.pdf
 + https://www.insticc.org/Primoris/Resources/PaperPdf.ashx?idPaper=75802
 + https://arxiv.org/pdf/1606.03798.pdf
+
++ Deeper understanding of the homography decompositionfor vision-based control
