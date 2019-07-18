@@ -2,7 +2,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-from src.data import *
+from airphen.data import *
 
 with open('figures/prespective-error.txt') as f:
     content = f.readlines()

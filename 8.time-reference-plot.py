@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from src.data import *
+from airphen.data import *
 
 all_times = []
 all_best = []

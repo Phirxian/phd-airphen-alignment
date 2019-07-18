@@ -7,6 +7,7 @@ This implies to search similaritie between image of the same scene to apply regi
 
 ## Material
 
+The multispectral imagery was provided by the six-band multispectral camera Airphen.
 AIRPHEN is a scientific multispectral camera developed by agronomists for agricultural applications.
 It can be embedded in different types of platforms such as UAV, phenotyping robots, etc.
 AIRPHEN is highly configurable (bands, fields of view), lightweight and compact.
@@ -155,5 +156,6 @@ Future work on spectral correction :
 + https://pdfs.semanticscholar.org/25b6/4d89abdd36e0800da4679813935f055846dd.pdf
 + https://www.insticc.org/Primoris/Resources/PaperPdf.ashx?idPaper=75802
 + https://arxiv.org/pdf/1606.03798.pdf
++ https://profs.etsmtl.ca/hlombaert/ECCV-Spectral-Demons.pdf
 
 + Deeper understanding of the homography decompositionfor vision-based control

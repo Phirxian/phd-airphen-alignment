@@ -4,27 +4,8 @@ import math
 import cv2
 
 from .keypoint import *
+from .image_processing import *
 from .debug import *
-
-def normalize(i):
-    G = cv2.GaussianBlur(i,(9,9),cv2.BORDER_DEFAULT)
-    return i/(G+1)*255
-pass
-
-def build_gradient(img, scale = 0.15, delta=0, ddepth = cv2.CV_32F):
-    clahe = cv2.createCLAHE(clipLimit=1.0, tileGridSize=(8,8))
-    grad_x = cv2.Scharr(img, ddepth, 1, 0, scale=scale, delta=delta, borderType=cv2.BORDER_DEFAULT)
-    grad_y = cv2.Scharr(img, ddepth, 0, 1, scale=scale, delta=delta, borderType=cv2.BORDER_DEFAULT)
-    abs_grad_x = cv2.convertScaleAbs(grad_x)
-    abs_grad_y = cv2.convertScaleAbs(grad_y)
-    grad = cv2.addWeighted(abs_grad_x, 0.5, abs_grad_y, 0.5, 0)
-    grad = grad.astype('float')**2
-    grad = grad/grad.max()*255
-    grad = grad.reshape([*grad.shape, 1])
-    grad = grad.astype('uint8')
-    grad = clahe.apply(grad)
-    return grad.astype('uint8')
-pass
 
 def get_perspective_min_bbox(M, img, p=2):
     h,w = img.shape[:2]
@@ -44,7 +25,7 @@ pass
 # @ref the best reference : default=1=570 !! (maximum number of matches)
 def refine_allignement(loaded, method='SURF', ref=1, verbose=True):
     img = [ i.astype('float32') for i in loaded]
-    img = [ normalize(i) for i in img]
+    img = [ gradient_normalize(i) for i in img]
     grad = [ build_gradient(i).astype('uint8') for i in img]
     img = [ (i/i.max()*255).astype('uint8') for i in img]
     
@@ -61,6 +42,9 @@ def refine_allignement(loaded, method='SURF', ref=1, verbose=True):
         if i == ref:
             keypoint_found.append(-1)
             continue
+            
+        if verbose > 2:
+            print('spectral registration', i)
     
         matches, kp1, kp2 = keypoint_detect(grad[ref], grad[i], method)
         matches = keypoint_filter(matches, kp1, kp2, max_dist)
@@ -84,7 +68,7 @@ def refine_allignement(loaded, method='SURF', ref=1, verbose=True):
         #loaded[i] = tr.warpImage(loaded[i])
         
         evaluators = [cv2.RANSAC, cv2.LMEDS, cv2.RHO]
-        M, mask = cv2.findHomography(target, source, evaluators[1])
+        M, mask = cv2.findHomography(target, source, evaluators[0])
         
         if M is None:
             keypoint_found.append(-1)

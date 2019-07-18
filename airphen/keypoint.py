@@ -27,9 +27,6 @@ class FilterDetection:
     def filter_position(self, t):
         #print('filter positions ...')
         d = np.array([
-            #distance.cosine(self.a[i], self.b[i]) * 180 / np.pi
-            #distance.cityblock(self.a[i], self.b[i])
-            #distance.euclidean(self.a[i], self.b[i])
             abs(distance.euclidean(self.a[i], [0,0]) - distance.euclidean([0,0], self.b[i]))
             for i in range(len(self.a))
         ])
@@ -40,9 +37,6 @@ class FilterDetection:
     def filter_duplicated(self, t):
         #print('filter duplicated ...')
         d = np.array([
-            #distance.cosine(self.a[i], self.b[i]) * 180 / np.pi
-            #distance.cityblock(self.a[i], self.b[i])
-            #distance.euclidean(self.a[i], self.b[i])
             min([
                 distance.euclidean(self.a[i], self.a[j])
                 for j in range(i)
@@ -56,14 +50,11 @@ class FilterDetection:
     def filter_angle(self, t):
         #print('filter angles ...')
         d = np.array([
-            #math.atan2(self.a[i][1] - self.b[i][1], self.a[i][0] - self.b[i][0] + 1280) * 180 / np.pi
             math.atan((self.a[i][1] - self.b[i][1])/(self.b[i][0] - self.a[i][0] + 1280))*180/math.pi
             for i in range(len(self.a))
         ])
         
-        d = abs(d)
-        
-        return np.array([i<t for i in d])
+        return np.array([i<t for i in abs(d)])
     pass
     
 pass

@@ -5,7 +5,7 @@ import scipy.signal as sig
 import cv2
 
 from tqdm import tqdm
-from src.spectral_image import *
+from airphen.spectral_image import *
 
 chessboard_shape = (13,13)
 criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 30, 0.001)

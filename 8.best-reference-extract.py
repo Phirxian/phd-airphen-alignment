@@ -4,10 +4,8 @@ import matplotlib.pyplot as plt
 import time
 
 from tqdm import tqdm
-from src.data import *
-from src.spectral_image import *
-from src.keypoint import *
-from src.settings import *
+from airphen.data import *
+from airphen.spectral_image import *
 
 def extract_performances(m):
     print('--------------')
@@ -21,10 +19,8 @@ def extract_performances(m):
         
         for mid in range(len(all_bands)):
             start_time = time.time()
-            S = SpectralImage('./data/steep/', str(h))
-            loaded, nb_kp = load_spectral_bands(
-                S, method=m, reference=mid
-            )
+            S = SpectralImage('./data/steep/', str(h), '', './data/'+str(h)+'.npy')
+            loaded, nb_kp = S.spectral_registration(m, mid)
             reference_val.append(nb_kp + [(time.time() - start_time)])
         pass
         

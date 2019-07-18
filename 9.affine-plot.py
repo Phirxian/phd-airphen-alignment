@@ -2,7 +2,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-from src.data import *
+from airphen.data import *
 
 with open('figures/affine-error.txt') as f:
     content = f.readlines()
