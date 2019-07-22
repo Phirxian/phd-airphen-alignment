@@ -1,10 +1,12 @@
 #!/usr/bin/python3
 import numpy as np
+import itertools
 import math
 import cv2
 
 from scipy.spatial import distance
 from functools import partial
+
 
 class FilterDetection:
     
@@ -77,26 +79,32 @@ def keypoint_detect(img1, img2, method='FAST'):
     }
     
     detector = detectors[method]()
-    kp1 = detector.detect(img1,None)
-    kp2 = detector.detect(img2,None)
+    kp1, kp2 = detector.detect([img1, img2],None)
+    
     descriptor = cv2.ORB_create()
-    kp1, des1 = descriptor.compute(img1, kp1)
-    kp2, des2 = descriptor.compute(img2, kp2)
+    (kp1, kp2), (des1, des2) = descriptor.compute([img1, img2], [kp1, kp2])
     
     #print('keypoint matching ...')
+    matcher = 0
     
-    if True:
-        bf = cv2.BFMatcher(cv2.NORM_HAMMING2, crossCheck=True)
+    if matcher==0:
+        bf = cv2.BFMatcher(descriptor.defaultNorm(), crossCheck=True)
         matches = bf.match(des1,des2)
+    elif matcher==1:
+        fv1 = cv2.detail.computeImageFeatures2(descriptor,img1)
+        fv2 = cv2.detail.computeImageFeatures2(descriptor,img2)
+        bf = cv2.detail.BestOf2NearestMatcher_create(True, 0.01,0,0)
+        matches = bf.apply(fv1, fv2).getMatches()
+        print(len(matches))
     else:
         FLANN_INDEX_KDTREE = cv2.flann.FLANN_INDEX_TYPE_32F
-        index_params = dict(algorithm = FLANN_INDEX_KDTREE, trees = 1)
-        search_params = dict(checks = 2)
+        index_params = dict(algorithm = FLANN_INDEX_KDTREE, trees = 4)
+        search_params = dict(checks = 50)
         flann = cv2.FlannBasedMatcher(index_params, search_params)
-        matches = flann.match(des1,des2)
+        matches = flann.match(np.asarray(des1, np.float32), np.asarray(des2, np.float32))
     pass
     
-    matches = sorted(matches, key = lambda x:x.distance)
+    #matches = sorted(matches, key = lambda x:x.distance)
     
     return matches, kp1, kp2
 pass

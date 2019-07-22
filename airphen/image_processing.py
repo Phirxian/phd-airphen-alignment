@@ -1,15 +1,18 @@
 import cv2
 import numpy as np
 import rasterio
+import math
 import os
 
 def gradient_normalize(i):
-    G = cv2.GaussianBlur(i,(9,9),cv2.BORDER_DEFAULT)
+    s = math.ceil(i.shape[0]**0.4) // 2 * 2 +1
+    G = cv2.GaussianBlur(i,(s,s),cv2.BORDER_DEFAULT)
     return i/(G+1)*255
 pass
 
 def false_color_normalize(i):
-    G = cv2.GaussianBlur(i,(9,9),cv2.BORDER_DEFAULT)
+    s = math.ceil(i.shape[0]**0.4) // 2 * 2 +1
+    G = cv2.GaussianBlur(i,(s,s),cv2.BORDER_DEFAULT)
     i = abs(i+G.min()) / G.max()
     return i
 pass
