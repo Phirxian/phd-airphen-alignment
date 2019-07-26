@@ -61,7 +61,7 @@ class FilterDetection:
     
 pass
 
-def keypoint_detect(img1, img2, method='FAST'):
+def keypoint_detect(img1, img2, method='GFTT'):
     #print('keypoint detection ...')
     
     detectors = {

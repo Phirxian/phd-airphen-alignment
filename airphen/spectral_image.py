@@ -9,7 +9,7 @@ class SpectralImage:
         self.path = set + '/' + str(subset) + '/'
         self.loaded = [read_tiff(self.path + prefix + str(i) + 'nm.tif') for i in all_bands]
         
-        self.ground_thrust = cv2.imread(self.path + 'mask.jpg')
+        self.ground_thrust = cv2.imread(self.path + prefix + 'mask.jpg')
         
         if self.ground_thrust is None:
             self.ground_thrust = np.zeros((self.loaded[0].shape[0], self.loaded[0].shape[1], 3))

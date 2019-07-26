@@ -14,7 +14,7 @@ def false_color_normalize(i):
     s = math.ceil(i.shape[0]**0.4) // 2 * 2 +1
     G = cv2.GaussianBlur(i,(s,s),cv2.BORDER_DEFAULT)
     i = abs(i+G.min()) / G.max()
-    return i
+    return i.clip(0,1)
 pass
 
 def build_gradient(img, scale = 0.15, delta=0, ddepth = cv2.CV_32F):
