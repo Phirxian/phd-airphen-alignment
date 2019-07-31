@@ -62,7 +62,8 @@ And directly use prespective correction (Phase 2).
 
 Each spectral band have different properties and value by nature,
 but we can extract corresponding similarity by transforming each spectral band to it's derivative
-to find similarity in gradient break of those ones. The Sharr filter are used in this steep for is precision.
+to find similarity in gradient break of those ones.
+The Sharr filter are used in this steep for is precision. (http://archiv.ub.uni-heidelberg.de/volltextserver/962/1/Diss.pdf)
 
 ![alt text](figures/math-perspective-correction.png "equation of the perspective correction")
 

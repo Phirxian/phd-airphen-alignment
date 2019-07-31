@@ -7,30 +7,12 @@ from .keypoint import *
 from .image_processing import *
 from .debug import *
 
-def get_perspective_min_bbox(M, img, p=2):
-    h,w = img.shape[:2]
-    
-    pts_x = np.float32([[  p,  p], [  p, h-p]]).reshape(-1,1,2)
-    pts_y = np.float32([[w-p,h-p], [w-p,   p]]).reshape(-1,1,2)
-    
-    coords_x = cv2.perspectiveTransform(pts_x,M)[:,0,:]
-    coords_y = cv2.perspectiveTransform(pts_y,M)[:,0,:]
-    
-    [xmin, xmax] = max(coords_x[0,0], coords_x[1,0]), min(coords_y[0,0], coords_y[1,0])
-    [ymin, ymax] = max(coords_x[0,1], coords_y[1,1]), min(coords_x[1,1], coords_y[0,1])
-    
-    return np.int32([ymin,xmin,ymax,xmax])
-pass
-
 # @ref the best reference : default=1=570 !! (maximum number of matches)
 def refine_allignement(loaded, method='SURF', ref=1, verbose=True):
     img = [ i.astype('float32') for i in loaded]
     img = [ gradient_normalize(i) for i in img]
     grad = [ build_gradient(i).astype('uint8') for i in img]
     img = [ (i/i.max()*255).astype('uint8') for i in img]
-    
-    identity = np.array([[1,0,0], [0,1,0]], dtype='float32')
-    transform = [identity] * len(loaded)
     
     # identify transformation for each band to the next one
     dsize = (loaded[0].shape[1], loaded[0].shape[0])

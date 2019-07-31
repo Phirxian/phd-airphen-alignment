@@ -33,7 +33,16 @@ class SpectralImage:
         crop_all(self, self.registred, np.flip(min_xy), np.flip(max_xy))
         
         # refine allignment with homography
-        if method is not None:
+        if method is None:
+            pass
+        elif method == 'FFT':
+            if verbose > 0:
+                print('fft similarity based correction ...')
+            self.registred, bbox = perspective_similarity_transform(self, self.registred, reference)
+            min_xy = np.max(bbox[:, :2], axis=0).astype('int')
+            max_xy = np.min(bbox[:, 2:], axis=0).astype('int')
+            crop_all(self, self.registred, min_xy, max_xy)
+        else:
             if verbose > 0:
                 print('homography correction ...')
             self.registred, bbox, nb_kp = refine_allignement(self.registred, method, reference, verbose)
