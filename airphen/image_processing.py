@@ -115,23 +115,17 @@ def perspective_similarity_transform(S, loaded, ref):
         [dsize[0], dsize[1]],
     ], np.float32)
     
-    s=50
-    d=250
+    s, d = 10, 200
     
     for i in range(len(loaded)):
         if i == ref:
             continue
         
-        upperleft = translation(grad[i][s:d, s:d], grad[ref][s:d, s:d])
-        upperright = translation(grad[i][s:d, -d:-s], grad[ref][s:d, -d:-s])
-        lowerleft = translation(grad[i][-d:-s, s:d], grad[ref][-d:-s, s:d])
-        lowerright = translation(grad[i][-d:-s, -d:-s], grad[ref][-d:-s, -d:-s])
-        
         dst = src.copy()
-        dst[0] -= upperleft
-        dst[1] -= upperright
-        dst[2] -= lowerleft
-        dst[3] -= lowerright
+        dst[0] -= translation(grad[i][s:d, s:d], grad[ref][s:d, s:d])
+        dst[1] -= translation(grad[i][-d:-s, s:d], grad[ref][-d:-s, s:d])
+        dst[2] -= translation(grad[i][s:d, -d:-s], grad[ref][s:d, -d:-s])
+        dst[3] -= translation(grad[i][-d:-s, -d:-s], grad[ref][-d:-s, -d:-s])
         
         M = cv2.getPerspectiveTransform(src, dst)
         bbox.append(get_perspective_min_bbox(M, loaded[ref]))

@@ -14,7 +14,7 @@ for h in height:
     )
     
     loaded, nb_kp = S.spectral_registration(
-        verbose=1, method=None,
+        verbose=1, method='GFTT',
         reference=all_bands.index(570)
     )
     
