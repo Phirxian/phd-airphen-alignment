@@ -16,13 +16,13 @@ def refine_allignement(loaded, method='SURF', ref=1, verbose=True):
     
     # identify transformation for each band to the next one
     dsize = (loaded[0].shape[1], loaded[0].shape[0])
+    bbox, centers, keypoint_found = [], [], []
     max_dist = 10
-    bbox = []
-    keypoint_found = []
     
     for i in range(0, len(loaded)):
         if i == ref:
             keypoint_found.append(-1)
+            centers.append(np.array([0,0]))
             continue
             
         if verbose > 2:
@@ -33,6 +33,7 @@ def refine_allignement(loaded, method='SURF', ref=1, verbose=True):
         
         if len(matches) < 2:
             keypoint_found.append(-1)
+            centers.append(np.array([0,0]))
             continue
             
         #print('estimate transformation ...')
@@ -54,10 +55,15 @@ def refine_allignement(loaded, method='SURF', ref=1, verbose=True):
         
         if M is None:
             keypoint_found.append(-1)
+            centers.append(np.array([0,0]))
             continue
         
         loaded[i] = cv2.warpPerspective(loaded[i], M, dsize)
         bbox.append(get_perspective_min_bbox(M, loaded[ref]))
+        #centers.append(cv2.perspectiveTransform(np.array([[[0.,0.]]]),M)[0,0])
+        
+        center = np.array(dsize)/2
+        centers.append(cv2.perspectiveTransform(np.array([[center]]),M)[0,0] - center)
         
         mask = np.where(mask.flatten())
         target = np.float32(target[0,mask,:])
@@ -91,6 +97,8 @@ def refine_allignement(loaded, method='SURF', ref=1, verbose=True):
             )
         pass
     pass
+    
+    #print(centers)
         
-    return loaded, np.array(bbox), keypoint_found
+    return loaded, np.array(bbox), keypoint_found, np.array(centers)
 pass

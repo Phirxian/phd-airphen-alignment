@@ -10,7 +10,8 @@ for h in height:
     start_time = time.time()
     S = SpectralImage(
         './data/steep/', str(h), '',
-        './data/' + str(h) + '.npy'
+        h # use linear model
+        #'./data/' + str(h) + '.npy'
     )
     
     loaded, nb_kp = S.spectral_registration(

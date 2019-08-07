@@ -15,19 +15,34 @@ class SpectralImage:
             self.ground_thrust = np.zeros((self.loaded[0].shape[0], self.loaded[0].shape[1], 3))
         
         # nearest chessboard points if not given
-        self.chessboard = np.load(height).astype('float32')
+        if type(height) is str:
+            self.chessboard = np.load(height).astype('float32')
         self.registred = self.loaded
+        self.height = height
     pass
     
     def spectral_registration(self, method='GFTT', reference=1, verbose=0):
         self.registred = self.loaded
-        nb_kp = self.chessboard.size
+        nb_kp = 0
 
         if verbose > 0:
             print('affine correction ...')
             
+        def eval_inv_model(x, a, b, c, d):
+            return a*x**3 + b*x**2 + c*x + d
+            
+        inv_model = np.array([
+            [-0.00424059    ,  0.06992566    , -0.52159131    ,  3.53416035],
+            [-2.21715358e-03,  1.04083738e-01, -1.75671654e+00,  1.21939587e+01],
+            [0.00377931     ,  0.02339037    ,  0.18219811    ,  2.27086661],
+            [-3.45198124e-03,  1.56572048e-01, -2.49924103e+00,  1.58468578e+01],
+            [2.26938044e-03 ,  1.94965085e-01,  5.72026284e+00,  5.89777906e+01],
+            [0.00356177     ,  0.05984146    ,  0.47140347    ,  3.37161168],
+        ])
+            
         # alligne trough affine transfrom using pre-callibration
-        self.registred, transform = affine_transform(self, self.registred)
+        if type(self.height) is str: self.registred, transform = affine_transform(self, self.registred)
+        else: self.registred, transform = affine_transform_linear(self, self.registred)
         max_xy = np.min(transform[:,:,2], axis=0).astype('int')
         min_xy = np.max(transform[:,:,2], axis=0).astype('int')
         crop_all(self, self.registred, np.flip(min_xy), np.flip(max_xy))
@@ -45,10 +60,15 @@ class SpectralImage:
         else:
             if verbose > 0:
                 print('homography correction ...')
-            self.registred, bbox, nb_kp = refine_allignement(self.registred, method, reference, verbose)
+            self.registred, bbox, nb_kp, centers = refine_allignement(self.registred, method, reference, verbose)
             min_xy = np.max(bbox[:, :2], axis=0).astype('int')
             max_xy = np.min(bbox[:, 2:], axis=0).astype('int')
             crop_all(self, self.registred, min_xy, max_xy)
+            
+            all_translation = transform[:,:,2] - centers
+            estimated = np.array([eval_inv_model(all_translation[i,0], *inv_model[i]) for i in range(len(all_bands))])
+            if verbose > 0:
+                print('re-estimated height =', estimated.mean())
         pass
         
         return self.registred, nb_kp

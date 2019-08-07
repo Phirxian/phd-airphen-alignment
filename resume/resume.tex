@@ -27,6 +27,8 @@
 		(i) Affine correction using pre-calibrated matrix at different height, the closest transformation can be selected via internal GPS.
 		And (ii) Perspective correction to refine the previous one, using keypoints matching between enhanced gradients of each spectral bands.
 		The contributions of this paper are the evaluation of different types of keypoints detection and their benchmark.
+		
+		\colorbox{green}{TODO : evaluate keypoints extractors with different parameters}
 	\end{abstract}
 	
 	\begin{keyword}
@@ -132,21 +134,43 @@
 	\subsection{Affine Correction}
 	
 	It's important to notice the closer we take the snapshot, the bigger is the distance of the initial Affine Correction.
-	On the other hand at a distance superior or equals to 5 meters,
-	the initial affine correction is near to few pixels (1-5) which is enough to take an identity matrix and directly use perspective correction.
+	On the other hand at a distance superior or equals to 5 meters, the initial affine correction become stable (figure \ref{fig:affine-translation-height}).
+	A calibration is used to build a linear model, which make the affine correction to work at any height.
 	The main purpose of this step is to reduce the distance of each spectral bands,
-	that allow to spatially bound the similarity within few pixel,
-	which make the feature matching more efficient.
+	that allow to spatially bound the similarity within few pixel, which make the feature matching more efficient.
 	
 	\paragraph{Detect chessboard} We use opencv 4 findChessboardCorners for each spectral image (normalized) at different heights (from 1.6 to 5 meters).
 	The function attempts to determine whether the input image is a view of the chessboard pattern and locate the internal chessboard corners.
 	The detected coordinates are approximated, and to determine their positions more accurately we use the function cornerSubPix as explained in the documentation.
 	The detected points are ordered by x/y (detection can be flipped) and saved on data/'height'.npy
 	
-	\paragraph{Correction} We select the detected points of the nearest height (known by the user or using the internal GPS sensor).
+	\paragraph{Making linear model}
 	Using all detected points for each spectral band, we compute the centroid grid (each point mean).
-	The affine transform from each spectral band to this centroid grid is estimated and applied.
-	Finally all spectral bands are croped to the minimal bounding box (minimal and maximal translation of each affine matrix).
+	The affine transform from each spectral band to this centroid grid is estimated.
+	It appear that the resulted rotation and scale are not depending on the distance to the ground, but only the translation.
+	Which is expected, so single calibration can be used for this part of the matrix.
+	This is visible on the figure \ref{fig:affine-translation-height}.
+	The factor $a,b,c,d$ is the rotation and scale factor which is pretty stable (the precision depend on the chessboard size).
+	On the other hand, the translation in $x, y$ depend on the height.
+	
+	Thus a Levenberg-Marquardt curve fitting algorithm with linear least square regression \cite{More78}
+	can be used to fit an equation for each spectral band again $x$ and $y$ independently to the centroid grid.
+	We have choose to fit the following curve $y = ax^3 + bx^2 + cx + d$ where $x$ is the height,
+	$y$ is the resulted translation and factors $a,b,c,d$ are the model parameter.
+	%The fitted parameters for each spectral bands can be found in supplementary data.
+	
+	\begin{figure}[!htb]
+		\centering
+		\includegraphics[width=\linewidth]{../figures/affine-translation-height.png}
+		\caption{Affine matrix value by height}
+		\label{fig:affine-translation-height}
+	\end{figure}
+	
+	\paragraph{Correction}
+	To make the affine matrix correction, we have used the $a,b,c,d$ factor at the nearest height (1.6 meter, more precise).
+	For the translation part, the curve model is applied for each spectral bands at the given height (roughly known by the user or using the internal GPS sensor).
+	Each spectral bands are so warp using the corresponding affine transformation.
+	Finally all spectral bands are cropped to the minimal bounding box (minimal and maximal translation of each affine matrix).
 	
 	\subsection{Perspective correction}
 	%Once the best keypoints extractor and spectral reference are defined, we use there detection to estimate an homography.
@@ -223,6 +247,17 @@
 	Finally all spectral bands are croped to the minimal bbox,
 	the miniam and maximal points is get by applying perspective transform to each images corners.
 	
+	%\subsection{Re-estimating the reel height}
+	%The same procedure about curve fitting \cite{More78} can be used to evaluate the inverse model between height and translation.
+	%By adding the affine translation and the perspective transform of the central image point $x,y$,
+	%the ``real'' translation can be evaluated. Using this value as input of the inverse model,
+	%we can estimate the real height of the acquisition.
+	%
+	%\noindent
+	%\colorbox{green}{estimating the height of each spectral bands corner} \\
+	%\colorbox{green}{to the reference can enable to build the ground plan ?} \\
+	%\colorbox{green}{and enable to correct the row gradient ?}
+	
 	\section{Result and discussion}
 	
 	\paragraph{Affine correction} After the first correction, ie the Affine using matrix from the nearest calibrated height.
@@ -239,8 +274,7 @@
 	It appear that the resulted rotation and scale are not depending on the distance to the ground, but only the translation.
 	Which expected, so single calibration can be used for this part of the matrix.
 	For the translation part, it depend of the distance to the field, and can be estimated using fft correlation \cite{506761}.
-	Due to the hard correlation between spectral band those registration especially between 450nm and 710-850nm (unless using normalized gradient)
-	we have not investigated and suggestion the reader to see specific article \cite{rabatel:hal-01684135}.
+	Due to the hard correlation between spectral band those registration especially between 450nm and 710-850nm (unless using normalized gradient) we have not investigated and suggestion the reader to see specific article \cite{rabatel:hal-01684135}.
 	% https://www.lfd.uci.edu/~gohlke/code/imreg.py.html
 	
 	\paragraph{Keypoint matching} 
