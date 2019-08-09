@@ -135,9 +135,9 @@
 	
 	It's important to notice the closer we take the snapshot, the bigger is the distance of the initial Affine Correction.
 	On the other hand at a distance superior or equals to 5 meters, the initial affine correction become stable (figure \ref{fig:affine-translation-height}).
-	A calibration is used to build a linear model, which make the affine correction to work at any height.
-	The main purpose of this step is to reduce the distance of each spectral bands,
-	that allow to spatially bound the similarity within few pixel, which make the feature matching more efficient.
+	A calibration is used to build a linear model, which makes the affine correction to work at any height.
+	The main purpose of this step is to reduce the distance of each spectral band,
+	which allow the similarity to be spatially delimited within a few pixels, making feature matching more effective.
 	
 	\paragraph{Detect chessboard} We use opencv 4 findChessboardCorners for each spectral image (normalized) at different heights (from 1.6 to 5 meters).
 	The function attempts to determine whether the input image is a view of the chessboard pattern and locate the internal chessboard corners.
@@ -145,17 +145,17 @@
 	The detected points are ordered by x/y (detection can be flipped) and saved on data/'height'.npy
 	
 	\paragraph{Making linear model}
-	Using all detected points for each spectral band, we compute the centroid grid (each point mean).
+	Using all the points detected for each spectral band, we calculate the centroid grid (each point average).
 	The affine transform from each spectral band to this centroid grid is estimated.
-	It appear that the resulted rotation and scale are not depending on the distance to the ground, but only the translation.
-	Which is expected, so single calibration can be used for this part of the matrix.
+	It appear that the rotation and the scale do not depend on the distance to the ground, but only on the translation.
+	This is expected, so that only one calibration can be used for this part of the matrix.
 	This is visible on the figure \ref{fig:affine-translation-height}.
-	The factor $a,b,c,d$ is the rotation and scale factor which is pretty stable (the precision depend on the chessboard size).
+	The factor $a,b,c,d$ is the rotation and scale factor that is quite stable and close to identity (accuracy depends on the spatial resolution of the board).
 	On the other hand, the translation in $x, y$ depend on the height.
 	
-	Thus a Levenberg-Marquardt curve fitting algorithm with linear least square regression \cite{More78}
+	Thus a Levenberg-Marquardt curve fitting algorithm with linear least squares regression \cite{More78}
 	can be used to fit an equation for each spectral band again $x$ and $y$ independently to the centroid grid.
-	We have choose to fit the following curve $y = ax^3 + bx^2 + cx + d$ where $x$ is the height,
+	We have chosen to adjust the following curve $y = ax^3 + bx^2 + cx + d$ where $x$ is the height,
 	$y$ is the resulted translation and factors $a,b,c,d$ are the model parameter.
 	%The fitted parameters for each spectral bands can be found in supplementary data.
 	
@@ -167,18 +167,20 @@
 	\end{figure}
 	
 	\paragraph{Correction}
-	To make the affine matrix correction, we have used the $a,b,c,d$ factor at the nearest height (1.6 meter, more precise).
+	
+	To make the affine matrix correction, we used the factors $a,b,c,d$ at the most accurate height (1.6 meter).
 	For the translation part, the curve model is applied for each spectral bands at the given height (roughly known by the user or using the internal GPS sensor).
-	Each spectral bands are so warp using the corresponding affine transformation.
-	Finally all spectral bands are cropped to the minimal bounding box (minimal and maximal translation of each affine matrix).
+	Each spectral band are so warped using the corresponding affine transformation.
+	Finally, all spectral bands are cropped to the minimal bounding box (minimal and maximal translation of each affine matrix).
 	
 	\subsection{Perspective correction}
 	%Once the best keypoints extractor and spectral reference are defined, we use there detection to estimate an homography.
 	%Homography is an isomorphism of perspectives. A 2D homography between A and B would give you the projection transformation
 	%between the two images. It is a 3x3 matrix that describes the affine transformation.
 	
-	Each spectral band have different properties and value by nature. (figure \ref{fig:vegetable-gradient})
-	But we can extract corresponding similarity by transforming each spectral band to it's absolute derivative
+	
+	Each spectral band has different properties and values by nature. (figure \ref{fig:vegetable-gradient})
+	But we can extract the corresponding similarity by transforming each spectral band into its absolute derivative,
 	to find similarity in gradient break among them.
 	
 	\begin{figure}[!htb]
@@ -188,18 +190,18 @@
 		\label{fig:vegetable-gradient}
 	\end{figure}
 	
-	\par The previous correction, such as Affine correction attempt to help the feature matching by adding (near) epipolar line properties.
-	So the matching of extracted feature can be spatially bounded,
-	(i) we know that the maximal translation is bounded to few pixel distance (less than $10$px),
-	and (ii) the angle between the initial feature and the matched one are bounded to $[-1,1]$ degree.
+	\par The previous correction, such as Affine correction attempts to help the feature matching by adding properties of epipolar lines (close).
+	Thus, the correspondence of the extracted features can be spatially bounded,
+	(i) we know that the maximum translation is limited to a distance of a few pixels (less than $10$px),
+	and (ii) the angle between the initial element and the matched one is limited to $[-1,1]$ degree.
 	
-	\paragraph{Computing the gradient} To compute the gradient of the image with a minimal impact of the light distribution (shadow, reflectance, ...)
-	Each spectral bands are normalized using Gaussian blur \cite{sage0303}, the kernel size is defined by $math.ceil(image\_width^{0.4}) // 2 * 2 +1$ (19 in your case)
+	\paragraph{Computing the gradient} To compute the gradient of the image with a minimal impact of the light distribution (shadow, reflectance, specular, ...)
+	Each spectral band are normalized using Gaussian blur \cite{sage0303}, the kernel size is defined by $math.ceil(image\_width^{0.4}) // 2 * 2 +1$ (19 in your case)
 	and the final normalized image are defined by $i/(G+1)*255$ where $i$ is the spectral band and $G$ are the Gaussian blur of those spectral band.
-	This first steep allow to minimize the impact of the noise on the gradient and smooth the signal in case of reflectance.
+	This first steep allow to minimize the impact of the noise on the gradient and smoothes the signal in case of hight reflectance.
 	Using this normalized image, the gradient are computed with the sum of Sharr filter \cite{Seitz} again $d_x=1$ and $d_y=1$.
-	Different type of edge detection such as Sobel, Laplacan and Canny was tested unsuccessfully (without sufficient number of matches), those one does not appear in this study.
-	Finally all gradients are normalized using CLAHE \cite{zuiderveld1994contrast} to enhance locally theres intensity which increase the number of detected keypoints (especially for 850nm).
+	
+	Different types of edge detection such as Sobel, Laplacan and Canny were tested unsuccessfully (without sufficient number of matches), those not included in this study. Finally, all gradients are normalized using CLAHE \cite{zuiderveld1994contrast} to locally improve their intensity and increase the number of key points detected (especially for 850nm).
 	%\begin{figure}[!htb]
 	%	\centering
 	%	\includegraphics[width=0.6\linewidth]{../figures/math-perspective-correction.png}
@@ -208,11 +210,12 @@
 	%\end{figure}
 	
 	\paragraph{Keypoints Extractor}
-	A keypoint is a point of interest. It defines what is important and distinctive in an image.
-	Different type of keypoint extractor has been tested, all results can be found in ``figures/*''.
+	A key point is a point of interest. It defines what is important and distinctive in an image.
+	Different types of key point extractors were tested, all the results can be found in "figures/*".
 	These algorithms are all available and easily usable in OpenCV.
-	For all of those algorithms we use theres default parameters.
-	In some case, parameters are set to increase or reduce the number of keypoints (trying to have a minimum of 20 matched keypoint, and less than 500).
+	For all these algorithms, we use the default settings.
+	In some cases, the parameters are set to increase or decrease the number of key points
+	(trying to have a minimum of 20 corresponding key points, and less than 500)..
 	
 	\begin{itemize}
 		\item ORB : An efficient alternative to SIFT or SURF \\ nfeatures=5000
@@ -228,12 +231,13 @@
 	\end{itemize}
 	
 	\paragraph{Keypoint detection}
-	We use one of the previous mentioned keypoint extractor on all spectral bands gradient (all extractor are evaluated).
-	For each detected keypoint we extract descriptor using ORB features.
-	We matches all detected keypoints to a reference spectral band (all bands are evaluated).
-	All matches are filtered (distance, position, angle) to remove false positive one according to epipolar line.
-	Finally we use the function \textit{findHomography} between detected/filtered keypoints with RANSAC,
-	to determine the best subset of matches to compute the perspective correction.
+	We use one of the keypoint extractors mentioned above between each spectral band gradient (all extractors are evaluated).
+	For each detected keypoint, we extract a descriptor using ORB features.
+	We match all detected keypoints to a reference spectral band (all bands are evaluated).
+	All matches are filtered (distance, position, angle) to eliminate false positives along the epipolar line.
+	Finally we use the function \textit{findHomography} between the key points detected/filtered with RANSAC,
+	to determine the best subset of matches to calculate the perspective correction.
+	
 	
 	\begin{figure}[!htb]
 		\centering
@@ -243,9 +247,10 @@
 	\end{figure}
 	
 	\paragraph{Correction}
+	
 	The perspective correction between each spectral band to the reference is estimated and applied.
-	Finally all spectral bands are croped to the minimal bbox,
-	the miniam and maximal points is get by applying perspective transform to each images corners.
+	Finally, all spectral bands are cropped to the minimum bbox,
+	the minimum and maximum points are obtained by applying a perspective transformation to each corner of the image.
 	
 	%\subsection{Re-estimating the reel height}
 	%The same procedure about curve fitting \cite{More78} can be used to evaluate the inverse model between height and translation.
@@ -260,9 +265,10 @@
 	
 	\section{Result and discussion}
 	
-	\paragraph{Affine correction} After the first correction, ie the Affine using matrix from the nearest calibrated height.
-	The remaining distance between each spectral bands varies following the distance between the real height and the nearest selected.
-	These residual distances can be see in the figure \ref{fig:affine-error}.
+	\paragraph{Affine correction}
+	After the first correction, i.e. the Affine transformation using the linear model from the approximate height,
+	the remaining distance between each spectral band varies according to the distance between the real height and the nearest selected.
+	These residual distances can be seen in the figure \ref{fig:affine-error}.
 	
 	\begin{figure}[!htb]
 		\centering
@@ -271,15 +277,17 @@
 		\label{fig:affine-error}
 	\end{figure}
 	
-	It appear that the resulted rotation and scale are not depending on the distance to the ground, but only the translation.
+	It appear that the resulted rotation and scale do not depend depend on the ground distance, but only on the translation.
 	Which expected, so single calibration can be used for this part of the matrix.
-	For the translation part, it depend of the distance to the field, and can be estimated using fft correlation \cite{506761}.
-	Due to the hard correlation between spectral band those registration especially between 450nm and 710-850nm (unless using normalized gradient) we have not investigated and suggestion the reader to see specific article \cite{rabatel:hal-01684135}.
+	For the translation part, it depends on the distance to the field, and can be estimated using the fft correlation \cite{506761}.
+	Due to the hard correlation between spectral bands these registration, especially between 450nm and 710-850nm (unless using normalized gradient)
+	have not been investigated and suggest that the reader should see the specific article \cite{rabatel:hal-01684135}.
+	
 	% https://www.lfd.uci.edu/~gohlke/code/imreg.py.html
 	
 	\paragraph{Keypoint matching} 
-	The following figure \ref{fig:features-performances} show the numbers of keypoint after filtering and homography association (minimum of all matches),
-	the computation time and the performances ratio (matches/time) for each methods.
+	The following figure \ref{fig:features-performances} shows the numbers of keypoints after filtering and homography association (minimum of all matches),
+	the computation time and performance ratio (matches/time) for each method.
 	
 	\begin{figure}[!htb]
 		\centering
@@ -289,7 +297,7 @@
 	\end{figure}
 	
 	\noindent
-	All this methods works, the selection of the methods depends on how we want to balance between computation time and precision:
+	All these methods work, the choice of method depends on how we want to balance between computation time and accuracy:
 	\begin{itemize}
 		\item GFTT show the best performance over all others both in computation time and number of matches
 		\item FAST and AGAST is the most suitable, balanced between time and matches performances.
@@ -308,9 +316,13 @@
 	Increasing the number of matched keypoints show tiny more precision. For example, moving from SURF (~30 matches) to FAST (~130 matches)
 	show the final residual distances reduced from ~1.2px to ~0.9px and the computation time from ~5sec to ~8sec.
 	
-	All methods show that the best reference spectra is 710nm, excepted for SURF and GFTT how is 570nm.
-	The following figure \ref{fig:features-FAST-performances} show the Minimum of number of matches between each reference spectra to all others using FAST algorithm.
-	Others best spectral reference figures is available in supplementary material.
+	All methods show that the best reference spectra is 710nm, excepted for SURF and GFTT which is 570nm.
+	The following figure \ref{fig:features-FAST-performances} shows the minimum number of matches between each reference spectrum and all others using the FAST algorithm.
+	Choosing the right spectral reference is important, as we can see, no correspondence is found in some cases between 650nm-850nm,
+	but correspondences are found between 675nm-710nm and 710nm-850nm, making the 710nm more appropriate,
+	the same behavior can be seen for the other bands and 570nm.
+	This is visible on the "all\_min" line, 570nm and 710nm have the best number of minimum matches.
+	Other better spectral reference values are available in supplementary material.
 	
 	\begin{figure}[!htb]
 		\centering
