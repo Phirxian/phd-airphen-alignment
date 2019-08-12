@@ -139,9 +139,9 @@
 	The main purpose of this step is to reduce the distance of each spectral band,
 	which allow the similarity to be spatially delimited within a few pixels, making feature matching more effective.
 	
-	\paragraph{Detect chessboard} We use opencv 4 findChessboardCorners for each spectral image (normalized) at different heights (from 1.6 to 5 meters).
+	\paragraph{Detect chessboard} We use opencv 4 \textit{cv2.findChessboardCorners} for each spectral image (normalized) at different heights (from 1.6 to 5 meters).
 	The function attempts to determine whether the input image is a view of the chessboard pattern and locate the internal chessboard corners.
-	The detected coordinates are approximated, and to determine their positions more accurately we use the function cornerSubPix as explained in the documentation.
+	The detected coordinates are approximated, and to determine their positions more accurately we use the function \textit{cornerSubPix} as explained in the documentation.
 	The detected points are ordered by x/y (detection can be flipped) and saved on data/'height'.npy
 	
 	\paragraph{Making linear model}
@@ -313,16 +313,15 @@
 		\item BRISK show good number of matches, but there computation time is too huge (~79 sec) comparing to FAST (~8 sec).
 	\end{itemize}
 	
-	Increasing the number of matched keypoints show tiny more precision. For example, moving from SURF (~30 matches) to FAST (~130 matches)
-	show the final residual distances reduced from ~1.2px to ~0.9px and the computation time from ~5sec to ~8sec.
-	
-	All methods show that the best reference spectra is 710nm, excepted for SURF and GFTT which is 570nm.
+	Increasing the number of key points matched allows a slightly higher accuracy. For example, switch from SURF (~30 results) to FAST (~130 results). show the final residual distances reduced from ~1.2px to ~0.9px but the calculation time from ~5sec to ~8sec.
+
+	All methods show that the best reference spectrum is 710nm, with the exception of SURF and GFTT which is 570nm.
 	The following figure \ref{fig:features-FAST-performances} shows the minimum number of matches between each reference spectrum and all others using the FAST algorithm.
 	Choosing the right spectral reference is important, as we can see, no correspondence is found in some cases between 650nm-850nm,
 	but correspondences are found between 675nm-710nm and 710nm-850nm, making the 710nm more appropriate,
-	the same behavior can be seen for the other bands and 570nm.
-	This is visible on the "all\_min" line, 570nm and 710nm have the best number of minimum matches.
-	Other better spectral reference values are available in supplementary material.
+	the same behaviour can be observed for the other bands and 570nm.
+	This is visible on the "all\_min" line, 570nm and 710nm have the best minimum number of matches.
+	Other best spectral reference are available in supplementary material.
 	
 	\begin{figure}[!htb]
 		\centering
@@ -332,9 +331,8 @@
 	\end{figure}
 	
 	\paragraph{Perspective correction}
-	The residuals of the perspective correction
-	show that we have correctly registered each spectral bands with a residual error less than 1 pixel,
-	the figure \ref{fig:perspective-error} show the residual distance at different ground distance.
+	Residues of the perspective correction show that we have correctly registered each spectral band with a residual error of less than 1 pixel,
+	the figure \ref{fig:perspective-error} shows the residual distance at different ground distances.
 	
 	\begin{figure}[!htb]
 		\centering
@@ -343,8 +341,8 @@
 		\label{fig:perspective-error}
 	\end{figure}
 	
-	The following figure \ref{fig:perspective-features-matching-scatter} show the difference between detected point for two bands (red-green)
-	before (left) and after (right) the perspective correction, and show that the residual error are spatially uniform.
+	The following figure \ref{fig:perspective-features-matching-scatter} showd the difference between detected pointd for two bands (red-green)
+	before (left) and after (right) the perspective correction, and show that the residual errors are spatially uniform.
 	
 	\begin{figure}[!htb]
 		\centering
@@ -353,11 +351,12 @@
 		\label{fig:perspective-features-matching-scatter}
 	\end{figure}
 	
-	Decomposing the residual distance by angle $[0-45-90-135-180-225-270-315-0]$ visible in figure \ref{fig:residual-angle} is interesting.
-	You can notice that the spatial distribution of the residual, for each different angle is equally distributed.
-	Our hypothesis is that the nature of the base information (spectral band + different lens) make little difference on the gradient break,
-	who is detected by the features detector and propagated to the final correction (observed residual).
-	This is interesting stuff because this equally distributed residual by angle in the space tend to minimize the resulted correction to his center (gradient),
+	
+	The decomposition of the residual distance by angle $[0-45-90-135-135-135-135-180-280-225-225-225-270-315-0]$ visible in the figure \ref{fig:residual-angle} is interesting.
+	We can notice that the spatial distribution of the residues, for each different angle, is equally distributed.
+	Our hypothesis is that the nature of the base information (spectral band + different lens) makes a small difference to the gradient break,
+	which is detected by the features detector and propagated until the final correction (observed residue).
+	This is interesting because these residues uniformly distributed by angle in space tend to minimize the resulting correction of its center (gradient),
 	thus the detected residual error are overrated and should be less than $0.4$ pixel.
 	
 	\begin{figure}[!htb]
@@ -367,39 +366,40 @@
 		\label{fig:residual-angle}
 	\end{figure}
 	
-	However, more complex deformation model \cite{10.1007/978-3-642-33709-3_3} can be used to enhance the remaining error.
-	This type of complex deformation have not been fully evaluated, but only rapidly tested (cv2.ThinPlateSplineShapeTransformer).
-	It appear no significant improvement in most of case (with huge computation time).
-	But can also in some case create great angular deformation caused by near keypoints,
-	of course filtering those keypoint is possible, which decrease the global precision.
+	However, more complex deformation models \cite{10.1007/978-3-642-3-3-33709-3_3} can be used to improve the remaining error.
+	This type of complex deformation has not been fully evaluated, but only quickly tested \textit{cv2.ThinPlateSplineSplineSplineShapeTransformer}.
+	There does not seem to be any significant improvement in most cases (with a huge computation time).
+	But can also, in some cases, create large angular deformations caused by the proximity of keypoints,
+	of course, it is possible to filter these keypoints, which also reduces the overall accuracy.
 	
 	%%%%%%%%%%%%%%%%%%%
 	
 	\section{Conclusion}
 	
-	In this work was explored the application of different techniques for the registration of multi-spectral images.
-	We have tested different methods of keypoint extraction at different height and the number of control point obtained.
-	As seen on the method, the best suitable methods is GFTT with significant number of matches with reasonable computation time.
-	Furthermore the best spectral reference was defined for each method, such as 570 for GFTT.
-	According to the last figure \ref{fig:perspective-error} we observe a residual error less than 1 px,
-	supposedly caused by the difference of the input (spectral range, lens).
-	Finally the method as been tested over 8000 image in real condition (not present in the study),
-	randomly taken between 1.6 to 2.2 meter without registration error (always a minimal number of matches, without visible error, less than $0.9$px).
+	In this work, the application of different techniques for multispectral image registration was explored.
+	We tested different methods of keypoints extractors at different heights and the number of control points obtained.
+	As seen in the method, the most suitable method is the GFTT with a significant number of matches and a reasonable calculation time.
+	
+	Furthermore, the best spectral reference was defined for each method, for example 570 for GFTT.
+	According to the figure \ref{fig:perspective-error} we observe a residual error of less than 1 px,
+	supposedly caused by the difference in input (spectral range, lens).
+	Finally, the method was tested on more than 8000 images in real conditions (not present in the study),
+	randomly taken between 1.6 and 2.2 meters without registration error (always a minimum number of matches, without visible error, less than $0.9$px).
 	\\
-	\par Further research can be operated on each feature extractor parameter, for the one how need specific performances (time/precision).
+	\par Further researches can be performed on each parameter of the feature extractors, for those who need specific performance (time/precision).
 	Otherwise feature matching can be optimized, at this stage, we use brute-force matching with post filtering,
-	but a different implementation that fulfill your epipolar line properties should greatly enhance the number of matches by reducing false positive ones.
+	but a different implementation that fulfill our epipolar line properties should greatly enhance the number of matches by reducing false positives.
 	
 	\section{Acknowledgment}
 	
 	We would like to thanks Jones Gawain, Combaluzier Quentin, Michin Nicolas and Savi Romain
-	for the realization of the ``lighting stand set'' that help us for positioning the camera at different height.
+	for the realization of the ``lighting stand set'' that help us for positioning the camera at different heights.
 	
 	\section{Supplementary material}
 	
-	Supplementary data and source code associated with this article can be found in the online version, at
-	\url{https://gitlab.com/phd-thesis-adventice/phd-airphen-alignment} the access is limited,
-	and we invite you to send an email to the author for a full access.
+	The additional data and source code associated with this article can be found in the online version at the following address
+	\url{https://gitlab.com/phd-thesis-adventice/phd-airphen-alignment} thz access is limited,
+	and we invite you to send an email to the author for full access.
 	
 	\bibliography{references.bib}
 	\bibliographystyle{apalike}
