@@ -15,4 +15,30 @@ height = np.array([
 bands_text = ['blue', 'green', 'red', 'redge', 'redge_max', 'nir']
 all_bands = [450, 570, 675, 710, 730, 850]
 
-all_methods = ['ORB', 'AKAZE', 'KAZE', 'BRISK', 'AGAST', 'MSER', 'SURF', 'FAST', 'GFTT']
+all_methods = [
+    'ORB1',
+    'ORB2',
+    'ORB3',
+    'AKAZE1',
+    'AKAZE2',
+    'AKAZE3',
+    'KAZE1',
+    'KAZE2',
+    'KAZE3',
+    'BRISK1',
+    'BRISK2',
+    'BRISK3',
+    'AGAST1',
+    'AGAST2',
+    'AGAST3',
+    'MSER',
+    'SURF1',
+    'SURF2',
+    'SURF3',
+    'FAST1',
+    'FAST2',
+    'FAST3',
+    'GFTT1',
+    'GFTT2',
+    'GFTT3',
+]

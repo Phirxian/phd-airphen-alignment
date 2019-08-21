@@ -20,7 +20,10 @@ def extract_performances(m):
         for mid in range(len(all_bands)):
             start_time = time.time()
             S = SpectralImage('./data/steep/', str(h), '', './data/'+str(h)+'.npy')
-            loaded, nb_kp = S.spectral_registration(m, mid)
+            try:
+                loaded, nb_kp = S.spectral_registration(m, mid)
+            except:
+                nb_kp = [-1] * len(all_bands)
             reference_val.append(nb_kp + [(time.time() - start_time)])
         pass
         

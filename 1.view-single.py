@@ -5,10 +5,10 @@ import cv2
 
 from airphen.spectral_image import *
 
-if False:
-    path = '/media/ovan/31F66DD04B004F4B/database/rose/'
-    folder = 'mais2'
-    prefix = '0012_'
+if True:
+    path = '/media/ovan/31F66DD04B004F4B/database/inra2/'
+    folder = '20190416_055537'
+    prefix = '0008_'
     height = './data/2.0.npy'
 else:
     path = './data/'
@@ -24,7 +24,7 @@ loaded = S.loaded
 loaded, nb_kp = S.spectral_registration(
     method='GFTT',
     reference=all_bands.index(570),
-    verbose=1
+    verbose=3
 )
 
 text = f"--- {time.time() - start_time} seconds ---"

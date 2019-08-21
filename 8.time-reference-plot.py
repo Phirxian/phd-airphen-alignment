@@ -28,7 +28,7 @@ all_best = np.array(all_best)
 value = all_best / all_times * 2
 merged = np.vstack([all_times * 5, all_best, value]).transpose()
 
-fig, axes = plt.subplots(1, 1, figsize=(10,3))
+fig, axes = plt.subplots(1, 1, figsize=(10,6))
 columns = ['5x time in seconds', 'number of matches', 'matches/time']
 
 df = pd.DataFrame(
