@@ -37,7 +37,7 @@ df = pd.DataFrame(
 )
 df = df.sort_values(['matches/time'])
 df.plot(ax=axes, kind='barh')
-plt.xlim([0,250])
+plt.xlim([0,350])
 
 plt.suptitle('Keypoint extraction performances')
 plt.tight_layout(rect=(0,0,1,0.97))
