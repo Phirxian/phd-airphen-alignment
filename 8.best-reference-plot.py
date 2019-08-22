@@ -26,8 +26,8 @@ for method in all_methods:
                      
     df.plot(kind='barh',figsize=(12,6))
 
-    plt.xlim([-1,200])
-    plt.xlabel('Minimum of matched features in all images (cliped to 200)')
+    plt.xlim([-1,1000])
+    plt.xlabel('Minimum of matched features in all images (cliped to 1000)')
     plt.ylabel('The spectral band used as reference (-1 on error)')
     plt.title(
         'Number of matches between each spectral band using ' + method + '\n' +

@@ -39,7 +39,7 @@
 	\end{keyword}
 	
 	\begin{frontmatter}
-		\title{Two steep multi-spectral registration \\ using keypoints detector for gradient similarity}
+		\title{Two steep multi-spectral registration \\ via keypoint detector and gradient similarity}
 		\author[unilu]{Jehan-Antoine VAYSSADE} \ead{jehan-antoine.vayssade@inra.fr}
 		\address[myuni]{Agrosup D2A2E pole GestAd equipe agriculture de precision 21000 Dijon, France}
 		\date{Received: date / Accepted: date}
@@ -139,12 +139,14 @@
 	The main purpose of this step is to reduce the distance of each spectral band,
 	which allow the similarity to be spatially delimited within a few pixels, making feature matching more effective.
 	
-	\paragraph{Detect chessboard} We use opencv 4 \textit{cv2.findChessboardCorners} for each spectral image (normalized) at different heights (from 1.6 to 5 meters).
+	\paragraph{Detect chessboard}
+	We use opencv 4 \textit{findChessboardCorners} for each spectral image (normalized) at different heights (from 1.6 to 5 meters).
 	The function attempts to determine whether the input image is a view of the chessboard pattern and locate the internal chessboard corners.
 	The detected coordinates are approximated, and to determine their positions more accurately we use the function \textit{cornerSubPix} as explained in the documentation.
 	The detected points are ordered by x/y (detection can be flipped) and saved on data/'height'.npy
 	
 	\paragraph{Making linear model}
+	
 	Using all the points detected for each spectral band, we calculate the centroid grid (each point average).
 	The affine transform from each spectral band to this centroid grid is estimated.
 	It appear that the rotation and the scale do not depend on the distance to the ground, but only on the translation.
@@ -218,16 +220,48 @@
 	(trying to have a minimum of 20 corresponding key points, and less than 500)..
 	
 	\begin{itemize}
-		\item ORB : An efficient alternative to SIFT or SURF \\ nfeatures=5000
+		\item ORB : An efficient alternative to SIFT or SURF
+		\subitem[1] nfeatures=5000
+		\subitem[2] nfeatures=10000
+		\subitem[3] nfeatures=15000
+		
 		\item AKAZE : Fast explicit diffusion for accelerated features in nonlinear scale spaces
+		\subitem[1] nOctaves=1, nOctaveLayers=1
+		\subitem[2] nOctaves=2, nOctaveLayers=1
+		\subitem[3] nOctaves=2, nOctaveLayers=2
+		
 		\item KAZE : A novel multi-scale 2D feature detection and description algorithm in nonlinear scale spaces \cite{rs10050756}
-		\item BRISK : Binary robust invariant scalable keypoints. \\ patternScale=.1
-		\item AGAST : Adaptive and generic corner detection based on the accelerated segment test \\ threshold=92, nonmaxSuppression=True
+		\subitem[1] nOctaves=4, nOctaveLayers=2
+		\subitem[2] nOctaves=4, nOctaveLayers=4
+		\subitem[3] nOctaves=2, nOctaveLayers=4
+		
+		\item BRISK : Binary robust invariant scalable keypoints.
+		\subitem[1] nOctaves=0, patternScale=.1
+		\subitem[2] nOctaves=1, patternScale=.1
+		\subitem[3] nOctaves=2, patternScale=.1
+		
+		\item AGAST : Adaptive and generic corner detection based on the accelerated segment test
+		\subitem[1] threshold=71, nonmaxSuppression=True
+		\subitem[2] threshold=92, nonmaxSuppression=True
+		\subitem[3] threshold=163, nonmaxSuppression=True
+		
 		\item MSER : maximally stable extremal regions
 		%\item SIFT : \cite{AguileraCarrasco2012MultispectralIF}
-		\item SURF : Speed-Up Robust Features \\ hessianThreshold=10, nOctaves=2, nOctaveLayers=1, upright=False
-		\item FAST : FAST Algorithm for Corner Detection \\  threshold=92, nonmaxSuppression=True
-		\item GFTT : Good Features to Track \\ maxCorners=5000,useHarrisDetector=True
+		
+		\item SURF : Speed-Up Robust Features
+		\subitem[1] nOctaves=1, nOctaveLayers=1
+		\subitem[2] nOctaves=2, nOctaveLayers=1
+		\subitem[3] nOctaves=2, nOctaveLayers=2
+		
+		\item FAST : FAST Algorithm for Corner Detection
+		\subitem[1] threshold=71, nonmaxSuppression=True
+		\subitem[2] threshold=92, nonmaxSuppression=True
+		\subitem[3] threshold=163, nonmaxSuppression=True
+		
+		\item GFTT : Good Features to Track
+		\subitem[1] maxCorners=5000,useHarrisDetector=True
+		\subitem[2] maxCorners=10000,useHarrisDetector=True
+		\subitem[3] maxCorners=15000,useHarrisDetector=True
 	\end{itemize}
 	
 	\paragraph{Keypoint detection}
@@ -302,12 +336,12 @@
 		\item GFTT show the best performance over all others both in computation time and number of matches
 		\item FAST and AGAST is the most suitable, balanced between time and matches performances.
 		\item KAZE show the best number of matches (>200) but it's also 2.5 times slower than FAST/AGAST.
-		\item SURF can be suitable for small gain of performances, the number of detected feature can be enough to fit the perspective correction.
 	\end{itemize}
 	
 	\noindent
 	The other ones did not show improvement in term of performances or matches:
 	\begin{itemize}
+		\item SURF the number of detected feature may not be enough to fit the perspective correction.
 		\item AKAZE and MSER did not show benefits comparing to FAST.
 		\item ORB could be excluded, the number of matches is near to ~20 how is the minimal to ensure that the homography is correct.
 		\item BRISK show good number of matches, but there computation time is too huge (~79 sec) comparing to FAST (~8 sec).
@@ -325,7 +359,7 @@
 	
 	\begin{figure}[!htb]
 		\centering
-		\includegraphics[width=\linewidth]{../figures/comparaison-keypoint-matching-reference-FAST.png}
+		\includegraphics[width=\linewidth]{../figures/comparaison-keypoint-matching-reference-FAST1.png}
 		\caption{feature FAST performances}
 		\label{fig:features-FAST-performances}
 	\end{figure}
@@ -390,6 +424,8 @@
 	Otherwise feature matching can be optimized, at this stage, we use brute-force matching with post filtering,
 	but a different implementation that fulfill our epipolar line properties should greatly enhance the number of matches by reducing false positives.
 	
+	\newpage
+	
 	\section{Acknowledgment}
 	
 	We would like to thanks Jones Gawain, Combaluzier Quentin, Michin Nicolas and Savi Romain
@@ -401,6 +437,7 @@
 	\url{https://gitlab.com/phd-thesis-adventice/phd-airphen-alignment} thz access is limited,
 	and we invite you to send an email to the author for full access.
 	
+	\section{Reference}
 	\bibliography{references.bib}
 	\bibliographystyle{apalike}
 	

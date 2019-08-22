@@ -24,7 +24,7 @@ for i in range(0, len(filenames), 20):
     S = SpectralImage(path, folder, f+'_', height)
     
     loaded, nb_kp = S.spectral_registration(
-        method='GFTT',
+        method='GFTT1',
         reference=all_bands.index(570),
         verbose=1
     )

@@ -3,3 +3,10 @@ results/*
 *.pyc
 MANIFEST
 build/*
+resume/resume.aux
+resume/resume.bbl
+resume/resume.blg
+resume/resume.log
+resume/resume.out
+resume/resume.spl
+resume/resume.synctex.g
