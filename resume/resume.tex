@@ -5,8 +5,8 @@
 \usepackage{graphicx}
 \usepackage[margin=0.8in]{geometry}
 \usepackage{color}
+\PassOptionsToPackage{hyphens}{url}\usepackage{hyperref}
 \usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
-\usepackage{hyperref}
 \hypersetup{colorlinks=true, citecolor=blue}
 
 \usepackage{tocloft}
@@ -401,7 +401,7 @@
 	\end{figure}
 	
 	However, more complex deformation models \cite{10.1007/978-3-642-3-3-33709-3_3} can be used to improve the remaining error.
-	This type of complex deformation has not been fully evaluated, but only quickly tested \textit{cv2.ThinPlateSplineSplineSplineShapeTransformer}.
+	This type of complex deformation has not been fully evaluated, but only quickly tested \textit{cv2.ThinPlateSplineShapeTransformer}.
 	There does not seem to be any significant improvement in most cases (with a huge computation time).
 	But can also, in some cases, create large angular deformations caused by the proximity of keypoints,
 	of course, it is possible to filter these keypoints, which also reduces the overall accuracy.
@@ -434,7 +434,7 @@
 	\section{Supplementary material}
 	
 	The additional data and source code associated with this article can be found in the online version at the following address
-	\url{https://gitlab.com/phd-thesis-adventice/phd-airphen-alignment} thz access is limited,
+	\url{gitlab.com/phd-thesis-adventice/phd-airphen-alignment} thz access is limited,
 	and we invite you to send an email to the author for full access.
 	
 	\section{Reference}
