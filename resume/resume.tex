@@ -27,8 +27,6 @@
 		(i) Affine correction using pre-calibrated matrix at different height, the closest transformation can be selected via internal GPS.
 		And (ii) Perspective correction to refine the previous one, using keypoints matching between enhanced gradients of each spectral bands.
 		The contributions of this paper are the evaluation of different types of keypoints detection and their benchmark.
-		
-		\colorbox{green}{TODO : evaluate keypoints extractors with different parameters}
 	\end{abstract}
 	
 	\begin{keyword}
@@ -215,9 +213,9 @@
 	A key point is a point of interest. It defines what is important and distinctive in an image.
 	Different types of key point extractors were tested, all the results can be found in "figures/*".
 	These algorithms are all available and easily usable in OpenCV.
-	For all these algorithms, we use the default settings.
-	In some cases, the parameters are set to increase or decrease the number of key points
-	(trying to have a minimum of 20 corresponding key points, and less than 500)..
+	%For all these algorithms, we use the default settings.
+	%In some cases, the parameters are set to increase or decrease the number of key points
+	%(trying to have a minimum of 20 corresponding key points, and less than 500)..
 	
 	\begin{itemize}
 		\item ORB : An efficient alternative to SIFT or SURF
@@ -363,6 +361,8 @@
 		\caption{feature FAST performances}
 		\label{fig:features-FAST-performances}
 	\end{figure}
+
+	\newpage
 	
 	\paragraph{Perspective correction}
 	Residues of the perspective correction show that we have correctly registered each spectral band with a residual error of less than 1 pixel,
@@ -375,7 +375,7 @@
 		\label{fig:perspective-error}
 	\end{figure}
 	
-	The following figure \ref{fig:perspective-features-matching-scatter} showd the difference between detected pointd for two bands (red-green)
+	The following figure \ref{fig:perspective-features-matching-scatter} shows the difference between detected points for two bands (red-green)
 	before (left) and after (right) the perspective correction, and show that the residual errors are spatially uniform.
 	
 	\begin{figure}[!htb]
@@ -392,6 +392,7 @@
 	which is detected by the features detector and propagated until the final correction (observed residue).
 	This is interesting because these residues uniformly distributed by angle in space tend to minimize the resulting correction of its center (gradient),
 	thus the detected residual error are overrated and should be less than $0.4$ pixel.
+	\\
 	
 	\begin{figure}[!htb]
 		\centering
@@ -400,7 +401,7 @@
 		\label{fig:residual-angle}
 	\end{figure}
 	
-	However, more complex deformation models \cite{10.1007/978-3-642-3-3-33709-3_3} can be used to improve the remaining error.
+	\par However, more complex deformation models \cite{Lombaert, ThinPlateSpline} can be used to improve the remaining error.
 	This type of complex deformation has not been fully evaluated, but only quickly tested \textit{cv2.ThinPlateSplineShapeTransformer}.
 	There does not seem to be any significant improvement in most cases (with a huge computation time).
 	But can also, in some cases, create large angular deformations caused by the proximity of keypoints,
