@@ -10,12 +10,16 @@ import scipy.ndimage.interpolation as ndii
 def gradient_normalize(i):
     s = math.ceil(i.shape[0]**0.4) // 2 * 2 +1
     G = cv2.GaussianBlur(i,(s,s),cv2.BORDER_DEFAULT)
+    if G is None:
+        raise ValueError('image or blur is None')
     return i/(G+1)*255
 pass
 
 def false_color_normalize(i):
     s = math.ceil(i.shape[0]**0.4) // 2 * 2 +1
     G = cv2.GaussianBlur(i,(s,s),cv2.BORDER_DEFAULT)
+    if G is None:
+        raise ValueError('image or blur is None')
     i = abs(i+G.min()) / G.max()
     return i.clip(0,1)
 pass

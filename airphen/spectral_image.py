@@ -6,6 +6,7 @@ from .image_processing import *
 
 class SpectralImage:
     def __init__(self, set, subset, prefix, height):
+        self.set = set
         self.path = set + '/' + str(subset) + '/'
         self.loaded = [read_tiff(self.path + prefix + str(i) + 'nm.tif') for i in all_bands]
         
@@ -19,6 +20,25 @@ class SpectralImage:
             self.chessboard = np.load(height).astype('float32')
         self.registred = self.loaded
         self.height = height
+    pass
+    
+    def undistort(self):
+        try:
+            mtx = np.load(self.set + 'len_mtx.npy')
+            dist = np.load(self.set + 'len_dist.npy')
+            cam = np.load(self.set + 'len_cameramtx.npy')
+        except:
+            print('loading undist mtx error')
+            return self.registred
+            
+        self.registred = [
+            cv2.undistort(i, mtx, dist, None, cam)
+            for i in self.registred
+        ]
+        
+        self.ground_thrust = cv2.undistort(self.ground_thrust, mtx, dist, None, cam)
+        
+        return self.registred
     pass
     
     def spectral_registration(self, method='GFTT', reference=1, verbose=0):

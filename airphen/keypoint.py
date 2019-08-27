@@ -98,6 +98,7 @@ def keypoint_detect(img1, img2, method='GFTT'):
         'FAST2'  : partial(cv2.FastFeatureDetector_create, threshold=92,  nonmaxSuppression=True),
         'FAST3'  : partial(cv2.FastFeatureDetector_create, threshold=163, nonmaxSuppression=True),
         
+        'GFTT0'  : partial(cv2.GFTTDetector_create, maxCorners=2000,  useHarrisDetector=True),
         'GFTT1'  : partial(cv2.GFTTDetector_create, maxCorners=5000,  useHarrisDetector=True),
         'GFTT2'  : partial(cv2.GFTTDetector_create, maxCorners=10000, useHarrisDetector=True),
         'GFTT3'  : partial(cv2.GFTTDetector_create, maxCorners=15000, useHarrisDetector=True),
