@@ -13,6 +13,9 @@ class SpectralImage:
         self.ground_thrust = cv2.imread(self.path + prefix + 'mask.jpg')
         
         if self.ground_thrust is None:
+            self.ground_thrust = cv2.imread(self.path + prefix + 'mask.png')
+        
+        if self.ground_thrust is None:
             self.ground_thrust = np.zeros((self.loaded[0].shape[0], self.loaded[0].shape[1], 3))
         
         # nearest chessboard points if not given
