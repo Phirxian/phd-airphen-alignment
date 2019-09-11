@@ -18,15 +18,19 @@
 	\onecolumn
 	
 	\begin{abstract}
-		In precision agriculture it's common to use multi-spectral camera (RGB+NIR).
-		Today the necessarity of having hight spatial resolution and numerous spectral band (6,8,+), have bring new type of cameras such as multi-sensor one,
-		in order to compute spectral index and extract informations such as shape, texture, \dots for plants and leaves analysis.
-		The problem with these cameras is that all the sensors are not aligned, so we need a solution to align the different images with precision in close view.
-		
-		In this study we propose a two step method applied to Airphen camera (6 spectral images).
+		%In precision agriculture it's common to use multi-spectral camera (RGB+NIR).
+		%Today the necessarity of having hight spatial resolution and numerous spectral band (6,8,+), have bring new type of cameras such as multi-sensor one,
+		%in order to compute spectral index and extract informations such as shape, texture, \dots for plants and leaves analysis.
+		%The problem with these cameras is that all the sensors are not aligned, so we need a solution to align the different images with precision in close view.
+		%
+		\par Modern agriculture is changing towards a system that is less dependent on pesticides (herbicides remain the most difficult pesticides to reduce) and increasingly uses digital tools. The development of imaging and image processing has made it possible to characterize an agricultural plot (the health status of a stand or characterize a soil) using non-destructive agronomic indices (NDVI, ExcessGreen, SBI, etc.) replacing traditional destructive and time-consuming methods. In recent years, the arrival of miniaturized multi-spectral and hyper-spectral cameras on mobile aerial platforms (UAVs) has made it possible to monitor a plot spatio-temporally. These vision systems have been developed for precise working conditions (flight height 150m). However, very practical to use, they are used for proxy-sensing applications. However, the algorithms for correcting and matching single-band images, proposed by some manufacturers, are not optimal for low heights.
+		\\
+		\par In this study we propose a two step method applied to multi-sensors camera (6 spectral images).
 		(i) Affine correction using pre-calibrated matrix at different height, the closest transformation can be selected via internal GPS.
 		And (ii) Perspective correction to refine the previous one, using keypoints matching between enhanced gradients of each spectral bands.
-		The contributions of this paper are the evaluation of different types of keypoints detection and their benchmark.
+		Different types of keypoints detection, their benchmark and the best reference spectra are evaluated.
+		\\
+		\par The objective of this article is to propose a simple method for agronomic scenes that allows to define the ideal conditions for matching single-band images from the same camera for low heights of use. To do this, we will use the AIRPHEN multispectral camera, marketed in France.
 	\end{abstract}
 	
 	\begin{keyword}
@@ -58,7 +62,7 @@
 	\\
 	\par There is two types of registration, feature based and intensity based \cite{Zitova}.
 	(i) Feature based methods use feature matching, in most cases a bruteforce matching is used, making those techniques slow.
-	Fortunately these features can be filtered to reduce the matching cost depending of the spatial properties we have, and a GPGPU implementation can reduce the comparisons' cost.
+	Fortunately these features can be filtered to reduce the matching cost depending of the spatial properties we have, and a GPGPU implementation can reduce the comparisons cost.
 	(ii) Intensity-based automatic image registration is an iterative process, and the metrics used are sensitive to determine the numbers of iteration,
 	making such method even worth in time for precise registration. Furthermore in multi-spectral we need different metrics for each registered bands which is hard to achieve.
 	\\
@@ -76,60 +80,47 @@
 	%as example SIFT have been rejected on the paper \cite{douarre:hal-02183837}
 	%which explain that the matched features are two numerous and not greatly matched.
 	
+	\section{Material and Method}
+	
 	\subsection{Material}
 	
 	The multi-spectral imagery was provided by the six-band multi-spectral camera Airphen \footnote{\url{https://www.hiphen-plant.com/our-solutions/airphen/}}.
 	AIRPHEN is a scientific multi spectral camera developed by agronomists for agricultural applications.
 	It can be embedded in different types of platforms such as UAV, phenotyping robots, etc.
-	AIRPHEN is highly configurable (bands, fields of view), lightweight and compact.
+	\\
+	\par AIRPHEN is highly configurable (bands, fields of view), lightweight and compact.
 	It can be operated wireless and combined with complementary thermal infrared channel and high resolution RGB cameras.
 	The camera was configured using 450/570/675/710/730/850 nm with FWHM of 10nm.
 	The focal lens is 8mm. It's raw resolution for each spectral band is 1280x960 px with 12 bit of precision.
 	Finally the camera also provide an internal GPS antenna, that can be used to get the distance from the ground.
-	
-	%\begin{figure}[!htb]
-	%\centering
-	%\includegraphics[height=15em]{../figures/airphen-detail3.png}
-	%\caption{the airphen camera}
-	%\label{fig:airphen}
-	%\end{figure}
-	
-	\subsection{Data}
-	
-	Two datasets were taken at different heights.
-	We have used a ``stairville LB-3s lighting stand set'' like for positioning the camera at different heights.
-	Due to the size of the chessboard, the limited focus of the camera and the height of the lighting stand set,
-	we have bounded the acquisition height from 1.6 meter to 5 meter with 20cm steep.
-	
-	The first dataset is for the calibration. A chessboard is taken at different heights, the corresponding data can be found in data/steep-chess/.
-	And the figure \ref{fig:calibration} shows the chessboard taken at each distance from the ground.
-	
-	\begin{figure}[!htb]
-		\centering
-		\includegraphics[width=\linewidth]{../figures/calibration-height.jpg}
-		\caption{chessboard for calibration at different height}
-		\label{fig:calibration}
-	\end{figure}
-	
-	The second dataset is for the alignment verification. One shot of a grassland is taken at different heights, the corresponding data can be found in data/steep/
+	\\
+	\par Two datasets were taken at different heights.
+	We have used a metallic gantry for positioning the camera at different heights.
+	The size of the gantry is about $3m * 5m * 4m$.
+	Due to the size of the chessboard, the limited focus of the camera and the height of the gantry,
+	we have bounded the acquisition height from 1.6 meter to 5 meter with 20cm steep, which represent 18 acquisitions.
+	\\
+	\par The first dataset is for the calibration. A chessboard is taken at different heights, the corresponding data can be found in data/steep-chess/.
+	The second one is for the alignment verification under reel condition.
+	One shot of an agronomic scene is taken at different heights, the corresponding data can be found in data/steep/
 	with a bias of +/- 10cm to be in the worst case (most complex).
 	
 	\newpage
-	\section{Method}
+	\subsection{Methods}
 	
 	Alignment is refined in two stages, with
 	(i) affine registration roughly estimated
 	and (ii) perspective registration for the refinement and precision.
-	As example the figure \ref{fig:merged-correction} show each correction steep at 1.6 meters.
+	%As example the figure \ref{fig:merged-correction} show each correction steep at 1.6 meters.
+	%
+	%\begin{figure}[!htb]
+	%	\centering
+	%	\includegraphics[width=\linewidth]{../figures/merged-correction.png}
+	%	\caption{Exemple of each correction}
+	%	\label{fig:merged-correction}
+	%\end{figure}
 	
-	\begin{figure}[!htb]
-		\centering
-		\includegraphics[width=\linewidth]{../figures/merged-correction.png}
-		\caption{Exemple of each correction}
-		\label{fig:merged-correction}
-	\end{figure}
-	
-	\subsection{Affine Correction}
+	\subsubsection{Affine Correction}
 	
 	It's important to notice the closer we take the snapshot, the bigger is the distance of the initial Affine Correction.
 	On the other hand at a distance superior or equals to 5 meters, the initial affine correction become stable (figure \ref{fig:affine-translation-height}).
@@ -137,7 +128,7 @@
 	The main purpose of this step is to reduce the distance of each spectral band,
 	which allow the similarity to be spatially delimited within a few pixels, making feature matching more effective.
 	
-	\paragraph{Detect chessboard}
+	\paragraph{Calibration}
 	We use opencv 4 \textit{findChessboardCorners} for each spectral image (normalized) at different heights (from 1.6 to 5 meters).
 	The function attempts to determine whether the input image is a view of the chessboard pattern and locate the internal chessboard corners.
 	The detected coordinates are approximated, and to determine their positions more accurately we use the function \textit{cornerSubPix} as explained in the documentation.
@@ -148,32 +139,24 @@
 	Using all the points detected for each spectral band, we calculate the centroid grid (each point average).
 	The affine transform from each spectral band to this centroid grid is estimated.
 	It appear that the rotation and the scale do not depend on the distance to the ground, but only on the translation.
-	This is expected, so that only one calibration can be used for this part of the matrix.
-	This is visible on the figure \ref{fig:affine-translation-height}.
-	The factor $a,b,c,d$ is the rotation and scale factor that is quite stable and close to identity (accuracy depends on the spatial resolution of the board).
+	%This is expected, so that only one calibration can be used for this part of the matrix.
+	%The rotation and scale factor that is quite stable and close to identity (accuracy depends on the spatial resolution of the board).
 	On the other hand, the translation in $x, y$ depend on the height.
-	
 	Thus a Levenberg-Marquardt curve fitting algorithm with linear least squares regression \cite{More78}
 	can be used to fit an equation for each spectral band again $x$ and $y$ independently to the centroid grid.
 	We have chosen to adjust the following curve $y = ax^3 + bx^2 + cx + d$ where $x$ is the height,
 	$y$ is the resulted translation and factors $a,b,c,d$ are the model parameter.
 	%The fitted parameters for each spectral bands can be found in supplementary data.
 	
-	\begin{figure}[!htb]
-		\centering
-		\includegraphics[width=\linewidth]{../figures/affine-translation-height.png}
-		\caption{Affine matrix value by height}
-		\label{fig:affine-translation-height}
-	\end{figure}
-	
 	\paragraph{Correction}
 	
-	To make the affine matrix correction, we used the factors $a,b,c,d$ at the most accurate height (1.6 meter).
+	To make the affine matrix correction, we used the rotation and scale factors at the most accurate height (1.6 meter), because it doesn't depend on the height.
 	For the translation part, the curve model is applied for each spectral bands at the given height (roughly known by the user or using the internal GPS sensor).
 	Each spectral band are so warped using the corresponding affine transformation.
 	Finally, all spectral bands are cropped to the minimal bounding box (minimal and maximal translation of each affine matrix).
 	
-	\subsection{Perspective correction}
+	\newpage
+	\subsubsection{Perspective correction}
 	%Once the best keypoints extractor and spectral reference are defined, we use there detection to estimate an homography.
 	%Homography is an isomorphism of perspectives. A 2D homography between A and B would give you the projection transformation
 	%between the two images. It is a 3x3 matrix that describes the affine transformation.
@@ -200,8 +183,8 @@
 	and the final normalized image are defined by $i/(G+1)*255$ where $i$ is the spectral band and $G$ are the Gaussian blur of those spectral band.
 	This first steep allow to minimize the impact of the noise on the gradient and smoothes the signal in case of hight reflectance.
 	Using this normalized image, the gradient are computed with the sum of Sharr filter \cite{Seitz} again $d_x=1$ and $d_y=1$.
-	
-	Different types of edge detection such as Sobel, Laplacan and Canny were tested unsuccessfully (without sufficient number of matches), those not included in this study. Finally, all gradients are normalized using CLAHE \cite{zuiderveld1994contrast} to locally improve their intensity and increase the number of key points detected (especially for 850nm).
+	%Different types of edge detection such as Sobel, Laplacan and Canny were tested unsuccessfully (without sufficient number of matches), those not included in this study.
+	Finally, all gradients are normalized using CLAHE \cite{zuiderveld1994contrast} to locally improve their intensity and increase the number of key points detected (especially for 850nm).
 	%\begin{figure}[!htb]
 	%	\centering
 	%	\includegraphics[width=0.6\linewidth]{../figures/math-perspective-correction.png}
@@ -212,55 +195,22 @@
 	\paragraph{Keypoints Extractor}
 	A key point is a point of interest. It defines what is important and distinctive in an image.
 	Different types of key point extractors were tested, all the results can be found in "figures/*".
-	These algorithms are all available and easily usable in OpenCV.
-	%For all these algorithms, we use the default settings.
-	%In some cases, the parameters are set to increase or decrease the number of key points
-	%(trying to have a minimum of 20 corresponding key points, and less than 500)..
 	
+	\pagebreak
 	\begin{itemize}
 		\item ORB : An efficient alternative to SIFT or SURF
-		\subitem[1] nfeatures=5000
-		\subitem[2] nfeatures=10000
-		\subitem[3] nfeatures=15000
-		
 		\item AKAZE : Fast explicit diffusion for accelerated features in nonlinear scale spaces
-		\subitem[1] nOctaves=1, nOctaveLayers=1
-		\subitem[2] nOctaves=2, nOctaveLayers=1
-		\subitem[3] nOctaves=2, nOctaveLayers=2
-		
 		\item KAZE : A novel multi-scale 2D feature detection and description algorithm in nonlinear scale spaces \cite{rs10050756}
-		\subitem[1] nOctaves=4, nOctaveLayers=2
-		\subitem[2] nOctaves=4, nOctaveLayers=4
-		\subitem[3] nOctaves=2, nOctaveLayers=4
-		
 		\item BRISK : Binary robust invariant scalable keypoints.
-		\subitem[1] nOctaves=0, patternScale=.1
-		\subitem[2] nOctaves=1, patternScale=.1
-		\subitem[3] nOctaves=2, patternScale=.1
-		
 		\item AGAST : Adaptive and generic corner detection based on the accelerated segment test
-		\subitem[1] threshold=71, nonmaxSuppression=True
-		\subitem[2] threshold=92, nonmaxSuppression=True
-		\subitem[3] threshold=163, nonmaxSuppression=True
-		
 		\item MSER : maximally stable extremal regions
-		%\item SIFT : \cite{AguileraCarrasco2012MultispectralIF}
-		
 		\item SURF : Speed-Up Robust Features
-		\subitem[1] nOctaves=1, nOctaveLayers=1
-		\subitem[2] nOctaves=2, nOctaveLayers=1
-		\subitem[3] nOctaves=2, nOctaveLayers=2
-		
 		\item FAST : FAST Algorithm for Corner Detection
-		\subitem[1] threshold=71, nonmaxSuppression=True
-		\subitem[2] threshold=92, nonmaxSuppression=True
-		\subitem[3] threshold=163, nonmaxSuppression=True
-		
 		\item GFTT : Good Features to Track
-		\subitem[1] maxCorners=5000,useHarrisDetector=True
-		\subitem[2] maxCorners=10000,useHarrisDetector=True
-		\subitem[3] maxCorners=15000,useHarrisDetector=True
 	\end{itemize}
+
+	These algorithms are all available and easily usable in OpenCV, the table \ref{tab:used-algorithms} in appendix
+	show all tested algorithms with different parameters.
 	
 	\paragraph{Keypoint detection}
 	We use one of the keypoint extractors mentioned above between each spectral band gradient (all extractors are evaluated).
@@ -270,13 +220,12 @@
 	Finally we use the function \textit{findHomography} between the key points detected/filtered with RANSAC,
 	to determine the best subset of matches to calculate the perspective correction.
 	
-	
-	\begin{figure}[!htb]
-		\centering
-		\includegraphics[width=0.7\linewidth]{../figures/prespective-feature-matching.jpg}
-		\caption{feature matching}
-		\label{fig:feature-matching}
-	\end{figure}
+	%\begin{figure}[!htb]
+	%	\centering
+	%	\includegraphics[width=0.7\linewidth]{../figures/prespective-feature-matching.jpg}
+	%	\caption{feature matching}
+	%	\label{fig:feature-matching}
+	%\end{figure}
 	
 	\paragraph{Correction}
 	
@@ -297,27 +246,50 @@
 	
 	\section{Result and discussion}
 	
-	\paragraph{Affine correction}
-	After the first correction, i.e. the Affine transformation using the linear model from the approximate height,
-	the remaining distance between each spectral band varies according to the distance between the real height and the nearest selected.
-	These residual distances can be seen in the figure \ref{fig:affine-error}.
+	Firstly the results will focus on affine corrections and then on the effects of the perspective correction.
+	As example the figure \ref{fig:merged-correction} show each correction steep at 1.6 meters and the manufacturer results.
 	
 	\begin{figure}[!htb]
 		\centering
+		\includegraphics[width=\linewidth]{../figures/merged-correction.png}
+		\caption{Exemple of each correction and manufacturer}
+		\label{fig:merged-correction}
+	\end{figure}
+	
+	\newpage
+	\subsection{Affine correction}
+	
+	It appear that the resulted rotation and scale do not depend depend on the ground distance, but only on the translation (figure \ref{fig:affine-translation-height}).
+	The rotation and scale factor ($a,b,c,d$) is quite stable and close to identity (accuracy depends on the spatial resolution of the board).
+	Which expected, so single calibration can be used for this part of the matrix.
+	For the translation part, it depends on the distance to the field.
+	On this part the linear model are used to estimated the affine correction from an approximated height.
+	%Due to the hard correlation between spectral bands these registration, especially between 450nm and 710-850nm (unless using normalized gradient)
+	%have not been investigated and suggest that the reader should see the specific article \cite{rabatel:hal-01684135}.
+	
+	\begin{figure}[!htb]
+		\centering
+		\includegraphics[width=\linewidth]{../figures/affine-translation-height.png}
+		\caption{Affine matrix value by height}
+		\label{fig:affine-translation-height}
+	\end{figure}
+
+	%After the correction, i.e. the Affine transformation using the linear model from the approximate height,
+	The remaining distance between each spectral band varies according to the distance between the real height and the nearest selected.
+	These residual distances can be seen in the figure \ref{fig:affine-error}.
+	
+	\begin{figure}[!htb]
+	\centering
 		\includegraphics[width=\linewidth]{../figures/affine-allignement-rmse.jpg}
 		\caption{The mean distance of detected keypoint before perspective correction}
 		\label{fig:affine-error}
 	\end{figure}
 	
-	It appear that the resulted rotation and scale do not depend depend on the ground distance, but only on the translation.
-	Which expected, so single calibration can be used for this part of the matrix.
-	For the translation part, it depends on the distance to the field, and can be estimated using the fft correlation \cite{506761}.
-	Due to the hard correlation between spectral bands these registration, especially between 450nm and 710-850nm (unless using normalized gradient)
-	have not been investigated and suggest that the reader should see the specific article \cite{rabatel:hal-01684135}.
-	
 	% https://www.lfd.uci.edu/~gohlke/code/imreg.py.html
 	
-	\paragraph{Keypoint matching} 
+	\newpage
+	\subsection{Perspective correction}
+	
 	The following figure \ref{fig:features-performances} shows the numbers of keypoints after filtering and homography association (minimum of all matches),
 	the computation time and performance ratio (matches/time) for each method.
 	
@@ -341,11 +313,11 @@
 	\begin{itemize}
 		\item SURF the number of detected feature may not be enough to fit the perspective correction.
 		\item AKAZE and MSER did not show benefits comparing to FAST.
-		\item ORB could be excluded, the number of matches is near to ~20 how is the minimal to ensure that the homography is correct.
-		\item BRISK show good number of matches, but there computation time is too huge (~79 sec) comparing to FAST (~8 sec).
+		\item ORB could be excluded, the number of matches is near to 20 how is the minimal to ensure that the homography is correct.
+		\item BRISK show good number of matches, but there computation time is too huge (79 sec) comparing to FAST (8 sec).
 	\end{itemize}
 	
-	Increasing the number of key points matched allows a slightly higher accuracy. For example, switch from SURF (~30 results) to FAST (~130 results). show the final residual distances reduced from ~1.2px to ~0.9px but the calculation time from ~5sec to ~8sec.
+	Increasing the number of key points matched allows a slightly higher accuracy. For example, switch from SURF (30 results) to FAST (130 results). show the final residual distances reduced from ~1.2px to ~0.9px but the calculation time from ~5sec to ~8sec.
 
 	All methods show that the best reference spectrum is 710nm, with the exception of SURF and GFTT which is 570nm.
 	The following figure \ref{fig:features-FAST-performances} shows the minimum number of matches between each reference spectrum and all others using the FAST algorithm.
@@ -361,10 +333,7 @@
 		\caption{feature FAST performances}
 		\label{fig:features-FAST-performances}
 	\end{figure}
-
-	\newpage
 	
-	\paragraph{Perspective correction}
 	Residues of the perspective correction show that we have correctly registered each spectral band with a residual error of less than 1 pixel,
 	the figure \ref{fig:perspective-error} shows the residual distance at different ground distances.
 	
@@ -386,7 +355,7 @@
 	\end{figure}
 	
 	
-	The decomposition of the residual distance by angle $[0-45-90-135-135-135-135-180-280-225-225-225-270-315-0]$ visible in the figure \ref{fig:residual-angle} is interesting.
+	The decomposition of the residual distance by angle $[0-40-80-120-160-200-240-280-320-0]$ visible in the figure \ref{fig:residual-angle} is interesting.
 	We can notice that the spatial distribution of the residues, for each different angle, is equally distributed.
 	Our hypothesis is that the nature of the base information (spectral band + different lens) makes a small difference to the gradient break,
 	which is detected by the features detector and propagated until the final correction (observed residue).
@@ -400,15 +369,23 @@
 		\caption{Residual Distribution Again Angle}
 		\label{fig:residual-angle}
 	\end{figure}
+
+	\subsection{General discussion}
 	
 	\par However, more complex deformation models \cite{Lombaert, ThinPlateSpline} can be used to improve the remaining error.
 	This type of complex deformation has not been fully evaluated, but only quickly tested \textit{cv2.ThinPlateSplineShapeTransformer}.
 	There does not seem to be any significant improvement in most cases (with a huge computation time).
 	But can also, in some cases, create large angular deformations caused by the proximity of keypoints,
-	of course, it is possible to filter these keypoints, which also reduces the overall accuracy.
+	of course, it's possible to filter these keypoints, which also reduces the overall accuracy.
+	\\
+	\par Further researches can be performed on each parameter of the feature extractors, for those who need specific performance (time/precision).
+	Otherwise feature matching can be optimized, at this stage, we use brute-force matching with post filtering,
+	but a different implementation that fulfill our epipolar line properties should greatly enhance the number of matches by reducing false positives.
+	
 	
 	%%%%%%%%%%%%%%%%%%%
 	
+	\pagebreak
 	\section{Conclusion}
 	
 	In this work, the application of different techniques for multi-spectral image registration was explored.
@@ -420,13 +397,7 @@
 	supposedly caused by the difference in input (spectral range, lens).
 	Finally, the method was tested on more than 8000 images in real conditions (not present in the study),
 	randomly taken between 1.6 and 2.2 meters without registration error (always a minimum number of matches, without visible error, less than $0.9$px).
-	\\
-	\par Further researches can be performed on each parameter of the feature extractors, for those who need specific performance (time/precision).
-	Otherwise feature matching can be optimized, at this stage, we use brute-force matching with post filtering,
-	but a different implementation that fulfill our epipolar line properties should greatly enhance the number of matches by reducing false positives.
-	
-	\newpage
-	
+		
 	\section{Acknowledgment}
 	
 	We would like to thanks Jones Gawain, Combaluzier Quentin, Michin Nicolas and Savi Romain
@@ -437,6 +408,29 @@
 	The additional data and source code associated with this article can be found in the online version at the following address
 	\url{gitlab.com/phd-thesis-adventice/phd-airphen-alignment} the access is limited,
 	and we invite you to send an email to the author for full access.
+	
+	\onecolumn
+	\section{Appendix}
+
+	\begin{table}[!htb]
+		\begin{tabular}{|l|c|c|c| } 
+			\hline
+			ABRV & 1 & 2 & 3 \\
+			\hline
+			ORB & nfeatures=5000 & nfeatures=10000 & nfeatures=15000 \\
+			GFTT & maxCorners=5000 & maxCorners=10000 & maxCorners=15000 \\
+			AGAST & threshold=71 & threshold=92 & threshold=163 \\
+			FAST & threshold=71 & threshold=92 & threshold=163 \\
+			AKAZE & nOctaves=1, nOctaveLayers=1 & nOctaves=2, nOctaveLayers=1 & nOctaves=2, nOctaveLayers=2 \\
+			KAZE & nOctaves=4, nOctaveLayers=2 & nOctaves=4, nOctaveLayers=4 & nOctaves=2, nOctaveLayers=4 \\
+			BRISK & nOctaves=0, patternScale=.1 & nOctaves=1, patternScale=.1 & nOctaves=2, patternScale=.1  \\
+			SURF & nOctaves=1, nOctaveLayers=1 & nOctaves=2, nOctaveLayers=1 & nOctaves=2, nOctaveLayers=2 \\
+			MSER & & & \\
+			\hline
+		\end{tabular}
+		\caption{list of algorithms with 3 variation of their parameters}
+		\label{tab:used-algorithms}
+	\end{table}
 	
 	\section{Reference}
 	\bibliography{references.bib}

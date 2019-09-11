@@ -70,8 +70,9 @@ def get_perspective_min_bbox(M, img, p=2):
   return np.int32([ymin,xmin,ymax,xmax])
 pass
 
-def crop_all(S, loaded, min_xy, max_xy):
-    S.ground_thrust = S.ground_thrust[min_xy[0]:max_xy[0], min_xy[1]:max_xy[1]]
+def crop_all(S, loaded, min_xy, max_xy, crop_ground_thrust=False):
+    if crop_ground_thrust:
+        S.ground_thrust = S.ground_thrust[min_xy[0]:max_xy[0], min_xy[1]:max_xy[1]]
     for i in range(len(loaded)):
         loaded[i] = loaded[i][min_xy[0]:max_xy[0], min_xy[1]:max_xy[1]]
     pass
