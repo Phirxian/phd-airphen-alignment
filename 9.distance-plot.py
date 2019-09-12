@@ -47,47 +47,65 @@ all_transform_y = np.array(all_transform_y)
 leg = np.array(bands_text)
 
 #######################################################
+plt.figure(figsize=(9,7))
+#######################################################
 
-plt.figure(figsize=(9,11))
-
-plt.subplot(321)
+plt.subplot(221)
 plt.title('Affine matrix factor A')
 for i in range(all_transform_a.shape[1]):
     plt.scatter(height, all_transform_a[:,i], s=4, c='black')
     plt.plot(height, all_transform_a[:,i], label=leg[i])
     
-plt.subplot(322)
+plt.ylabel('translation in pixel')
+    
+plt.subplot(222)
 plt.title('Affine matrix factor B')
 for i in range(all_transform_a.shape[1]):
     plt.scatter(height, all_transform_b[:,i], s=4, c='black')
     plt.plot(height, all_transform_b[:,i], label=leg[i])
     
-plt.subplot(323)
+plt.subplot(223)
 plt.title('Affine matrix factor C')
 for i in range(all_transform_a.shape[1]):
     plt.scatter(height, all_transform_c[:,i], s=4, c='black')
     plt.plot(height, all_transform_c[:,i], label=leg[i])
     
-plt.subplot(324)
+plt.ylabel('translation in pixel')
+plt.xlabel('height in meter')
+    
+plt.subplot(224)
 plt.title('Affine matrix factor D')
 for i in range(all_transform_a.shape[1]):
     plt.scatter(height, all_transform_d[:,i], s=4, c='black')
     plt.plot(height, all_transform_d[:,i], label=leg[i])
+    
+plt.xlabel('height in meter')
+    
+plt.legend()
+plt.tight_layout()
+plt.savefig('figures/affine-rotation-height.png')
 
-plt.subplot(325)
+#######################################################
+plt.figure(figsize=(9,4))
+#######################################################
+
+plt.subplot(121)
 plt.title('Affine matrix factor X')
 for i in range(all_transform_a.shape[1]):
     plt.scatter(height, all_transform_x[:,i], s=4, c='black')
     plt.plot(height, all_transform_x[:,i], label=leg[i])
+plt.ylabel('translation in pixel')
+plt.xlabel('height in meter')
     
-plt.subplot(326)
+plt.subplot(122)
 plt.title('Affine matrix factor Y')
 for i in range(all_transform_a.shape[1]):
     plt.scatter(height, all_transform_y[:,i], s=4, c='black')
     plt.plot(height, all_transform_y[:,i], label=leg[i])
 
+plt.xlabel('height in meter')
 plt.legend()
 plt.tight_layout()
-
 plt.savefig('figures/affine-translation-height.png')
+
 plt.show()

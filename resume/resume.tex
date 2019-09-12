@@ -23,7 +23,7 @@
 		%in order to compute spectral index and extract informations such as shape, texture, \dots for plants and leaves analysis.
 		%The problem with these cameras is that all the sensors are not aligned, so we need a solution to align the different images with precision in close view.
 		%
-		\par Modern agriculture is changing towards a system that is less dependent on pesticides (herbicides remain the most difficult pesticides to reduce) and increasingly uses digital tools. The development of imaging and image processing has made it possible to characterize an agricultural plot (the health status of a stand or characterize a soil) using non-destructive agronomic indices (NDVI, ExcessGreen, SBI, etc.) replacing traditional destructive and time-consuming methods. In recent years, the arrival of miniaturized multi-spectral and hyper-spectral cameras on mobile aerial platforms (UAVs) has made it possible to monitor a plot spatio-temporally. These vision systems have been developed for precise working conditions (flight height 150m). However, very practical to use, they are used for proxy-sensing applications. However, the algorithms for correcting and matching single-band images, proposed by some manufacturers, are not optimal for low heights.
+		\par Modern agriculture is changing towards a system that is less dependent on pesticides (herbicides remain the most difficult pesticides to reduce) and increasingly uses digital tools. The development of imaging and image processing has made it possible to characterize an agricultural plot (the health status of a stand or characterize a soil) using non-destructive agronomic indices (NDVI, ExcessGreen, SBI, etc.) replacing traditional destructive and time-consuming methods. In recent years, the arrival of miniaturized multi-spectral and hyper-spectral cameras on mobile aerial platforms (UAVs) has made it possible to monitor a plot spatio-temporally. These vision systems have been developed for precise working conditions (flight height 150m). Although, very practical to use, they are also used for proxy-sensing applications. However, the algorithms for correcting and matching single-band images, proposed by some manufacturers, are not optimal for low heights.
 		\\
 		\par In this study we propose a two step method applied to multi-sensors camera (6 spectral images).
 		(i) Affine correction using pre-calibrated matrix at different height, the closest transformation can be selected via internal GPS.
@@ -69,8 +69,8 @@
 	\par Different studies of images alignment using multi-sensors camera exist using UAV.
 	Some show good performances for feature based \cite{DantasDiasJunior, Vakalopoulou} with strong enhancement of feature descriptor for matching performances.
 	Other don't and prefer to use intensity based \cite{douarre:hal-02183837} with better convergence metrics, which is slower and not necessarily robust against light variabilities.
-	\\
-	\par Unless this type of articles, as we know, no studies have been made under agricultural and external conditions in near field of view (less than 10 meter).
+	\\ % 
+	\par Unless this type of articles, the domain is not very well sourced, no studies have been made under agricultural and external conditions in near field of view (less than 10 meter).
 	Those studies mainly propose features matching without large methods comparison of their performance (time/precision),
 	spectral band reference selection, or pre-affine correction depending on the distance.
 	Thus, this study propose the best combination of feature extractor and spectral reference on normalized gradients transformation,
@@ -180,9 +180,9 @@
 	
 	\paragraph{Computing the gradient} To compute the gradient of the image with a minimal impact of the light distribution (shadow, reflectance, specular, ...)
 	Each spectral band are normalized using Gaussian blur \cite{sage0303}, the kernel size is defined by $math.ceil(image\_width^{0.4}) // 2 * 2 +1$ (19 in your case)
-	and the final normalized image are defined by $i/(G+1)*255$ where $i$ is the spectral band and $G$ are the Gaussian blur of those spectral band.
+	and the final normalized image are defined by $i/(G+1)*255$ where $i$ is the spectral band and $G$ is the Gaussian blur of those spectral band.
 	This first steep allow to minimize the impact of the noise on the gradient and smoothes the signal in case of hight reflectance.
-	Using this normalized image, the gradient are computed with the sum of Sharr filter \cite{Seitz} again $d_x=1$ and $d_y=1$.
+	Using this normalized image, the gradient is computed with the sum of Sharr filter \cite{Seitz} again $d_x=1$ and $d_y=1$.
 	%Different types of edge detection such as Sobel, Laplacan and Canny were tested unsuccessfully (without sufficient number of matches), those not included in this study.
 	Finally, all gradients are normalized using CLAHE \cite{zuiderveld1994contrast} to locally improve their intensity and increase the number of key points detected (especially for 850nm).
 	%\begin{figure}[!htb]
@@ -196,7 +196,6 @@
 	A key point is a point of interest. It defines what is important and distinctive in an image.
 	Different types of key point extractors were tested, all the results can be found in "figures/*".
 	
-	\pagebreak
 	\begin{itemize}
 		\item ORB : An efficient alternative to SIFT or SURF
 		\item AKAZE : Fast explicit diffusion for accelerated features in nonlinear scale spaces
@@ -210,7 +209,7 @@
 	\end{itemize}
 
 	These algorithms are all available and easily usable in OpenCV, the table \ref{tab:used-algorithms} in appendix
-	show all tested algorithms with different parameters.
+	show all tested algorithms. These algorithms were studied by varying the most influential parameters for each of them.
 	
 	\paragraph{Keypoint detection}
 	We use one of the keypoint extractors mentioned above between each spectral band gradient (all extractors are evaluated).
@@ -236,7 +235,7 @@
 	%\subsection{Re-estimating the reel height}
 	%The same procedure about curve fitting \cite{More78} can be used to evaluate the inverse model between height and translation.
 	%By adding the affine translation and the perspective transform of the central image point $x,y$,
-	%the ``real'' translation can be evaluated. Using this value as input of the inverse model,
+	%the ``real'' translation can be evaluate. Using this value as input of the inverse model,
 	%we can estimate the real height of the acquisition.
 	%
 	%\noindent
@@ -259,10 +258,8 @@
 	\newpage
 	\subsection{Affine correction}
 	
-	It appear that the resulted rotation and scale do not depend depend on the ground distance, but only on the translation (figure \ref{fig:affine-translation-height}).
-	The rotation and scale factor ($a,b,c,d$) is quite stable and close to identity (accuracy depends on the spatial resolution of the board).
-	Which expected, so single calibration can be used for this part of the matrix.
-	For the translation part, it depends on the distance to the field.
+	The 6 coefficients ($A,B,C,D,X,Y$) of the affine matrix were studied according to the height of the camera in order to see their stability.
+	It appears that the translation part ($X,Y$), depends to the distance of the field (figure \ref{fig:affine-translation-height}).
 	On this part the linear model are used to estimated the affine correction from an approximated height.
 	%Due to the hard correlation between spectral bands these registration, especially between 450nm and 710-850nm (unless using normalized gradient)
 	%have not been investigated and suggest that the reader should see the specific article \cite{rabatel:hal-01684135}.
@@ -273,6 +270,18 @@
 		\caption{Affine matrix value by height}
 		\label{fig:affine-translation-height}
 	\end{figure}
+
+	The rotation and scale do not depend depend on the ground distance (figure \ref{fig:affine-rotation-height}).
+	These factors ($A,B,C,D$) is quite stable and close to identity (accuracy depends on the spatial resolution of the board).
+	Which expected, so single calibration can be used for this part of the matrix, and the most accurate are used.
+	
+	\begin{figure}[!htb]
+		\centering
+		\includegraphics[width=\linewidth]{../figures/affine-rotation-height.png}
+		\caption{Affine matrix value by height}
+		\label{fig:affine-rotation-height}
+	\end{figure}
+	
 
 	%After the correction, i.e. the Affine transformation using the linear model from the approximate height,
 	The remaining distance between each spectral band varies according to the distance between the real height and the nearest selected.
@@ -314,7 +323,7 @@
 		\item SURF the number of detected feature may not be enough to fit the perspective correction.
 		\item AKAZE and MSER did not show benefits comparing to FAST.
 		\item ORB could be excluded, the number of matches is near to 20 how is the minimal to ensure that the homography is correct.
-		\item BRISK show good number of matches, but there computation time is too huge (79 sec) comparing to FAST (8 sec).
+		\item BRISK show good number of matches, but there computation time is too huge (79 sec).
 	\end{itemize}
 	
 	Increasing the number of key points matched allows a slightly higher accuracy. For example, switch from SURF (30 results) to FAST (130 results). show the final residual distances reduced from ~1.2px to ~0.9px but the calculation time from ~5sec to ~8sec.
@@ -372,6 +381,9 @@
 
 	\subsection{General discussion}
 	
+	\par Even if the relief of the scene is not taken into account due to the used deformation model,
+	in our case we didn't see any difference
+	\\
 	\par However, more complex deformation models \cite{Lombaert, ThinPlateSpline} can be used to improve the remaining error.
 	This type of complex deformation has not been fully evaluated, but only quickly tested \textit{cv2.ThinPlateSplineShapeTransformer}.
 	There does not seem to be any significant improvement in most cases (with a huge computation time).
@@ -385,7 +397,6 @@
 	
 	%%%%%%%%%%%%%%%%%%%
 	
-	\pagebreak
 	\section{Conclusion}
 	
 	In this work, the application of different techniques for multi-spectral image registration was explored.
@@ -400,8 +411,8 @@
 		
 	\section{Acknowledgment}
 	
-	We would like to thanks Jones Gawain, Combaluzier Quentin, Michin Nicolas and Savi Romain
-	for the realization of the ``lighting stand set'' that help us for positioning the camera at different heights.
+	We would like to thanks Jones Gawain, Combaluzier Quentin, Michin Nicolas, Savi Romain and Jean-Benoit Masson
+	for the realization of the metallic gantry that help us for positioning the camera at different heights.
 	
 	\section{Supplementary material}
 	
