@@ -24,7 +24,7 @@ for method in all_methods:
         columns=pd.Index(['ref='+str(i) for i in all_bands], name='Genus')
     )
                      
-    df.plot(kind='barh',figsize=(12,6))
+    df.plot(kind='barh',figsize=(8,7))
 
     plt.xlim([-1,1000])
     plt.xlabel('Minimum of matched features in all images (cliped to 1000)')

@@ -18,7 +18,7 @@ pass
 
 data = np.array(data)
     
-plt.figure(figsize=(15,4))
+plt.figure(figsize=(9,2.5))
 axes = plt.gca()
 axes.set_ylim([0,5])
 

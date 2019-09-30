@@ -47,7 +47,7 @@ all_transform_y = np.array(all_transform_y)
 leg = np.array(bands_text)
 
 #######################################################
-plt.figure(figsize=(9,7))
+plt.figure(figsize=(7,5))
 #######################################################
 
 plt.subplot(221)
@@ -86,7 +86,7 @@ plt.tight_layout()
 plt.savefig('figures/affine-rotation-height.png')
 
 #######################################################
-plt.figure(figsize=(9,4))
+plt.figure(figsize=(7,3))
 #######################################################
 
 plt.subplot(121)

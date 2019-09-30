@@ -18,9 +18,9 @@ pass
 
 data = np.array(data)
     
-plt.figure(figsize=(15,4))
+plt.figure(figsize=(9,2.5))
 axes = plt.gca()
-axes.set_ylim([0.5,1.5])
+#axes.set_ylim([0.5,1.5])
 
 bands = all_bands.copy()
 bands.remove(710) # the reference
