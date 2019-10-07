@@ -9,7 +9,7 @@ from airphen.spectral_image import *
 
 chessboard_shape = (13,13)
 criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 30, 0.001)
-directory = './data/steep-chess/'
+directory = './data/step-chess/'
 bands = [450, 570, 675, 710, 730, 850]
 
 height = [
