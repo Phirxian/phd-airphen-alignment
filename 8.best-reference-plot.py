@@ -24,16 +24,17 @@ for method in all_methods:
         columns=pd.Index(['ref='+str(i) for i in all_bands], name='Genus')
     )
                      
-    df.plot(kind='barh',figsize=(8,7))
+    df.plot(kind='bar',figsize=(10,5))
 
-    plt.xlim([-1,1000])
-    plt.xlabel('Minimum of matched features in all images (cliped to 1000)')
-    plt.ylabel('The spectral band used as reference (-1 on error)')
+    plt.ylim([-1,2000])
+    plt.ylabel('Minimum of matched features in all images (cliped to 2000)')
+    plt.xlabel('The spectral band used as reference (-1 on error)')
     plt.title(
         'Number of matches between each spectral band using ' + method + '\n' +
         'The best reference is ' + str(all_bands[best]) + ' with ' + str(np.int0(all_min[best])) + ' matches'
     )
     
     plt.legend(loc='upper right')
+    plt.tight_layout(rect=(0,0,1,0.97))
     plt.savefig('figures/comparaison-keypoint-matching-reference-'+method+'.png')
 pass

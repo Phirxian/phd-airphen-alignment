@@ -90,6 +90,8 @@ class SpectralImage:
             
             all_translation = transform[:,:,2] - centers
             estimated = np.array([eval_inv_model(all_translation[i,0], *inv_model[i]) for i in range(len(all_bands))])
+            self.estimated_height = estimated.mean()
+            
             if verbose > 0:
                 print('re-estimated height =', estimated.mean())
         pass
