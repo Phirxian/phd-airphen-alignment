@@ -29,8 +29,8 @@ for i,b in enumerate(bands):
     l2 = data[i::5,1]
     std = data[i::5,2]/2
     x = np.arange(len(l2))
-    c = all_bands.index(b)
-    plt.plot(x, l2, label=bands_text[c])
+    #c = all_bands.index(b)
+    plt.plot(x, l2, label=str(bands[i]))
     #plt.fill_between(x, l2-std, l2+std, alpha=.2)
 pass
     
@@ -38,7 +38,7 @@ plt.title('Allignement error at different height')
 plt.xlabel('height of the aquisition')
 plt.ylabel('L2 distance in pixel (error)')
 plt.xticks(np.arange(height.shape[0]), height)
-plt.legend(loc='upper left')
+plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
 plt.tight_layout()
 plt.savefig('figures/affine-allignement-rmse.jpg')
 plt.show()

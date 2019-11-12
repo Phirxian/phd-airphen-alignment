@@ -17,6 +17,10 @@
 \DeclarePairedDelimiter\ceil{\lceil}{\rceil}
 \DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
 
+%\linespread{3}
+%\usepackage{lineno}
+%\linenumbers
+
 \makeatletter
 \def\ps@pprintTitle{%
 	\let\@oddhead\@empty
@@ -34,8 +38,7 @@
 	
 	\begin{abstract}
 		\par The potential of multi-spectral images is growing rapidly in precision agriculture,
-		and is currently based on the use of multi-sensor cameras.% such as the Airphen camera (6 spectral bands) or the Sequoia (4 spectral bands).
-		However, their development usally concerns aerial application and their parameters are optimized to high altitudes per drone ($\approx 50$ meters)
+		and is currently based on the use of multi-sensor cameras. However, their development usually concerns aerial application and their parameters are optimized to high altitudes per drone ($\approx 50$ meters)
 		to ensure surface coverage and reduce technical problems.
 		%As part of the efforts towards of phytosanitary use reduction,
 		%this type of device becomes necessary in order to discriminate crops from weeds in close detection ($< 10$ meters).
@@ -82,7 +85,7 @@
 %	(NDVI \footnote{Normalized Difference Vegetation Index}, ExcessGreen, \dots)
 	replacing traditional destructive and time-consuming methods.
 	In recent years, the arrival of miniaturized multi-spectral and hyper-spectral cameras on Unmanned Aerial Vehicles (UAVs)
-	has allow the plot spatio-temporal monitoring of the field. These vision systems have been developed for precise working conditions (flight height $50m$).
+	has allowed the plot spatio-temporal monitoring of the field. These vision systems have been developed for precise working conditions (flight height $50m$).
 	Although, very practical to use, they are also used for proxy-sensing applications.
 	However, the algorithms for correcting and matching multiple single-band images of different spectral range,
 	offered by manufacturers, are not optimal for low heights. It thus requires a specific close-field image registration.
@@ -153,7 +156,7 @@
 		\caption{Disposition of each bands on the Airphen multi-sensors camera}
 	\end{table}
 	
-	\par Two datasets were taken at different heights.
+	\par Two datasets were taken at different heights with images of a chessboard and of an agronomic scene.
 	We have used a metallic gantry for positioning the camera at different heights.
 	The size of the gantry is $3m * 5m * 4m$.
 	Due to the size of the chessboard, the limited focus of the camera and the gantry height,
@@ -168,10 +171,10 @@
 	
 	Alignment is refined in two stages, with (i) affine registration approximately estimated
 	and (ii) perspective registration for the refinement and precision.
-	As example the figure \ref{fig:each-stages} show each correction step, where the first line is for the (i) affine correction (section \ref{sec:affine}), the second and third are for (ii) perspective correction.
-	More precisely the second are per-channel pre-processing where the feature detector are used to detect key points (section \ref{sec:pre-processing}).
-	And the last line where each channel key points are associated to compute the perspective correction through homography, to the selected spectral band (section \ref{sec:perspective}).
-	Those step is explained on specific subsection.
+	As example the figure \ref{fig:each-stages} shows each correction step, where the first line is for the (i) affine correction (section \ref{sec:affine}), the second and third is for (ii) perspective correction.
+	More precisely the second are per-channel pre-processing where feature detectors are used to detect key points (section \ref{sec:pre-processing}).
+	And the last line each channel key points are associated to compute the perspective correction through homography, to the selected spectral band (section \ref{sec:perspective}).
+	Those steps are explained on specific subsections.
 	
 	\begin{figure}[H]
 		\centering
@@ -192,7 +195,7 @@
 	\subsubsection{Affine Correction}
 	\label{sec:affine}
 	
-	It is important to notice the closer we take the snapshot, bigger is the distance of the initial Affine Correction.
+	It is important to notice the closer we take the snapshot, the bigger is the distance of the initial Affine Correction.
 	On the other hand at a distance superior or equals to $5m$, the initial affine correction become stable (figure \ref{fig:affine-translation-height}).
 	Then a calibration is used to build a linear model, which makes the affine correction to work at any height.
 	The main purpose of this step is to reduce the offset between each spectral band,
@@ -257,13 +260,13 @@
 	and (ii) the angle between the initial element and the matched one is limited to $[-1,1]$ degree.
 	
 	\paragraph{Computing the gradient} \label{sec:pre-processing} To compute the gradient of the image with a minimal impact of the light distribution (shadow, reflectance, specular, ...),
-	each spectral band are normalized using Gaussian blur \cite{sage0303}, the kernel size is defined by $\floor{\ceil{image\_width^{0.4}}/2} * 2 +1$ (19 in your case)
-	and the final normalized image are defined by $I/(G+1)*255$ where $I$ is the spectral band and $G$ is the Gaussian blur of those spectral bands.
+	each spectral band is normalized using Gaussian blur \cite{sage0303}, the kernel size is defined by $\floor{\ceil{image\_width^{0.4}}/2} * 2 +1$ (19 in our case)
+	and the final normalized images are defined by $I/(G+1)*255$ where $I$ is the spectral band and $G$ is the Gaussian blur of those spectral bands.
 	This first step minimizes the impact of the noise on the gradient and smooths the signal in case of high reflectance.
 	Using this normalized image, the gradient $I_{grad}(x,y)$ is computed with the sum of absolute Sharr filter \cite{Seitz}
 	for horizontal $S_x$ and vertical $S_y$ derivative, noted $I_{grad}(x,y)=\frac{1}{2}|S_x|+\frac{1}{2}|S_y|$.
 	%Different types of edge detection such as Sobel, Laplacan and Canny were tested unsuccessfully (without sufficient number of matches), those not included in this study.
-	Finally, all gradients $I_{grad}(x,y)$ are normalized using CLAHE \cite{zuiderveld1994contrast} to locally improve their intensity and increase the number of key points detected (especially for 850nm).
+	Finally, all gradients $I_{grad}(x,y)$ are normalized using CLAHE \cite{zuiderveld1994contrast} to locally improve their intensity and increase the number of key points detected.% (especially for 850nm).
 	%\begin{figure}[!htb]
 	%	\centering
 	%	\includegraphics[width=0.6\linewidth]{../figures/math-perspective-correction.png}
@@ -284,9 +287,9 @@
 	(SURF) Speed-Up Robust Features \cite{bay2006surf}, 
 	(FAST) FAST Algorithm for Corner Detection \cite{trajkovic1998fast}
 	and (GFTT) Good Features to Track \cite{shi1994good}.
-	These algorithms were largely summarized across multiple study \cite{DantasDiasJunior, Tareen2018ACA, Zhang2016EXTENSIONAE, ali2016comparison},
-	their are all available and easily usable in OpenCV, thus we have studied them by varying the most influential parameters for each of them with three modalities,
-	the table \ref{tab:used-algorithms} in appendix show all modalities and methods.
+	These algorithms were largely summarized across multiple studies \cite{DantasDiasJunior, Tareen2018ACA, Zhang2016EXTENSIONAE, ali2016comparison},
+	they are all available and easily usable in OpenCV, thus we have studied them by varying the most influential parameters for each of them with three modalities,
+	the table \ref{tab:used-algorithms} in appendix shows all modalities and methods.
 	All the results can be found in ``figures/*''.
 	
 	\paragraph{Key-point detection} \label{sec:perspective}
@@ -294,7 +297,7 @@
 	For each detected key-point, we extract a descriptor using ORB features.
 	We match all detected key-points to a reference spectral band (all bands are evaluated).
 	All matches are filtered by distance, position and angle, to eliminate false positives along the epipolar line.
-	Finally we use the function \textit{findHomography} between the key points detected/filtered with RANSAC,
+	Finally we use the function \textit{findHomography} between the key points detected/filtered with RANSAC \cite{Fischler:1981:RSC:358669.358692},
 	to determine the best subset of matches to calculate the perspective correction.
 	
 	%\begin{figure}[!htb]
@@ -375,7 +378,7 @@
 	
 	\subsection{Perspective correction}
 	
-	The figures \ref{fig:features-performances} show the numbers of key-points after filtering and homographic association (minimum of all matches)
+	The figures \ref{fig:features-performances} shows the numbers of key-points after filtering and homographic association (minimum of all matches)
 	as well as the computation time and performance ratio (matches/time) for each method.
 	
 	\begin{figure}[H]
@@ -385,7 +388,7 @@
 		\label{fig:features-performances}
 	\end{figure}
 	
-	All these methods offer interesting results, the choice of method depends to the wanted to balance between computation time and accuracy:
+	All these methods offer interesting results, the choice of method depends to the wanted balance between computation time and accuracy:
 	\begin{itemize}
 		\item GFTT shows the best overall performance in both computation time and number of matches
 		\item FAST and AGAST1 are quite suitable too, balanced in time and with greater matches performances.
@@ -408,7 +411,7 @@
 	Choosing the right spectral reference is important, as we can see, no correspondence is found in some cases between $650-850nm$,
 	but correspondences are found between $675-710nm$ and $710-850nm$, making the $710nm$ more appropriate,
 	the same behavior can be observed for the other bands and $570nm$.
-	This is visible on the "all\_min" line, $570nm$ and $710nm$ have the best minimum number of matches.
+	This is visible on the "all\_min" coluns, $570nm$ and $710nm$ have the best minimum number of matches.
 	Other best spectral reference are available in supplementary material.
 	
 	\begin{figure}[H]

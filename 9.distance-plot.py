@@ -44,7 +44,8 @@ all_transform_d = np.array(all_transform_d)
 all_transform_x = np.array(all_transform_x)
 all_transform_y = np.array(all_transform_y)
 
-leg = np.array(bands_text)
+leg = np.array([str(i) for i in all_bands])
+#leg = np.array(bands_text)
 
 #######################################################
 plt.figure(figsize=(7,5))
@@ -81,7 +82,7 @@ for i in range(all_transform_a.shape[1]):
     
 plt.xlabel('height in meter')
     
-plt.legend()
+plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
 plt.tight_layout()
 plt.savefig('figures/affine-rotation-height.png')
 
@@ -104,7 +105,7 @@ for i in range(all_transform_a.shape[1]):
     plt.plot(height, all_transform_y[:,i], label=leg[i])
 
 plt.xlabel('height in meter')
-plt.legend()
+plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
 plt.tight_layout()
 plt.savefig('figures/affine-translation-height.png')
 
