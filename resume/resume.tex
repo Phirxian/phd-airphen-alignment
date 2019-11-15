@@ -38,7 +38,7 @@
 	
 	\begin{abstract}
 		\par The potential of multi-spectral images is growing rapidly in precision agriculture,
-		and is currently based on the use of multi-sensor cameras. However, their development usually concerns aerial application and their parameters are optimized to high altitudes per drone ($\approx 50$ meters)
+		and is currently based on the use of multi-sensor cameras. However, their development usually concerns aerial application and their parameters are optimized for high altitudes acquisition by drone ($\approx 50$ meters)
 		to ensure surface coverage and reduce technical problems.
 		%As part of the efforts towards of phytosanitary use reduction,
 		%this type of device becomes necessary in order to discriminate crops from weeds in close detection ($< 10$ meters).
@@ -46,11 +46,11 @@
 		With the recent emergence of terrestrial robots (UGV), their use is diverted for nearby agronomic applications.
 		It is possible to explore new application maximizing specific traits extraction (spectral index, shape, texture \dots) which requires high spatial resolution
 		\\
-		\par The problem with these cameras is that all sensors are not aligned and the manufacturers' methods are not adapted for close-field acquisition,
+		\par The problem with these cameras is that all sensors are not aligned and the manufacturers' methods are not suitable for close-field acquisition,
 		resulting in offsets between images and degrading the quality of extractable information.
 		We therefore need a solution to align the different images accurately in such condition.
-		The objective of this article is to propose a simple method that allows to define the ideal conditions
-		for matching multi-spectral images from the multi-sensor camera at low heights of use applied on agronomic scenes.
+		The objective of this article is to describe and evaluate a method that allows to define the ideal conditions
+		for matching multi-spectral images from a multi-sensor camera at low heights of use applied on agronomic scenes.
 		\\
 		\par In this study we propose a two-step method applied to the six-bands Airphen multi-sensors camera with
 		(i) affine correction using pre-calibrated matrix at different heights, the closest transformation can be selected via internal GPS
@@ -69,6 +69,8 @@
 	\begin{frontmatter}
 		\title{Two-step multi-spectral registration \\ via key-point detector and gradient similarity}
 		\author[unilu]{Jehan-Antoine VAYSSADE} \ead{jehan-antoine.vayssade@inra.fr}
+		\author[unilu]{Gawain Jones} \ead{gawain.jones@agrosupdijon.fr}
+		\author[unilu]{Jean-Noel Paoli} \ead{jean-noel.paoli@agrosupdijon.fr}
 		\author[unilu]{Christelle Gee} \ead{christelle.gee@agrosupdijon.fr}
 		\address[myuni]{Agroécologie, AgroSup Dijon, INRA, Univ. Bourgogne, Univ. Bourgogne Franche-Comté, F-21000 Dijon, France}
 		\date{Received: date / Accepted: date}
@@ -133,6 +135,7 @@
 	\section{Material and Method}
 	
 	\subsection{Material}
+	\subsubsection{Camera}
 	
 	The multi-spectral imagery is provided by the six-band multi-spectral camera Airphen \footnote{\url{https://www.hiphen-plant.com/our-solutions/airphen/}}.
 	AIRPHEN is a scientific multi-spectral camera developed by agronomists for agricultural applications.
@@ -140,22 +143,18 @@
 	\\
 	\par AIRPHEN is highly configurable (bands, fields of view), lightweight and compact.
 	It can be operated wirelessly and combined with complementary thermal infrared channel and high resolution RGB cameras.
-	The camera was configured using 450/570/675/710/730/850 nm with FWHM \footnote{Full Width at Half Maximum} of 10nm, the position of each bands is referenced on table \ref{tab:bands-disposition}.
-	The focal lens is 8mm. The raw resolution for each spectral band is $1280x960$ px with 12 bit of precision.
-	Finally the camera also provides an internal GPS antenna, that can be used to get the distance from the ground.
+	The camera was configured using interferential filter centered at 450/570/675/710/730/850 nm with FWHM \footnote{Full Width at Half Maximum} of 10nm, the position of each bands is referenced on figure \ref{fig:bands-disposition}.
+	The focal lens is 8mm for all wavelength. The raw resolution for each spectral band is $1280 \times 960$ px with 12 bit of precision.
+	Finally the camera also provides an internal GPS antenna that can be used to get the distance from the ground.
 	
-	\begin{table}[H]
-		\begin{tabularx}{\linewidth}{|X|X|X|}
-			\hline
-			450 & 675 & 710 \\
-			\hline
-			570 & 850 & 730 \\
-			\hline
-		\end{tabularx}
-		\label{tab:bands-disposition}
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.33\linewidth]{../figures/airphen-detail4}
+		\label{fig:bands-disposition}
 		\caption{Disposition of each bands on the Airphen multi-sensors camera}
-	\end{table}
+	\end{figure}
 	
+	\subsubsection{Datasets}
 	\par Two datasets were taken at different heights with images of a chessboard and of an agronomic scene.
 	We have used a metallic gantry for positioning the camera at different heights.
 	The size of the gantry is $3m * 5m * 4m$.
@@ -388,7 +387,7 @@
 		\label{fig:features-performances}
 	\end{figure}
 	
-	All these methods offer interesting results, the choice of method depends to the wanted balance between computation time and accuracy:
+	All these methods offer interesting results, the choice of method depends on application needs between computation time and accuracy:
 	\begin{itemize}
 		\item GFTT shows the best overall performance in both computation time and number of matches
 		\item FAST and AGAST1 are quite suitable too, balanced in time and with greater matches performances.
@@ -403,12 +402,12 @@
 		\item BRISK shows good number of matches, at the cost of an important computation time (79 sec).
 	\end{itemize}
 	
-	\par Increasing the number of key points matched allows a slightly higher accuracy \cite{DantasDiasJunior, }.
+	\par Increasing the number of key points matched allows a slightly higher accuracy \cite{DantasDiasJunior}.
 	For example, switching from SURF (30 results) to FAST (130 results) reduces the final residual distances from ~1.2 to ~0.9 pixel but increases the calculation time from $\approx 5$ to $\approx 8$ seconds.
 	\\
 	\par All methods show that the best reference spectrum is $710nm$, with the exception of SURF and GFTT which is $570nm$.
 	The figure \ref{fig:features-GFTT-performances} shows the minimum number of matches between each reference spectrum and all others using the GFTT algorithm.
-	Choosing the right spectral reference is important, as we can see, no correspondence is found in some cases between $650-850nm$,
+	Choosing the right spectral reference is important, as we can see, no correspondence is found in some cases between $675-850nm$,
 	but correspondences are found between $675-710nm$ and $710-850nm$, making the $710nm$ more appropriate,
 	the same behavior can be observed for the other bands and $570nm$.
 	This is visible on the "all\_min" coluns, $570nm$ and $710nm$ have the best minimum number of matches.
@@ -528,6 +527,7 @@
 	
 	\section{References}
 	\bibliography{references.bib}
-	\bibliographystyle{apalike}
+	%\bibliographystyle{apalike} %order alphabet
+	\bibliographystyle{unsrt}
 	
 \end{document}

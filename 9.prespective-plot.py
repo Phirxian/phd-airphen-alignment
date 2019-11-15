@@ -29,8 +29,8 @@ for i,b in enumerate(bands):
     l2 = data[i::5,1]
     std = data[i::5,2]/2
     x = np.arange(len(l2))
-    #c = all_bands.index(b)
-    plt.plot(x, l2, label=str(bands[i]))
+    c = all_bands.index(b)
+    plt.plot(x, l2, label=str(bands[i]), color=bands_color[c])
     #plt.fill_between(x, l2-std, l2+std, alpha=.2)
 pass
     
