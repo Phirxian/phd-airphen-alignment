@@ -46,10 +46,11 @@ df = pd.DataFrame(
     columns=pd.Index(['ref='+str(i) for i in all_bands], name='Genus')
 )
                  
-df.plot(kind='bar',figsize=(10,5))
+df.plot(kind='bar',figsize=(6,5))
 
 plt.ylim([-1,600])
-plt.title('Number of matches between each spectral for each relevant methods')
-plt.legend(loc='upper left')
+plt.title('Number of matches between each spectral \n for each relevant methods')
+plt.legend(loc='upper right')
 plt.tight_layout(rect=(0,0,1,0.97))
 plt.savefig('figures/comparaison-keypoint-matching-reference-merged.png')
+plt.show()
