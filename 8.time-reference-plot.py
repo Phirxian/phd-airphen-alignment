@@ -28,7 +28,7 @@ all_best = np.array(all_best)
 value = all_best / all_times * 2
 merged = np.vstack([all_times * 10, all_best, value]).transpose()
 
-fig, axes = plt.subplots(1, 1, figsize=(8,7))
+fig, axes = plt.subplots(1, 1, figsize=(10,5))
 columns = ['10x time in seconds', 'number of matches', 'matches/time']
 
 df = pd.DataFrame(
@@ -38,9 +38,12 @@ df = pd.DataFrame(
 
 df = df.sort_values(['matches/time'])
 #df = df.sort_values([columns[0]])
-df.plot(ax=axes, kind='barh')
-plt.xlim([0,500])
-plt.xticks(np.arange(0,550,50))
+df.plot(ax=axes, kind='bar')
+plt.ylim([0,500])
+plt.yticks(np.arange(0,550,50))
+
+plt.xlabel('Methodes and modalities')
+plt.ylabel('Performances in different terms (time, matches, ...)')
 
 plt.suptitle('Keypoint extraction performances')
 plt.tight_layout(rect=(0,0,1,0.97))

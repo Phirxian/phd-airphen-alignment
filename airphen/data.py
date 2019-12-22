@@ -12,7 +12,8 @@ height = np.array([
 ])
 
 # excluded green (reference)
-bands_text = ['blue', 'green', 'red', 'redge', 'redge_max', 'nir']
+bands_text =  ['blue',    'green',   'red',     'redge',   'redge_max', 'nir']
+bands_color = ['#1f77b4', '#2ca02c', '#d62728', '#ff7f0e', '#9467bd',   '#8c564b']
 all_bands = [450, 570, 675, 710, 730, 850]
 
 all_methods = [

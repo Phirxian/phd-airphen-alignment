@@ -12,7 +12,7 @@ if True:
     height = './data/2.0.npy'
 else:
     path = './data/'
-    folder = 'steep/1.6'
+    folder = 'step/1.6'
     prefix = ''
     height = './data/1.6.npy'
 pass

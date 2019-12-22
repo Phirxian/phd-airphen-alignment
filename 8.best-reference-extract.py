@@ -19,7 +19,7 @@ def extract_performances(m):
         
         for mid in range(len(all_bands)):
             start_time = time.time()
-            S = SpectralImage('./data/steep/', str(h), '', './data/'+str(h)+'.npy')
+            S = SpectralImage('./data/step/', str(h), '', './data/'+str(h)+'.npy')
             try:
                 loaded, nb_kp = S.spectral_registration(m, mid)
             except:
