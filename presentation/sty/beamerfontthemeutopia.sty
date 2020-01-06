@@ -1,0 +1,50 @@
+% Beamer theme utopia, originally mtheme
+% Xavier Olive, 2015
+
+% Original notice
+%
+% Copyright 2014 Matthias Vogelgesang
+% Licensed under CC-BY-SA 4.0 International.
+%
+% The initial template comes from the HSRM beamer theme by Benjamin Weiss, which
+% you can find at https://github.com/hsrmbeamertheme/hsrmbeamertheme.
+%
+
+\ProvidesPackage{beamerfontthemeutopia}
+
+\RequirePackage[no-math]{fontspec}
+
+
+\defaultfontfeatures{Mapping=tex-text}
+\setsansfont[BoldFont={FiraSans}]{FiraSans-Light}
+\setmonofont[Scale=0.7]{FiraMono}
+\newfontfamily\ExtraLight{FiraSans-ExtraLight}
+\newfontfamily\Light{FiraSans-Light}
+\newfontfamily\Book{FiraSans}
+\newfontfamily\Medium{FiraSans-Medium}
+
+\AtBeginEnvironment{tabular}{\setsansfont[BoldFont={FiraSans}, Numbers={Monospaced}]{FiraSans-Light}}
+
+\setbeamerfont{title}{family=\Book, size=\Large}
+\setbeamerfont{author}{family=\ExtraLight, size=\small}
+\setbeamerfont{date}{family=\ExtraLight, size=\small}
+
+\setbeamerfont{alerted text}{family=\Book}
+
+\setbeamerfont{section title}{family=\Book, size=\Large}
+
+\setbeamerfont{block title}{family=\Book, size=\normalsize}
+\setbeamerfont{block title alerted}{family=\Book,size=\normalsize}
+
+\setbeamerfont{subtitle}{family=\Light, size=\fontsize{12}{14}}
+\setbeamerfont{frametitle}{family=\Book, series=\scshape, size=\large}
+
+\setbeamerfont{caption}{size=\small}
+\setbeamerfont{caption name}{family=\Book}
+
+\setbeamerfont{description item}{family=\Book}
+
+\setbeamerfont{page number in head/foot}{size=\scriptsize}
+
+
+\linespread{1.15}
