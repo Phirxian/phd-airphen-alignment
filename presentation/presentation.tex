@@ -27,6 +27,26 @@
 \begin{document}
 
 	\maketitle
+	\section{Introduction}
+	
+		\begin{frame}{Main Question}
+			In agricultural purpose such as precision farming, major mistake are still done in image registration.
+			There is no large study of :
+			
+			\begin{itemize}
+				\item What is the best spectral band to use as reference ?
+				\item What keypoint extractor algorithms are the most adapted ?
+			\end{itemize}
+		
+			This paper focus on that two question and propose a two step registration:
+			
+			\begin{itemize}
+				\item affine registration trough calibration and GPS
+				\item perspective correction trough key-point detection
+				\item benchmark of different key-point detector (time/number)
+				\item benchmark for each spectral reference.
+			\end{itemize}
+		\end{frame}
 	
 		\begin{frame}{Material}
 			\begin{figure}
@@ -49,7 +69,7 @@
 			\end{figure}
 		\end{frame}
 	
-	\section{Affine correction}
+	\section{Methods : Affine correction}
 	
 		\begin{frame}{Affine Calibration, translation part}
 			\begin{figure}
@@ -66,10 +86,10 @@
 		\end{frame}
 	
 		\begin{frame}{Affine Correction}
-			From that calibration a new affine matrix are build:
+			From that calibration a affine matrix model are build:
 			
 			\begin{itemize}
-				\item For $X,Y$ factors an equation are fit \footnote{Levenberg-Marquardt with linear least squares regression} and the height from the GPS are used to get the nearest correction
+				\item For $X,Y$ factors an equation are fit for each spectral band \footnote{Levenberg-Marquardt with linear least squares regression} and the height from the GPS are used to get the nearest correction
 				\begin{itemize}
 					\item $t = \alpha h^3 + \beta h^2 + \theta h + \gamma$
 				\end{itemize}
@@ -77,11 +97,16 @@
 			\end{itemize}
 		
 			Each spectral band is warped using the corresponding affine transformation.
+			For each spectral band the translation factor are computed from an approximated height given by the GPS.
 			And a crop are applied.
 		\end{frame}
 	
-	\section{Perspective correction (refinement)}
+	\section{Methods : Perspective correction via key-point detector (refinement)}
 		\begin{frame}{Gradient transform for keypoint detection}
+			\begin{figure}
+				\includegraphics[width=0.7\linewidth]{../figures/contrast-inversion.png}
+			\end{figure}
+			
 			To optimize the search of specific keypoint such as gradient break,
 			each spectral band are transformed :
 			\begin{itemize}
@@ -112,12 +137,41 @@
 			\end{figure}
 		\end{frame}
 	
-		\begin{frame}{Results}
+	\section{Results}
+	
+		\begin{frame}{Results : keypoint extractor benchmark}
+			\begin{figure}
+				\includegraphics[width=0.8\linewidth]{../figures/comparaison-keypoint-performances}
+				\caption{Bruteforce keypoint matching in normalized gradient and filtering (570nm left \& 850nm right)}
+			\end{figure}
+		\end{frame}
+	
+		\begin{frame}{Results : spectral reference benchmark}
+			\begin{figure}
+				\includegraphics[width=0.8\linewidth]{../figures/comparaison-keypoint-matching-reference-merged.png}
+				\caption{Bruteforce keypoint matching in normalized gradient and filtering (570nm left \& 850nm right)}
+			\end{figure}
+		\end{frame}
+	
+		\begin{frame}{Results : precision}
 			\begin{figure}
 				\includegraphics[width=0.8\linewidth]{../figures/affine-allignement-rmse.jpg} \\
 				\includegraphics[width=0.8\linewidth]{../figures/prespective-allignement-rmse.jpg}
 				\caption{Performance evaluation with 570nm as reference}
 			\end{figure}
 		\end{frame}
+	
+	\section{Conclusion}
+	
+		\begin{frame}{Conclusion}
+			\begin{itemize}
+				\item This study as determined that the best spectral reference is 570 and 710nm with that hardware.
+				Where major study still define empirically 850nm as registration reference which is largely sub-optimal.
+				\item We have made a large comparison of key-point detector and determined that GFTT are the best key-point detector.
+				Where different study still use ORB and KAZE which is largely sub-optimal (time and precision).
+			\end{itemize}
+		\end{frame}
+	
+	\section{Question ?}
 			
 \end{document}
