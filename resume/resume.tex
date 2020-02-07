@@ -57,8 +57,8 @@
 	\par Modern agriculture is changing towards a system that is less dependent on pesticides \cite{10.1371/journal.pone.0097922}
 	(herbicides remain the most difficult pesticides to reduce) and digital tools are of great help in his matter.
 	The development of imaging and image processing have made it possible to characterize an agricultural plot \cite{SANKARAN2015112}
-	(crop health status or soil characteristics) using non-destructive agronomic indices %\cite{doi:10.1080/02757259509532298}
-	\cite{doi:10.1080/02757259509532298, filella1995evaluating, 10.1371/journal.pone.0072736}
+	(crop health status or soil characteristics) using non-destructive agronomic indices \cite{10.1371/journal.pone.0072736}
+	%\cite{doi:10.1080/02757259509532298, filella1995evaluating, 10.1371/journal.pone.0072736}
 %	(NDVI \footnote{Normalized Difference Vegetation Index}, ExcessGreen, \dots)
 	replacing traditional destructive and time-consuming methods.
 	In recent years, the arrival of miniaturized multi-spectral and hyper-spectral cameras on Unmanned Aerial Vehicles (UAVs)
@@ -176,7 +176,6 @@
 	%	\label{fig:merged-correction}
 	%\end{figure}
 	
-	\newpage
 	\subsubsection{Affine Correction}
 	\label{sec:affine}
 	
@@ -284,6 +283,7 @@
 	
 	\begin{table}[h]
 		\centering
+		\caption{list of algorithms with 3 modalities of their parameters}
 		\rotatebox{90}{
 			\begin{tabular}{|l|l|c|c|c| } 
 				\hline
@@ -301,7 +301,6 @@
 				\hline
 			\end{tabular}
 		}
-		\caption{list of algorithms with 3 modalities of their parameters}
 		\label{tab:used-algorithms}
 	\end{table}
 	
@@ -559,8 +558,10 @@
 	%\url{gitlab.com/phd-thesis-adventice/phd-airphen-alignment} the access is limited
 	%and we invite you to send an email to the author for full access.
 	
-	\bibliography{references.bib}
-	%\bibliographystyle{apalike} %order alphabet
-	\bibliographystyle{unsrt}
+	\bibliographystyle{apalike}
+	{\small \bibliography{references}}
+	
+	%\bibliography{references.bib}
+	%\bibliographystyle{unsrt}
 	
 \end{document}

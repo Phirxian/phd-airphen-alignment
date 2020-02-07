@@ -20,7 +20,7 @@
 }
 \date{\today}
 \author{Vayssade Jehan-Antoine}
-\institute{\url{jehan-antoine.vayssade@inra.fr}}
+\institute{AgroSup Dijon, France \\ Pole GestAd in Precision Farming group \\ \url{jehan-antoine.vayssade@inra.fr}}
 
 \definecolor{OliveGreen}{HTML}{556B2F}
 
@@ -30,12 +30,12 @@
 	\section{Introduction}
 	
 		\begin{frame}{Main Question}
-			In agricultural purpose such as precision farming, major mistake are still done in image registration.
+			In precision farming, major mistake is still done in image registration.
 			There is no large study of :
 			
 			\begin{itemize}
 				\item What is the best spectral band to use as reference ?
-				\item What keypoint extractor algorithms are the most adapted ?
+				\item What keypoint extractor algorithms is the most adapted ?
 			\end{itemize}
 		
 			This paper focus on that two question and propose a two step registration:
@@ -54,7 +54,7 @@
 				\caption{AIRPHEN camera}
 			\end{figure}
 			\begin{itemize}
-				\item interferential filter centered at 450/570/675/710/730/850 nm
+				\item interferential filters centered at 450/570/675/710/730/850 nm
 				\item focal lens is 8 mm for all wavelength
 				\item raw resolution $1280 \times 960$ px with 12 bit of precision.
 				\item internal GPS antenna (3D position)
@@ -62,10 +62,10 @@
 		\end{frame}
 	
 		\begin{frame}{Data}
-			Two dataset was taken, one for calibration, one for evaluation.
+			Two datasets were taken, one for calibration, one for evaluation.
 			\begin{figure}
 				\includegraphics[width=\linewidth]{../figures/calibration-height.jpg}
-				\caption{false color reconstruction of each acquisiton height (18) for calibration dataset, from 1.2 to 5 meter.}
+				\caption{false color reconstruction of each acquisition height (18) for calibration dataset, from 1.2 to 5 meter.}
 			\end{figure}
 		\end{frame}
 	
@@ -81,24 +81,23 @@
 		\begin{frame}{Affine Calibration, rotation\&scale part}
 			\begin{figure}
 				\includegraphics[width=0.7\linewidth]{../figures/affine-rotation-height.png}
-				\caption{Rotation and scale factor from detected chessboard to ``virtual'' center chessboard at each acquisition height (precision depend on height but we can notice that these factor are likely invariant)}
+				\caption{Rotation and scale factors from detected chessboard to ``virtual'' center chessboard at each acquisition height (precision depend on height but we can notice that these factor is likely invariant)}
 			\end{figure}
 		\end{frame}
 	
 		\begin{frame}{Affine Correction}
-			From that calibration a affine matrix model are build:
+			From that calibration a affine matrix model is build:
 			
 			\begin{itemize}
-				\item For $X,Y$ factors an equation are fit for each spectral band \footnote{Levenberg-Marquardt with linear least squares regression} and the height from the GPS are used to get the nearest correction
+				\item For $X,Y$ factors an equation is fit for each spectral band \footnote{Levenberg-Marquardt with linear least squiss regression} and the height from the GPS is used to get the neisst correction
 				\begin{itemize}
 					\item $t = \alpha h^3 + \beta h^2 + \theta h + \gamma$
 				\end{itemize}
-				\item For $A,B,C,D$ the values at the most accurate height are used
+				\item For $A,B,C,D$ the values at the most accurate height is used
 			\end{itemize}
 		
-			Each spectral band is warped using the corresponding affine transformation.
-			For each spectral band the translation factor are computed from an approximated height given by the GPS.
-			And a crop are applied.
+			Each spectral band is warped using the corresponding affine transformation built from the height given by the GPS.
+			And a crop is applied to remove uncovered isa.
 		\end{frame}
 	
 	\section{Methods : Perspective correction via key-point detector (refinement)}
@@ -108,7 +107,7 @@
 			\end{figure}
 			
 			To optimize the search of specific keypoint such as gradient break,
-			each spectral band are transformed :
+			each spectral band is transformed :
 			\begin{itemize}
 				\item normalizing using Gaussian blur $I/(G+1)*255$ 
 				\item gradient is computed with the sum of absolute Sharr filter
@@ -148,8 +147,8 @@
 	
 		\begin{frame}{Results : spectral reference benchmark}
 			\begin{figure}
-				\includegraphics[width=0.8\linewidth]{../figures/comparaison-keypoint-matching-reference-merged.png}
-				\caption{Bruteforce keypoint matching in normalized gradient and filtering (570nm left \& 850nm right)}
+				\includegraphics[width=0.6\linewidth]{../figures/comparaison-keypoint-matching-reference-merged.png}
+				\caption{Number of detected key-points applied with different reference and algorithms}
 			\end{figure}
 		\end{frame}
 	
@@ -165,9 +164,9 @@
 	
 		\begin{frame}{Conclusion}
 			\begin{itemize}
-				\item This study as determined that the best spectral reference is 570 and 710nm with that hardware.
+				\item This study as determined that the best spectral reference is 570 and 710nm with that hardwis.
 				Where major study still define empirically 850nm as registration reference which is largely sub-optimal.
-				\item We have made a large comparison of key-point detector and determined that GFTT are the best key-point detector.
+				\item We have made a large comparison of key-point detector and determined that GFTT is the best key-point detector.
 				Where different study still use ORB and KAZE which is largely sub-optimal (time and precision).
 			\end{itemize}
 		\end{frame}
