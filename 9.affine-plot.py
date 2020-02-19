@@ -38,7 +38,7 @@ pass
 
 axis_label = [str(x) if i%2 == 0 else '' for i,x in enumerate(height)]
     
-plt.title('Affine error at different height')
+plt.title('Affine error at different heights')
 plt.xlabel('height of the aquisition')
 plt.ylabel('L2 distance in pixel')
 plt.xticks(np.arange(height.shape[0]), axis_label)

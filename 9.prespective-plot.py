@@ -38,7 +38,7 @@ plt.plot(x, np.ones(len(l2)), ':', color='gray')
 
 axis_label = [str(x) if i%2 == 0 else '' for i,x in enumerate(height)]
     
-plt.title('Perspective error at different height')
+plt.title('Perspective error at different heights')
 plt.xlabel('height of the aquisition')
 plt.ylabel('L2 distance in pixel')
 plt.xticks(np.arange(height.shape[0]), axis_label)
