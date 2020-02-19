@@ -25,7 +25,7 @@
 }
 \institute{
 	AgroSup Dijon, Pole GestAd in Precision Farming group, France  \\
-	Gawain Jones, Jean-Noel Paoli, Christelle Gee
+	Gawain Jones, Jean-Noël Paoli, Christelle Gee
 }
 
 \definecolor{OliveGreen}{HTML}{556B2F}
@@ -66,7 +66,7 @@
 			\begin{figure}
 				\centering
 				\includegraphics[width=\linewidth]{leaf}
-				\caption{We search for criteria that can discriminate weed and crop}
+				\caption{We search for criteria that can discriminate weeds and crops}
 			\end{figure}
 		\end{frame}
 	
@@ -81,7 +81,7 @@
 		\end{frame}
 	
 		\begin{frame}{Focuses}
-			This paper focuses on these two points and define :
+			This paper focuses on these two points and defines :
 			\begin{itemize}
 				\item a benchmark of different key-points detectors (time/number)
 				\item a benchmark for each spectral reference.
@@ -134,7 +134,7 @@
 		\begin{frame}{Affine Calibration, rotation\&scale part}
 			\begin{figure}
 				\includegraphics[width=0.7\linewidth]{../figures/affine-rotation-height.png}
-				\caption{Rotation and scale factors from detected chessboard to ``virtual'' center chessboard at each acquisition height (precision depends on height but we can notice that these factor is likely invariant)}
+				\caption{Rotation and scale factors from detected chessboard to ``virtual'' center chessboard at each acquisition height (precision depends on height but we can notice that these factors are likely invariant)}
 			\end{figure}
 		\end{frame}
 	
@@ -143,7 +143,7 @@
 			
 			\begin{itemize}
 				\item For $A,B,C,D$ the values at the most accurate height are used
-				\item For $X,Y$ factors an equation is fit for each spectral band \footnote{Levenberg-Marquardt with linear least squiss regression}
+				\item For $X,Y$ factors an equation is fitted for each spectral band \footnote{Levenberg-Marquardt with linear least squiss regression}
 				\begin{itemize}
 					\item $t = \alpha h^3 + \beta h^2 + \theta h + \gamma$
 				\end{itemize}
@@ -162,10 +162,10 @@
 				\includegraphics[width=0.7\linewidth]{../figures/contrast-inversion.png}
 			\end{figure}
 		
-			To optimize the search of specific key-points such as gradient break,
+			To optimize the search of specific key-points such as gradient breaks,
 			each spectral band is transformed :
 			\begin{itemize}
-				\item normalizing using Gaussian blur $I/(G+1)*255$ 
+				\item normalization using Gaussian blur $I/(G+1)*255$ 
 				\item gradient is computed with the sum of absolute Sharr filter
 				\item normalization using CLAHE to locally improve their intensity
 			\end{itemize}
@@ -188,7 +188,7 @@
 		\begin{frame}{Perspective correction via Keypoint}
 			\begin{figure}
 				\includegraphics[width=\linewidth]{../figures/prespective-feature-matching}
-				\caption{Bruteforce keypoint matching in normalized gradient and filtering (refence 570nm left \& 850nm right) using GFTT1}
+				\caption{Bruteforce key-points matching in normalized gradient and filtering (reference 570nm left \& 850nm right) using GFTT1}
 			\end{figure}
 		
 			\begin{itemize}
@@ -268,7 +268,7 @@
 				\item Code open-source : \\ {\tiny \url{https://gitlab.com/phd-thesis-adventice/phd-airphen-alignment} }
 				\item Only need two datasets using your specific camera/scene
 				\item Make the calibration and extract the benchmark
-				\item Use the best combination of key-point and reference
+				\item Use the best combination of key-points detector and reference
 			\end{itemize}
 		\end{frame}
 	
@@ -276,7 +276,7 @@
 			For our specific use, such as our camera and scene, we have determined through a benchmark:
 			
 			\begin{itemize}
-				\item the best spectral reference is 570 and 710nm \\ (studies still define empirically 850nm).
+				\item the best spectral reference are 570 and 710nm \\ (studies still define empirically 850nm).
 				\item the best key-point detector is GFTT (time and number) \\ (studies still use ORG or KAZE).
 			\end{itemize}
 			
@@ -284,15 +284,15 @@
 		\end{frame}
 		\begin{frame}{Perspective}
 			\begin{itemize}
-				\item Benchmark of key-points detectors using other camera
-				\item Benchmark of key-points detectors using other scene
+				\item Benchmark of key-points detectors using others cameras
+				\item Benchmark of key-points detectors using others scenes
 				\item Study about the spatial distribution of key-points
-				\item Are the spectral bands reference almost the same ?
+				\item Are the best spectral bands references almost the same ?
 				\item Test of different deformations models
 				\item More modalities about key-points detectors parameters
-				\item Optimization with more efficient matching algorithm
+				\item Optimization with more efficient matching algorithms
 			\end{itemize}
 		\end{frame}
-	\section{Question ?}
+	\section{Thank you for listening ! \\ Questions ?}
 			
 \end{document}
