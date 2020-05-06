@@ -8,11 +8,11 @@ from .image_processing import *
 from .debug import *
 
 # @ref the best reference : default=1=570 !! (maximum number of matches)
-def refine_allignement(loaded, method='SURF', ref=1, verbose=True):
+def refine_allignement(prefix, loaded, method='SURF', ref=1, verbose=True):
     img = [ i.astype('float32') for i in loaded]
-    img = [ gradient_normalize(i) for i in img]
-    grad = [ build_gradient(i).astype('uint8') for i in img]
-    img = [ (i/i.max()*255).astype('uint8') for i in img]
+    img = [ gradient_normalize(i, 0.001) for i in img]
+    grad = [ build_gradient(i, method='Ridge').astype('uint8') for i in img]
+    img = [ (i/i.max()*255).clip(0,255).astype('uint8') for i in img]
     
     # identify transformation for each band to the next one
     dsize = (loaded[0].shape[1], loaded[0].shape[0])
@@ -83,7 +83,7 @@ def refine_allignement(loaded, method='SURF', ref=1, verbose=True):
             std = l2.std()
             
             if verbose > 1:
-                scatter_plot_residual(source, target, corrected)
+                scatter_plot_residual(prefix, source, target, corrected, loaded[0].shape, i)
                 
             if verbose > 2:
                 draw_final_keypoint_matching(source, target, grad[ref], grad[i])

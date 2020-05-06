@@ -7,6 +7,8 @@ from .image_processing import *
 class SpectralImage:
     def __init__(self, set, subset, prefix, height):
         self.set = set
+        self.subset = subset
+        self.prefix = prefix
         self.path = set + '/' + str(subset) + '/'
         self.loaded = [read_tiff(self.path + prefix + str(i) + 'nm.tif') for i in all_bands]
         
@@ -83,7 +85,7 @@ class SpectralImage:
         else:
             if verbose > 0:
                 print('homography correction ...')
-            self.registred, bbox, nb_kp, centers = refine_allignement(self.registred, method, reference, verbose)
+            self.registred, bbox, nb_kp, centers = refine_allignement(self.subset+'-', self.registred, method, reference, verbose)
             min_xy = np.max(bbox[:, :2], axis=0).astype('int')
             max_xy = np.min(bbox[:, 2:], axis=0).astype('int')
             crop_all(self, self.registred, min_xy, max_xy)
@@ -101,9 +103,12 @@ class SpectralImage:
 
     def compute_false_color(self):
         img = np.zeros((self.registred[0].shape[0], self.registred[0].shape[1], 3))
-        img[:,:,0] = false_color_normalize(self.registred[0])*92  # B
-        img[:,:,1] = false_color_normalize(self.registred[1])*220 # G
-        img[:,:,2] = false_color_normalize(self.registred[2])*200 # R
-        return img.astype('uint8')
+        #img[:,:,0] = false_color_normalize(self.registred[0])*92  # B
+        #img[:,:,1] = false_color_normalize(self.registred[1])*220 # G
+        #img[:,:,2] = false_color_normalize(self.registred[2])*200 # R
+        img[:,:,0] = 40+false_color_normalize(self.registred[0])*92  # B
+        img[:,:,1] = 40+false_color_normalize(self.registred[1])*220 # G
+        img[:,:,2] = 40+false_color_normalize(self.registred[2])*200 # R
+        return img.clip(0,255).astype('uint8')
     pass
 pass

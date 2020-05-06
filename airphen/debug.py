@@ -1,9 +1,13 @@
 import matplotlib.pyplot as plt
+import scipy.interpolate as interpolate
 import numpy as np
 import math
 import cv2
 
-def scatter_plot_residual(source, target, corrected):
+from gstools import Gaussian
+from sklearn.gaussian_process import GaussianProcessRegressor
+
+def scatter_plot_residual(prefix, source, target, corrected, image_size, l):
     fig = plt.figure(figsize=(17,5))
     size = 1
     
@@ -11,15 +15,15 @@ def scatter_plot_residual(source, target, corrected):
     ####   ALIGNMENT REFINENMENT COMPARAISON   #####
     ################################################
     
-    diff = target-source
-    l2 = np.sqrt((diff**2)[0].sum(axis=1))
+    diff = (target-source)[0]
+    l2 = np.sqrt((diff**2).sum(axis=1))
     
     ax = fig.add_subplot(121)
     ax.scatter(target[0,:,0], target[0,:,1], s=size)
     ax.scatter(source[0,:,0], source[0,:,1], s=size)
     ax.quiver(
         corrected[0,:,0], corrected[0,:,1],
-        diff[0,:,0], diff[0,:,1],
+        diff[:,0], diff[:,1],
         scale_units='xy', scale=.1,
         units='xy', width=2
     )
@@ -30,16 +34,15 @@ def scatter_plot_residual(source, target, corrected):
     
     ################################################
     
-    diff = corrected-source
-    l2 = np.sqrt((diff**2)[0].sum(axis=1))
-    residual = diff[0].mean(axis=0)
+    diff = (corrected-source)[0]
+    l2 = np.sqrt((diff**2).sum(axis=1))
     
     ax = fig.add_subplot(122)
     ax.scatter(corrected[0,:,0], corrected[0,:,1], s=size)
     ax.scatter(source[0,:,0], source[0,:,1], s=size)
     ax.quiver(
         corrected[0,:,0], corrected[0,:,1],
-        diff[0,:,0], diff[0,:,1],
+        diff[:,0], diff[:,1],
         scale_units='xy', scale=0.1,
         units='xy', width=2
     )
@@ -47,7 +50,6 @@ def scatter_plot_residual(source, target, corrected):
     ax.yaxis.set_label_position("right")
     plt.title('residual distances after correction')
     plt.xlabel('residual l2 mean = ' + str(l2.mean()))
-    plt.ylabel('residual std = ' + str(np.round(residual, 4)))
     
     ################################################
     
@@ -59,7 +61,7 @@ def scatter_plot_residual(source, target, corrected):
     #######   RESIDUAL ANGLE DISTRIBUTION   ########
     ################################################
     
-    direction = np.arctan2(diff[0,:,1], diff[0,:,0])*180/math.pi + 180
+    direction = np.arctan2(diff[:,1], diff[:,0])*180/math.pi + 180
     #bins = np.arange(0,180,10)
     #hog = HOG_histogram(direction, l2, bins).clip(0,100)
     
@@ -76,7 +78,7 @@ def scatter_plot_residual(source, target, corrected):
         ax.scatter(source[0,index,0], source[0,index,1], s=size)
         ax.quiver(
             corrected[0,index,0], corrected[0,index,1],
-            diff[0,index,0], diff[0,index,1],
+            diff[index,0], diff[index,1],
             scale_units='xy', scale=0.1,
             units='xy', width=4
         )
@@ -88,9 +90,38 @@ def scatter_plot_residual(source, target, corrected):
     plt.suptitle('Residual Angle Distribution')
     plt.savefig('figures/perspective-features-residual.png')
     
+    
     ################################################
     
-    plt.show()
+    data = np.vstack([source[0,:,0], source[0,:,1], diff[:,0], diff[:,1]])
+    print(data.shape)
+    np.save('/home/javayss/'+prefix+str(l)+'.npy', data)
+    
+    #plt.figure()
+    #
+    #if False:
+    #    gridx = np.arange(0.0, image_size[0], 2)
+    #    gridy = np.arange(0.0, image_size[1], 2)
+    #    cov_model = Gaussian(dim=2, len_scale=1, anis=0.2, angles=-0.5, var=0.5, nugget=0.1)
+    #    OK1 = OrdinaryKriging(diff[:,0], diff[:,1], l2, cov_model)
+    #    z1, ss1 = OK1.execute('grid', gridx, gridy)
+    #    plt.imshow(z1 / z1.max(), origin="lower")
+    #else:
+    #    gp = GaussianProcessRegressor()
+    #    gp.fit(X=diff, y=l2)
+    #    
+    #    r = np.linspace(0, 4, image_size[0]) 
+    #    c = np.linspace(0, 4, image_size[1])
+    #    rr, cc = np.meshgrid(r, c)
+    #    rr_cc_as_cols = np.column_stack([rr.flatten(), cc.flatten()])
+    #    interpolated = gp.predict(rr_cc_as_cols).reshape(image_size[:2])
+    #    plt.imshow(interpolated, origin="lower")
+    #
+    #plt.savefig('figures/perspective-krigging-resiual.png')
+    
+    ################################################
+    
+    #plt.show()
 pass
 
 def keypoint_draw(img1, img2, kp1, kp2, matches):

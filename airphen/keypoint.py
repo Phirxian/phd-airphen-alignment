@@ -28,12 +28,14 @@ class FilterDetection:
     
     def filter_position(self, t):
         #print('filter positions ...')
+        d = np.sum((self.a-self.b)**2, axis=1)
+        
         d = np.array([
             abs(distance.euclidean(self.a[i], [0,0]) - distance.euclidean([0,0], self.b[i]))
             for i in range(len(self.a))
         ])
         
-        return d<t
+        return d<(t**2)
     pass
     
     def filter_duplicated(self, t):
@@ -51,12 +53,12 @@ class FilterDetection:
     
     def filter_angle(self, t):
         #print('filter angles ...')
-        d = np.array([
-            math.atan((self.a[i][1] - self.b[i][1])/(self.b[i][0] - self.a[i][0] + 1280))*180/math.pi
-            for i in range(len(self.a))
-        ])
+        d = 180/math.pi*np.arctan(
+            (self.a[:,1] - self.b[:,1])/
+            (self.b[:,0] - self.a[:,0] + 1280)
+        )
         
-        return np.array([i<t for i in abs(d)])
+        return abs(d)<t
     pass
     
 pass
@@ -65,44 +67,44 @@ def keypoint_detect(img1, img2, method='GFTT'):
     #print('keypoint detection ...')
     
     detectors = {
-        'ORB1'   : partial(cv2.ORB_create, nfeatures=5000),
-        'ORB2'   : partial(cv2.ORB_create, nfeatures=10000),
-        'ORB3'   : partial(cv2.ORB_create, nfeatures=15000),
-        
-        'AGAST1' : partial(cv2.AgastFeatureDetector_create, threshold=71, nonmaxSuppression=True),
-        'AGAST2' : partial(cv2.AgastFeatureDetector_create, threshold=92, nonmaxSuppression=True),
-        'AGAST3' : partial(cv2.AgastFeatureDetector_create, threshold=163, nonmaxSuppression=True),
-        
-        'AKAZE1' : partial(cv2.AKAZE_create, nOctaves=1, nOctaveLayers=1),
-        'AKAZE2' : partial(cv2.AKAZE_create, nOctaves=2, nOctaveLayers=1),
-        'AKAZE3' : partial(cv2.AKAZE_create, nOctaves=2, nOctaveLayers=2),
-        
-        'KAZE1' : partial(cv2.KAZE_create, nOctaves=4, nOctaveLayers=2),
-        'KAZE2' : partial(cv2.KAZE_create, nOctaves=4, nOctaveLayers=4),
-        'KAZE3' : partial(cv2.KAZE_create, nOctaves=2, nOctaveLayers=4),
-        
-        'MSER'  : partial(cv2.MSER_create),
-        
-        'BRISK1' : partial(cv2.BRISK_create, octaves=0, patternScale=.1),
-        'BRISK2' : partial(cv2.BRISK_create, octaves=1, patternScale=.1),
-        'BRISK3' : partial(cv2.BRISK_create, octaves=2, patternScale=.1),
+        #'ORB1'   : partial(cv2.ORB_create, nfeatures=5000),
+        #'ORB2'   : partial(cv2.ORB_create, nfeatures=10000),
+        #'ORB3'   : partial(cv2.ORB_create, nfeatures=15000),
+        #
+        #'AGAST1' : partial(cv2.AgastFeatureDetector_create, threshold=71, nonmaxSuppression=True),
+        #'AGAST2' : partial(cv2.AgastFeatureDetector_create, threshold=92, nonmaxSuppression=True),
+        #'AGAST3' : partial(cv2.AgastFeatureDetector_create, threshold=163, nonmaxSuppression=True),
+        #
+        #'AKAZE1' : partial(cv2.AKAZE_create, nOctaves=1, nOctaveLayers=1),
+        #'AKAZE2' : partial(cv2.AKAZE_create, nOctaves=2, nOctaveLayers=1),
+        #'AKAZE3' : partial(cv2.AKAZE_create, nOctaves=2, nOctaveLayers=2),
+        #
+        #'KAZE1' : partial(cv2.KAZE_create, nOctaves=4, nOctaveLayers=2),
+        #'KAZE2' : partial(cv2.KAZE_create, nOctaves=4, nOctaveLayers=4),
+        #'KAZE3' : partial(cv2.KAZE_create, nOctaves=2, nOctaveLayers=4),
+        #
+        #'MSER'  : partial(cv2.MSER_create),
+        #
+        #'BRISK1' : partial(cv2.BRISK_create, octaves=0, patternScale=.1),
+        #'BRISK2' : partial(cv2.BRISK_create, octaves=1, patternScale=.1),
+        #'BRISK3' : partial(cv2.BRISK_create, octaves=2, patternScale=.1),
         
         #'SIFT'  : partial(cv2.xfeatures2d.SIFT_create, nfeatures=1000), # good ~5s
         # exact ~5s (increase parameter for higher precision)
         
-        'SURF1'  : partial(cv2.xfeatures2d.SURF_create, hessianThreshold=10, nOctaves=1, nOctaveLayers=1, upright=False),
-        'SURF2'  : partial(cv2.xfeatures2d.SURF_create, hessianThreshold=10, nOctaves=2, nOctaveLayers=1, upright=False),
-        'SURF3'  : partial(cv2.xfeatures2d.SURF_create, hessianThreshold=10, nOctaves=2, nOctaveLayers=2, upright=False),
+        #'SURF1'  : partial(cv2.xfeatures2d.SURF_create, hessianThreshold=10, nOctaves=1, nOctaveLayers=1, upright=False),
+        #'SURF2'  : partial(cv2.xfeatures2d.SURF_create, hessianThreshold=10, nOctaves=2, nOctaveLayers=1, upright=False),
+        #'SURF3'  : partial(cv2.xfeatures2d.SURF_create, hessianThreshold=10, nOctaves=2, nOctaveLayers=2, upright=False),
         
         'FAST1'  : partial(cv2.FastFeatureDetector_create, threshold=71,  nonmaxSuppression=True),
         'FAST2'  : partial(cv2.FastFeatureDetector_create, threshold=92,  nonmaxSuppression=True),
         'FAST3'  : partial(cv2.FastFeatureDetector_create, threshold=163, nonmaxSuppression=True),
         
-        'GFTT'   : partial(cv2.GFTTDetector_create, maxCorners=1000,  useHarrisDetector=True),
-        'GFTT0'  : partial(cv2.GFTTDetector_create, maxCorners=2000,  useHarrisDetector=True),
-        'GFTT1'  : partial(cv2.GFTTDetector_create, maxCorners=5000,  useHarrisDetector=True),
-        'GFTT2'  : partial(cv2.GFTTDetector_create, maxCorners=10000, useHarrisDetector=True),
-        'GFTT3'  : partial(cv2.GFTTDetector_create, maxCorners=15000, useHarrisDetector=True),
+        'GFTT'   : partial(cv2.GFTTDetector_create, maxCorners=1000,  useHarrisDetector=False, minDistance=1, blockSize=9),
+        'GFTT0'  : partial(cv2.GFTTDetector_create, maxCorners=2000,  useHarrisDetector=False, minDistance=1, blockSize=9),
+        'GFTT1'  : partial(cv2.GFTTDetector_create, maxCorners=5000,  useHarrisDetector=False, minDistance=1, blockSize=9),
+        'GFTT2'  : partial(cv2.GFTTDetector_create, maxCorners=10000, useHarrisDetector=False, minDistance=1, blockSize=9),
+        'GFTT3'  : partial(cv2.GFTTDetector_create, maxCorners=15000, useHarrisDetector=False, minDistance=1, blockSize=9),
     }
     
     detector = detectors[method]()

@@ -4,28 +4,31 @@ import rasterio
 import math
 import os
 
+from skimage.feature import hessian_matrix, hessian_matrix_eigvals
 from numpy.fft import fft2, ifft2, fftshift
 import scipy.ndimage.interpolation as ndii
 
-def gradient_normalize(i):
-    s = math.ceil(i.shape[0]**0.4) // 2 * 2 +1
-    G = cv2.GaussianBlur(i,(s,s),cv2.BORDER_DEFAULT)
-    if G is None:
-        raise ValueError('image or blur is None')
-    return i/(G+1)*255
+def gradient_normalize(i, q=0.01):
+    min = np.quantile(i, q)
+    max = np.quantile(i, 1-q)
+    i = (i-min) / (max-min) * 255
+    return i.clip(0,255)
+    #s = math.ceil(i.shape[0]**0.4) // 2 * 2 +1
+    #G = cv2.GaussianBlur(i,(s,s),cv2.BORDER_DEFAULT)
+    #if G is None:
+    #    raise ValueError('image or blur is None')
+    #return i/(G+1)*255
 pass
 
-def false_color_normalize(i):
-    s = math.ceil(i.shape[0]**0.4) // 2 * 2 +1
-    G = cv2.GaussianBlur(i,(s,s),cv2.BORDER_DEFAULT)
-    if G is None:
-        raise ValueError('image or blur is None')
-    i = abs(i+G.min()) / G.max()
+def false_color_normalize(i, q=0.01):
+    min = np.quantile(i, q)
+    max = np.quantile(i, 1-q)
+    i = (i-min) / (max-min)
     return i.clip(0,1)
 pass
 
 def build_gradient(img, scale = 0.15, delta=0, method='Scharr'):
-    clahe = cv2.createCLAHE(clipLimit=1.0, tileGridSize=(8,8))
+    clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8,8))
     
     if method == 'Sobel':
         grad_x = cv2.Sobel(img, cv2.CV_32F, 1, 0, scale=scale, delta=delta, borderType=cv2.BORDER_DEFAULT)
@@ -37,6 +40,11 @@ def build_gradient(img, scale = 0.15, delta=0, method='Scharr'):
         grad = cv2.Laplacian(img, cv2.CV_32F, ksize=3)
     elif method == 'Canny':
         grad = cv2.Canny(img.astype('uint8'), delta, 255)
+    elif method == 'Ridge':
+        H_elems = hessian_matrix(img, sigma=1-scale, order='rc')
+        maxima_ridges, minima_ridges = hessian_matrix_eigvals(H_elems)
+        grad = minima_ridges
+        grad = 255-gradient_normalize(grad, q=0.001)
     else:
         grad_x = cv2.Scharr(img, cv2.CV_32F, 1, 0, scale=scale, delta=delta, borderType=cv2.BORDER_DEFAULT)
         grad_y = cv2.Scharr(img, cv2.CV_32F, 0, 1, scale=scale, delta=delta, borderType=cv2.BORDER_DEFAULT)
