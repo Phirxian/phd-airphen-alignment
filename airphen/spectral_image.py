@@ -2,6 +2,7 @@ import cv2
 
 from .data import *
 from .refinement import *
+from .multiple_refinement import *
 from .image_processing import *
 
 class SpectralImage:
@@ -85,7 +86,12 @@ class SpectralImage:
         else:
             if verbose > 0:
                 print('homography correction ...')
-            self.registred, bbox, nb_kp, centers = refine_allignement(self.subset+'-', self.registred, method, reference, verbose)
+            
+            if reference == -1:
+                self.registred, bbox, nb_kp, centers = multiple_refine_allignement(self.subset+'-', self.registred, method, 5, verbose)
+            else:
+                self.registred, bbox, nb_kp, centers = refine_allignement(self.subset+'-', self.registred, method, reference, verbose)
+                
             min_xy = np.max(bbox[:, :2], axis=0).astype('int')
             max_xy = np.min(bbox[:, 2:], axis=0).astype('int')
             crop_all(self, self.registred, min_xy, max_xy)

@@ -9,15 +9,17 @@ from numpy.fft import fft2, ifft2, fftshift
 import scipy.ndimage.interpolation as ndii
 
 def gradient_normalize(i, q=0.01):
-    min = np.quantile(i, q)
-    max = np.quantile(i, 1-q)
-    i = (i-min) / (max-min) * 255
-    return i.clip(0,255)
-    #s = math.ceil(i.shape[0]**0.4) // 2 * 2 +1
-    #G = cv2.GaussianBlur(i,(s,s),cv2.BORDER_DEFAULT)
-    #if G is None:
-    #    raise ValueError('image or blur is None')
-    #return i/(G+1)*255
+    if q is None:
+        s = math.ceil(i.shape[0]**0.4) // 2 * 2 +1
+        G = cv2.GaussianBlur(i,(s,s),cv2.BORDER_DEFAULT)
+        if G is None:
+            raise ValueError('image or blur is None')
+        return i/(G+1)*255
+    else:
+        min = np.quantile(i, q)
+        max = np.quantile(i, 1-q)
+        i = (i-min) / (max-min) * 255
+        return i.clip(0,255)
 pass
 
 def false_color_normalize(i, q=0.01):
@@ -36,6 +38,7 @@ def build_gradient(img, scale = 0.15, delta=0, method='Scharr'):
         abs_grad_x = cv2.convertScaleAbs(grad_x)
         abs_grad_y = cv2.convertScaleAbs(grad_y)
         grad = cv2.addWeighted(abs_grad_x, 0.5, abs_grad_y, 0.5, 0)
+        grad = gradient_normalize(grad, q=0.001)
     elif method == 'Laplacian':
         grad = cv2.Laplacian(img, cv2.CV_32F, ksize=3)
     elif method == 'Canny':
@@ -44,7 +47,7 @@ def build_gradient(img, scale = 0.15, delta=0, method='Scharr'):
         H_elems = hessian_matrix(img, sigma=1-scale, order='rc')
         maxima_ridges, minima_ridges = hessian_matrix_eigvals(H_elems)
         grad = minima_ridges
-        grad = 255-gradient_normalize(grad, q=0.001)
+        grad = 255-gradient_normalize(grad, q=0.01)
     else:
         grad_x = cv2.Scharr(img, cv2.CV_32F, 1, 0, scale=scale, delta=delta, borderType=cv2.BORDER_DEFAULT)
         grad_y = cv2.Scharr(img, cv2.CV_32F, 0, 1, scale=scale, delta=delta, borderType=cv2.BORDER_DEFAULT)
@@ -58,8 +61,8 @@ def build_gradient(img, scale = 0.15, delta=0, method='Scharr'):
     grad = grad/grad.max()*255
     grad = grad.reshape([*grad.shape, 1])
     
-    grad = grad.astype('uint8')
-    grad = clahe.apply(grad)
+    #grad = grad.astype('uint8')
+    #grad = clahe.apply(grad)
     return grad.astype('uint8')
 pass
 

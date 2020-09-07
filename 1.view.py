@@ -18,8 +18,9 @@ for h in height:
     
     start = timer()
     loaded, nb_kp = S.spectral_registration(
-        verbose=1, method='GFTT1',
-        reference=all_bands.index(570)
+        verbose=1, method='FAST1',
+        #reference=all_bands.index(570)
+        reference=-1
     )
     print('registration time', timer()-start)
     

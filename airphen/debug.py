@@ -4,9 +4,6 @@ import numpy as np
 import math
 import cv2
 
-from gstools import Gaussian
-from sklearn.gaussian_process import GaussianProcessRegressor
-
 def scatter_plot_residual(prefix, source, target, corrected, image_size, l):
     fig = plt.figure(figsize=(17,5))
     size = 1

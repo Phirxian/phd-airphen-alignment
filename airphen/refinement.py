@@ -51,7 +51,7 @@ def refine_allignement(prefix, loaded, method='SURF', ref=1, verbose=True):
         #loaded[i] = tr.warpImage(loaded[i])
         
         evaluators = [cv2.RANSAC, cv2.LMEDS, cv2.RHO]
-        M, mask = cv2.findHomography(target, source, evaluators[0])
+        M, mask = cv2.findHomography(target, source, evaluators[2])
         
         if M is None:
             keypoint_found.append(-1)
@@ -59,8 +59,13 @@ def refine_allignement(prefix, loaded, method='SURF', ref=1, verbose=True):
             continue
         
         loaded[i] = cv2.warpPerspective(loaded[i], M, dsize)
+        ## test
+        #if cv2.__version__[0] == '4': transform = cv2.estimateAffine2D(target, source)[0]
+        #else: transform[i] = cv2.estimateRigidTransform(target, source, fullAffine=False)
+        #loaded[i] = cv2.warpAffine(loaded[i], transform, dsize)
+        
+        
         bbox.append(get_perspective_min_bbox(M, loaded[ref]))
-        #centers.append(cv2.perspectiveTransform(np.array([[[0.,0.]]]),M)[0,0])
         
         center = np.array(dsize)/2
         centers.append(cv2.perspectiveTransform(np.array([[center]]),M)[0,0] - center)
