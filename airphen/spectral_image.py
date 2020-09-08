@@ -1,9 +1,14 @@
 import cv2
 
 from .data import *
-from .refinement import *
 from .multiple_refinement import *
 from .image_processing import *
+
+def pair_band_iterator(k):
+    for i in range(k):
+        for j in range(k):
+            if i == j and i<j: continue
+            yield (i,j)
 
 class SpectralImage:
     def __init__(self, set, subset, prefix, height):
@@ -87,11 +92,20 @@ class SpectralImage:
             if verbose > 0:
                 print('homography correction ...')
             
-            if reference == -1:
-                self.registred, bbox, nb_kp, centers = multiple_refine_allignement(self.subset+'-', self.registred, method, 5, verbose)
+            if reference == None:
+                #reference, iterator = 5, [(4,5), (3,4), (2,4), (0,2), (1,2)]
+                reference, iterator = 3, [(2,3), (1,2), (5,1), (0,5), (4,5)]
+            elif reference < 0:
+                reference = abs(reference)-1
+                iterator = pair_band_iterator(len(self.registred))
             else:
-                self.registred, bbox, nb_kp, centers = refine_allignement(self.subset+'-', self.registred, method, reference, verbose)
+                iterator = [(i, reference) for i in range(len(self.registred))]
                 
+            self.registred, bbox, nb_kp, centers = multiple_refine_allignement(
+                self.subset+'-', self.registred,
+                method, iterator, reference, verbose
+            )
+            
             min_xy = np.max(bbox[:, :2], axis=0).astype('int')
             max_xy = np.min(bbox[:, 2:], axis=0).astype('int')
             crop_all(self, self.registred, min_xy, max_xy)

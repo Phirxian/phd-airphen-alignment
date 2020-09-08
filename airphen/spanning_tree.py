@@ -1,12 +1,12 @@
 #!/usr/bin/python3
 from collections import defaultdict, namedtuple
 
-Arc = namedtuple('Arc', ('tail', 'weight', 'head'))
+Arc = namedtuple('Arc', ('tail', 'weight', 'head', 'data'))
 
 # The third argument of gen_spanning_arborescence funtion specifies whether the result returned will be a Minimum spanning tree or a Maximum spanning tree.
 def gen_spanning_arborescence(arcs, sink, opt):
     if opt == "max":
-        arcs = [Arc(arc.tail, arc.weight * (-1), arc.head) for arc in arcs]
+        arcs = [Arc(arc.tail, arc.weight * (-1), arc.head, arc.data) for arc in arcs]
     good_arcs = []
     quotient_map = {arc.tail: arc.tail for arc in arcs}
     quotient_map[sink] = sink
@@ -77,6 +77,6 @@ def spanning_arborescence(arcs, sink, opt):
         if opt == "min":
             solution_arc_by_tail[arc.tail] = arc
         if opt == "max":
-            solution_arc_by_tail[arc.tail] = Arc(arc.tail, arc.weight*(-1), arc.head)
+            solution_arc_by_tail[arc.tail] = Arc(arc.tail, arc.weight*(-1), arc.head, arc.data)
         stack.extend(arcs_by_head[arc.tail])
     return solution_arc_by_tail

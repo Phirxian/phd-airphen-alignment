@@ -139,9 +139,9 @@ def keypoint_detect(img1, img2, method='GFTT'):
 pass
 
 def keypoint_filter(matches, kp1, kp2, alpha):
-    filtering = FilterDetection(matches, kp1, kp2)
-    filter = np.where(filtering.filter_position(alpha))
-    matches = np.array(matches)[filter]
+    #filtering = FilterDetection(matches, kp1, kp2)
+    #filter = np.where(filtering.filter_position(alpha))
+    #matches = np.array(matches)[filter]
     
     filtering = FilterDetection(matches, kp1, kp2)
     filter = np.where(filtering.filter_angle(1))

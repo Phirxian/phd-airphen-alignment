@@ -42,12 +42,12 @@ def build_gradient(img, scale = 0.15, delta=0, method='Scharr'):
     elif method == 'Laplacian':
         grad = cv2.Laplacian(img, cv2.CV_32F, ksize=3)
     elif method == 'Canny':
-        grad = cv2.Canny(img.astype('uint8'), delta, 255)
+        grad = cv2.Canny(img.astype('uint8'), 125, 125)
     elif method == 'Ridge':
         H_elems = hessian_matrix(img, sigma=1-scale, order='rc')
         maxima_ridges, minima_ridges = hessian_matrix_eigvals(H_elems)
         grad = minima_ridges
-        grad = 255-gradient_normalize(grad, q=0.01)
+        grad = 255-gradient_normalize(grad, q=0.001)
     else:
         grad_x = cv2.Scharr(img, cv2.CV_32F, 1, 0, scale=scale, delta=delta, borderType=cv2.BORDER_DEFAULT)
         grad_y = cv2.Scharr(img, cv2.CV_32F, 0, 1, scale=scale, delta=delta, borderType=cv2.BORDER_DEFAULT)
@@ -57,12 +57,12 @@ def build_gradient(img, scale = 0.15, delta=0, method='Scharr'):
     pass
     
     grad = cv2.convertScaleAbs(grad)
+    grad = grad.astype('uint8')
+    grad = clahe.apply(grad)
     grad = grad.astype('float')**2
     grad = grad/grad.max()*255
     grad = grad.reshape([*grad.shape, 1])
     
-    #grad = grad.astype('uint8')
-    #grad = clahe.apply(grad)
     return grad.astype('uint8')
 pass
 
