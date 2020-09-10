@@ -21,7 +21,7 @@ def extract_performances(m):
             start_time = time.time()
             S = SpectralImage('./data/step/', str(h), '', './data/'+str(h)+'.npy')
             try:
-                loaded, nb_kp = S.spectral_registration(m, mid)
+                loaded, nb_kp = S.spectral_registration(m, -mid-1)
             except:
                 nb_kp = [-1] * len(all_bands)
             reference_val.append(nb_kp + [(time.time() - start_time)])

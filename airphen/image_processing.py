@@ -20,14 +20,14 @@ def gradient_normalize(i, q=0.01):
         max = np.quantile(i, 1-q)
         i = (i-min) / (max-min) * 255
         return i.clip(0,255)
-pass
+        
 
 def false_color_normalize(i, q=0.01):
     min = np.quantile(i, q)
     max = np.quantile(i, 1-q)
     i = (i-min) / (max-min)
     return i.clip(0,1)
-pass
+    
 
 def build_gradient(img, scale = 0.15, delta=0, method='Scharr'):
     clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8,8))
@@ -54,7 +54,6 @@ def build_gradient(img, scale = 0.15, delta=0, method='Scharr'):
         abs_grad_x = cv2.convertScaleAbs(grad_x)
         abs_grad_y = cv2.convertScaleAbs(grad_y)
         grad = cv2.addWeighted(abs_grad_x, 0.5, abs_grad_y, 0.5, 0)
-    pass
     
     grad = cv2.convertScaleAbs(grad)
     grad = grad.astype('uint8')
@@ -64,30 +63,29 @@ def build_gradient(img, scale = 0.15, delta=0, method='Scharr'):
     grad = grad.reshape([*grad.shape, 1])
     
     return grad.astype('uint8')
-pass
+    
 
 def get_perspective_min_bbox(M, img, p=2):
-  h,w = img.shape[:2]
+    h,w = img.shape[:2]
+    
+    pts_x = np.float32([[  p,  p], [  p, h-p]]).reshape(-1,1,2)
+    pts_y = np.float32([[w-p,h-p], [w-p,   p]]).reshape(-1,1,2)
+    
+    coords_x = cv2.perspectiveTransform(pts_x,M)[:,0,:]
+    coords_y = cv2.perspectiveTransform(pts_y,M)[:,0,:]
+    
+    [xmin, xmax] = max(coords_x[0,0], coords_x[1,0]), min(coords_y[0,0], coords_y[1,0])
+    [ymin, ymax] = max(coords_x[0,1], coords_y[1,1]), min(coords_x[1,1], coords_y[0,1])
+    
+    return np.int32([ymin,xmin,ymax,xmax])
   
-  pts_x = np.float32([[  p,  p], [  p, h-p]]).reshape(-1,1,2)
-  pts_y = np.float32([[w-p,h-p], [w-p,   p]]).reshape(-1,1,2)
-  
-  coords_x = cv2.perspectiveTransform(pts_x,M)[:,0,:]
-  coords_y = cv2.perspectiveTransform(pts_y,M)[:,0,:]
-  
-  [xmin, xmax] = max(coords_x[0,0], coords_x[1,0]), min(coords_y[0,0], coords_y[1,0])
-  [ymin, ymax] = max(coords_x[0,1], coords_y[1,1]), min(coords_x[1,1], coords_y[0,1])
-  
-  return np.int32([ymin,xmin,ymax,xmax])
-pass
 
 def crop_all(S, loaded, min_xy, max_xy, crop_ground_thrust=False):
     if crop_ground_thrust:
         S.ground_thrust = S.ground_thrust[min_xy[0]:max_xy[0], min_xy[1]:max_xy[1]]
     for i in range(len(loaded)):
         loaded[i] = loaded[i][min_xy[0]:max_xy[0], min_xy[1]:max_xy[1]]
-    pass
-pass
+    
 
 def affine_transform(S, loaded):
     dsize = (loaded[0].shape[1], loaded[0].shape[0])
@@ -102,7 +100,7 @@ def affine_transform(S, loaded):
     pass
     
     return loaded, np.array(transform)
-pass
+    
 
 def affine_transform_linear(S, loaded):
     dsize = (loaded[0].shape[1], loaded[0].shape[0])
@@ -159,7 +157,7 @@ def translation(im0, im1):
     if t0 > shape[0] // 2: t0 -= shape[0]
     if t1 > shape[1] // 2: t1 -= shape[1]
     return [t0, t1]
-pass
+    
 
 def perspective_similarity_transform(S, loaded, ref):
     dsize = (loaded[0].shape[1], loaded[0].shape[0])
@@ -194,7 +192,7 @@ def perspective_similarity_transform(S, loaded, ref):
     pass
     
     return loaded, np.array(bbox)
-pass
+    
     
 def read_tiff(fname):
     if not os.path.exists(fname): return None
@@ -206,4 +204,4 @@ def read_tiff(fname):
     tr = geotiff.transform
     
     return data[0]
-pass
+    

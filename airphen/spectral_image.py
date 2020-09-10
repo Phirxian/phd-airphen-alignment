@@ -116,10 +116,9 @@ class SpectralImage:
             
             if verbose > 0:
                 print('re-estimated height =', estimated.mean())
-        pass
         
         return self.registred, nb_kp
-    pass
+        
 
     def compute_false_color(self):
         img = np.zeros((self.registred[0].shape[0], self.registred[0].shape[1], 3))
@@ -130,5 +129,4 @@ class SpectralImage:
         img[:,:,1] = 40+false_color_normalize(self.registred[1])*220 # G
         img[:,:,2] = 40+false_color_normalize(self.registred[2])*200 # R
         return img.clip(0,255).astype('uint8')
-    pass
-pass
+        

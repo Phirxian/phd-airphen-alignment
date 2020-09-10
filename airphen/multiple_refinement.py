@@ -8,9 +8,14 @@ from tqdm import tqdm
 from .keypoint import *
 from .spanning_tree import *
 from .image_processing import *
-from .debug import *
+from .data import *
 
-Detection = namedtuple('Detection', ('kp', 'des'))
+class Detection:
+    def __init__(self,kp, des, T):
+        self.kp = kp
+        self.des = des
+        self.T = T
+        
 
 def global_kp_extractor(grad, detector, descriptor, verbose):
     if verbose: print('keypoint detection')
@@ -18,7 +23,7 @@ def global_kp_extractor(grad, detector, descriptor, verbose):
     for i in range(0, len(grad)):
         kp = detector.detect(grad[i],None)
         kp, des = descriptor.compute(grad[i], kp)
-        keypoints.append(Detection(kp, des))
+        keypoints.append(Detection(kp, des, None))
         #cv2.imshow('grad'+str(i), grad[i])
     return keypoints
     
@@ -47,19 +52,20 @@ def kp_graph_matching(keypoints, descriptor, iterator, verbose, max_dist=20):
             corrected = cv2.perspectiveTransform(target,T)
             diff = corrected-source
             l2 = np.sqrt((diff**2).sum(axis=1))
-            A = Arc(tail=j, head=i, weight=l2.mean(), data=T)
+            keypoints[j].T = T
+            A = Arc(tail=j, head=i, weight=l2.mean())
             arcs.append(A)
                 
     return arcs
     
-def apply_spanning_registration(arcs, sink, loaded, verbose):
+def apply_spanning_registration(arcs, keypoints, sink, loaded, verbose):
     tree = gen_spanning_arborescence(arcs, sink, 'min')
     tree = [i for i in tree.values()]
     #print(tree)
     
     dsize = (loaded[0].shape[1], loaded[0].shape[0])
     center = np.array(dsize)/2
-    bbox, centers, keypoint_found = [None]*len(loaded), [None]*len(loaded), [None]*len(loaded)
+    bbox, centers, keypoint_found = [None]*len(loaded), [None]*len(loaded), [0]*len(loaded)
     
     bbox[sink] = [0,0,dsize[1],dsize[0]]
     centers[sink] = [0,0]
@@ -71,12 +77,13 @@ def apply_spanning_registration(arcs, sink, loaded, verbose):
         c, M = link.tail, np.eye(3)
         while c != sink:
             l = [i for i in tree if i.tail==c][0]
-            M = np.matmul(l.data,M)
+            M = np.matmul(keypoints[c].T,M)
             c = l.head
             
         loaded[link.tail] = cv2.warpPerspective(loaded[link.tail], M, dsize)
         bbox[link.tail] = get_perspective_min_bbox(M, loaded[sink])
         centers[link.tail] = cv2.perspectiveTransform(np.array([[center]]),M)[0,0] - center
+        keypoint_found[link.tail] = len(keypoints[c].kp)
         
     return loaded, np.array(bbox), keypoint_found, np.array(centers)
 
@@ -96,4 +103,4 @@ def multiple_refine_allignement(prefix, loaded, method, iterator, sink, verbose=
     keypoints = global_kp_extractor(grad, detector, descriptor, verbose)
     arcs = kp_graph_matching(keypoints, descriptor, iterator, verbose)
     
-    return apply_spanning_registration(arcs, sink, loaded, verbose)
+    return apply_spanning_registration(arcs, keypoints, sink, loaded, verbose)
