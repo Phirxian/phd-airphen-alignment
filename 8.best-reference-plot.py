@@ -7,6 +7,7 @@ from airphen.data import *
 
 for method in all_methods:
     data = np.load('figures/keypoint-reference-count-'+method+'.npy', allow_pickle=True)
+    data[data==None] = 0
     data = data[:,:,:6]
 
     data = np.min(data, axis=0)

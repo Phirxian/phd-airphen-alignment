@@ -11,7 +11,9 @@ all_times = []
 
 for method in all_methods:
     data = np.load('figures/keypoint-reference-count-'+method+'.npy', allow_pickle=True)
-    time = data[:,:,6].mean()
+    data[data==None] = 0
+    print(data)
+    time = data[:,:,6]
     data = data[:,:,:6]
     
     print(method + ' >> ' + str(time))
@@ -48,7 +50,7 @@ df = pd.DataFrame(
                  
 df.plot(kind='bar',figsize=(6,5))
 
-plt.ylim([-1,600])
+#plt.ylim([-1,600])
 plt.title('Number of matches between each spectral \n for each relevant methods')
 plt.legend(loc='upper right')
 plt.tight_layout(rect=(0,0,1,0.97))
