@@ -15,6 +15,7 @@ class Detection:
         self.kp = kp
         self.des = des
         self.T = T
+        self.nb_kp = 0
         
 
 def global_kp_extractor(grad, detector, descriptor, verbose):
@@ -53,6 +54,7 @@ def kp_graph_matching(keypoints, descriptor, iterator, verbose, max_dist=20):
             diff = corrected-source
             l2 = np.sqrt((diff**2).sum(axis=1))
             keypoints[j].T = T
+            keypoints[j].nb_kp = len(source)
             A = Arc(tail=j, head=i, weight=l2.mean())
             arcs.append(A)
                 
@@ -65,7 +67,7 @@ def apply_spanning_registration(arcs, keypoints, sink, loaded, verbose):
     
     dsize = (loaded[0].shape[1], loaded[0].shape[0])
     center = np.array(dsize)/2
-    bbox, centers, keypoint_found = [None]*len(loaded), [None]*len(loaded), [0]*len(loaded)
+    bbox, centers, keypoint_found = [None]*len(loaded), [None]*len(loaded), [None]*len(loaded)
     
     bbox[sink] = [0,0,dsize[1],dsize[0]]
     centers[sink] = [0,0]
@@ -83,7 +85,7 @@ def apply_spanning_registration(arcs, keypoints, sink, loaded, verbose):
         loaded[link.tail] = cv2.warpPerspective(loaded[link.tail], M, dsize)
         bbox[link.tail] = get_perspective_min_bbox(M, loaded[sink])
         centers[link.tail] = cv2.perspectiveTransform(np.array([[center]]),M)[0,0] - center
-        keypoint_found[link.tail] = len(keypoints[c].kp)
+        keypoint_found[link.tail] = keypoints[link.tail].nb_kp
         
     return loaded, np.array(bbox), keypoint_found, np.array(centers)
 

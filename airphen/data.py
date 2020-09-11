@@ -23,7 +23,7 @@ all_methods = [
     'ORB1',   'ORB2',   'ORB3',
     'AKAZE1', 'AKAZE2', 'AKAZE3',
     'KAZE1',  'KAZE2',  'KAZE3',
-    'BRISK1', 'BRISK2', 'BRISK3',
+#    'BRISK1',  'BRISK2', 'BRISK3',
     'AGAST1', 'AGAST2', 'AGAST3',
     'MSER',
     'SURF1',  'SURF2',  'SURF3',

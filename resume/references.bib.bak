@@ -1,0 +1,438 @@
+% Encoding: UTF-8
+@inproceedings{DantasDiasJunior,
+	author = {Dantas Dias Junior, Jocival and Backes, Andre and Escarpinati, Maurício},
+	year = {2019},
+	month = {01},
+	pages = {444-451},
+	title = {Detection of Control Points for UAV-Multispectral Sensed Data Registration through the Combining of Feature Descriptors},
+	doi = {10.5220/0007580204440451}
+}
+
+
+@Article{rs10050756,
+	AUTHOR = {Ordonez, Alvaro and Arguello, Francisco and Heras, Dora B.},
+	TITLE = {Alignment of Hyperspectral Images Using KAZE Features},
+	JOURNAL = {Remote Sensing},
+	VOLUME = {10},
+	YEAR = {2018},
+	NUMBER = {5},
+	ARTICLE-NUMBER = {756},
+	URL = {https://www.mdpi.com/2072-4292/10/5/756},
+	ISSN = {2072-4292},
+	ABSTRACT = {Image registration is a common operation in any type of image processing, specially in remote sensing images. Since the publication of the scale–invariant feature transform (SIFT) method, several algorithms based on feature detection have been proposed. In particular, KAZE builds the scale space using a nonlinear diffusion filter instead of Gaussian filters. Nonlinear diffusion filtering allows applying a controlled blur while the important structures of the image are preserved. Hyperspectral images contain a large amount of spatial and spectral information that can be used to perform a more accurate registration. This article presents HSI–KAZE, a method to register hyperspectral remote sensing images based on KAZE but considering the spectral information. The proposed method combines the information of a set of preselected bands, and it adapts the keypoint descriptor and the matching stage to take into account the spectral information. The method is adequate to register images in extreme situations in which the scale between them is very different. The effectiveness of the proposed algorithm has been tested on real images taken on different dates, and presenting different types of changes. The experimental results show that the method is robust achieving image registrations with scales of up to     24 . 0 ×    .},
+	DOI = {10.3390/rs10050756}
+}
+
+@inproceedings{Bouguet2001CameraCT,
+	title={Camera calibration toolbox for matlab},
+	author={Jean-Yves Bouguet},
+	year={2001}
+}
+
+@article{Fischler:1981:RSC:358669.358692,
+	author = {Fischler, Martin A. and Bolles, Robert C.},
+	title = {Random Sample Consensus: A Paradigm for Model Fitting with Applications to Image Analysis and Automated Cartography},
+	journal = {Commun. ACM},
+	issue_date = {June 1981},
+	volume = {24},
+	number = {6},
+	month = jun,
+	year = {1981},
+	issn = {0001-0782},
+	pages = {381--395},
+	numpages = {15},
+	url = {http://doi.acm.org/10.1145/358669.358692},
+	doi = {10.1145/358669.358692},
+	acmid = {358692},
+	publisher = {ACM},
+	address = {New York, NY, USA},
+	keywords = {automated cartography, camera calibration, image matching, location determination, model fitting, scene analysis},
+} 
+
+@inproceedings{AguileraCarrasco2012MultispectralIF,
+	title={Multispectral Image Feature Points},
+	author={Cristhian A. Aguilera-Carrasco and Fernando Barrera and Felipe Lumbreras and Angel Domingo Sappa and Ricardo Toledo},
+	booktitle={Sensors},
+	year={2012}
+}
+
+@inproceedings{Rublee:2011:OEA:2355573.2356268,
+	author = {Rublee, Ethan and Rabaud, Vincent and Konolige, Kurt and Bradski, Gary},
+	title = {ORB: An Efficient Alternative to SIFT or SURF},
+	booktitle = {Proceedings of the 2011 International Conference on Computer Vision},
+	series = {ICCV '11},
+	year = {2011},
+	isbn = {978-1-4577-1101-5},
+	pages = {2564--2571},
+	numpages = {8},
+	url = {http://dx.doi.org/10.1109/ICCV.2011.6126544},
+	doi = {10.1109/ICCV.2011.6126544},
+	acmid = {2356268},
+	publisher = {IEEE Computer Society},
+	address = {Washington, DC, USA},
+}
+
+@inproceedings{Calonder:2010:BBR:1888089.1888148,
+	author = {Calonder, Michael and Lepetit, Vincent and Strecha, Christoph and Fua, Pascal},
+	title = {BRIEF: Binary Robust Independent Elementary Features},
+	booktitle = {Proceedings of the 11th European Conference on Computer Vision: Part IV},
+	series = {ECCV'10},
+	year = {2010},
+	isbn = {3-642-15560-X, 978-3-642-15560-4},
+	location = {Heraklion, Crete, Greece},
+	pages = {778--792},
+	numpages = {15},
+	url = {http://dl.acm.org/citation.cfm?id=1888089.1888148},
+	acmid = {1888148},
+	publisher = {Springer-Verlag},
+	address = {Berlin, Heidelberg},
+} 
+
+@article{alcantarilla2011fast,
+	title={Fast explicit diffusion for accelerated features in nonlinear scale spaces},
+	author={Alcantarilla, Pablo F and Solutions, T},
+	journal={IEEE Trans. Patt. Anal. Mach. Intell},
+	volume={34},
+	number={7},
+	pages={1281--1298},
+	year={2011},
+	publisher={TrueVision Solutions}
+}
+
+@inproceedings{leutenegger2011brisk,
+	title={BRISK: Binary robust invariant scalable keypoints},
+	author={Leutenegger, Stefan and Chli, Margarita and Siegwart, Roland},
+	booktitle={2011 IEEE international conference on computer vision (ICCV)},
+	pages={2548--2555},
+	year={2011},
+	organization={Ieee}
+}
+
+@inproceedings{mair2010adaptive,
+	title={Adaptive and generic corner detection based on the accelerated segment test},
+	author={Mair, Elmar and Hager, Gregory D and Burschka, Darius and Suppa, Michael and Hirzinger, Gerhard},
+	booktitle={European conference on Computer vision},
+	pages={183--196},
+	year={2010},
+	organization={Springer}
+}
+
+@inproceedings{donoser2006efficient,
+	title={Efficient maximally stable extremal region (MSER) tracking},
+	author={Donoser, Michael and Bischof, Horst},
+	booktitle={2006 IEEE Computer Society Conference on Computer Vision and Pattern Recognition (CVPR'06)},
+	volume={1},
+	pages={553--560},
+	year={2006},
+	organization={Ieee}
+}
+
+@inproceedings{bay2006surf,
+	title={Surf: Speeded up robust features},
+	author={Bay, Herbert and Tuytelaars, Tinne and Van Gool, Luc},
+	booktitle={European conference on computer vision},
+	pages={404--417},
+	year={2006},
+	organization={Springer}
+}
+
+@article{trajkovic1998fast,
+	title={Fast corner detection},
+	author={Trajkovi{\'c}, Miroslav and Hedley, Mark},
+	journal={Image and vision computing},
+	volume={16},
+	number={2},
+	pages={75--87},
+	year={1998},
+	publisher={Elsevier}
+}
+
+@inproceedings{shi1994good,
+	title={Good features to track},
+	author={Shi, Jianbo and others},
+	booktitle={1994 Proceedings of IEEE conference on computer vision and pattern recognition},
+	pages={593--600},
+	year={1994},
+	organization={IEEE}
+}
+
+@inproceedings{Vioix2004ConceptionER,
+	title={Conception et r{\'e}alisation d'un dispositif d'imagerie multispectrale embarqu{\'e} : du capteur aux traitements pour la d{\'e}tection d'adventices},
+	author={Jean-Baptiste Vioix},
+	year={2004}
+}
+
+@article{10.1371/journal.pone.0097922,
+	author = {Lechenet, Martin AND Bretagnolle, Vincent AND Bockstaller, Christian AND Boissinot, François AND Petit, Marie-Sophie AND Petit, Sandrine AND Munier-Jolain, Nicolas M.},
+	journal = {PLOS ONE},
+	publisher = {Public Library of Science},
+	title = {Reconciling Pesticide Reduction with Economic and Environmental Sustainability in Arable Farming},
+	year = {2014},
+	month = {06},
+	volume = {9},
+	url = {https://doi.org/10.1371/journal.pone.0097922},
+	pages = {1-10},
+	abstract = {Reducing pesticide use is one of the high-priority targets in the quest for a sustainable agriculture. Until now, most studies dealing with pesticide use reduction have compared a limited number of experimental prototypes. Here we assessed the sustainability of 48 arable cropping systems from two major agricultural regions of France, including conventional, integrated and organic systems, with a wide range of pesticide use intensities and management (crop rotation, soil tillage, cultivars, fertilization, etc.). We assessed cropping system sustainability using a set of economic, environmental and social indicators. We failed to detect any positive correlation between pesticide use intensity and both productivity (when organic farms were excluded) and profitability. In addition, there was no relationship between pesticide use and workload. We found that crop rotation diversity was higher in cropping systems with low pesticide use, which would support the important role of crop rotation diversity in integrated and organic strategies. In comparison to conventional systems, integrated strategies showed a decrease in the use of both pesticides and nitrogen fertilizers, they consumed less energy and were frequently more energy efficient. Integrated systems therefore appeared as the best compromise in sustainability trade-offs. Our results could be used to re-design current cropping systems, by promoting diversified crop rotations and the combination of a wide range of available techniques contributing to pest management.},
+	number = {6},
+	doi = {10.1371/journal.pone.0097922}
+}
+
+@InProceedings{Lombaert,
+	author="Lombaert, Herve
+	and Grady, Leo
+	and Pennec, Xavier
+	and Ayache, Nicholas
+	and Cheriet, Farida",
+	editor="Fitzgibbon, Andrew
+	and Lazebnik, Svetlana
+	and Perona, Pietro
+	and Sato, Yoichi
+	and Schmid, Cordelia",
+	title="Spectral Demons -- Image Registration via Global Spectral Correspondence",
+	booktitle="Computer Vision -- ECCV 2012",
+	year="2012",
+	publisher="Springer Berlin Heidelberg",
+	address="Berlin, Heidelberg",
+	pages="30--44",
+	abstract="Image registration is a building block for many applications in computer vision and medical imaging. However the current methods are limited when large and highly non-local deformations are present. In this paper, we introduce a new direct feature matching technique for non-parametric image registration where efficient nearest-neighbor searches find global correspondences between intensity, spatial and geometric information. We exploit graph spectral representations that are invariant to isometry under complex deformations. Our direct feature matching technique is used within the established Demons framework for diffeomorphic image registration. Our method, called Spectral Demons, can capture very large, complex and highly non-local deformations between images. We evaluate the improvements of our method on 2D and 3D images and demonstrate substantial improvement over the conventional Demons algorithm for large deformations.",
+	isbn="978-3-642-33709-3"
+}
+
+@article{Vakalopoulou,
+	author = {Vakalopoulou, Maria and Karantzalos, Konstantinos},
+	year = {2014},
+	month = {03},
+	pages = {},
+	title = {Automatic Descriptor-Based Co-Registration of Frame Hyperspectral Data},
+	volume = {6},
+	journal = {Remote Sensing},
+	doi = {10.3390/rs6043409}
+}
+
+
+@thesis{Seitz,
+	AUTHOR = {Seitz, Hanna},
+	TITLE = { Contributions to the Minimum Linear Arrangement Problem },
+	YEAR = {2010},
+	ABSTRACT = {The Minimum Linear Arrangement problem (MinLA) consists in finding an ordering of the nodes of a weighted graph, such that the sum of the weighted edge lengths is minimized. We report on the usefulness of a new model within a branch-and-cut-and-price algorithm for solving MinLA problems to optimality. The key idea is to introduce binary variables d_{ijk}, that are equal to 1 if nodes i and j have distance k in the permutation. We present formulations for complete and for sparse graphs and explain the realization of a branch-and-cut-and-price algorithm. Furthermore, its different settings are discussed and evaluated. To the study of the theoretical aspects concerning the MinLA, we contribute a characterization of a relaxation of the corresponding polyeder. },
+	DOI = {10.11588/heidok.00010578}
+}
+
+
+@article{doi:10.1080/02757259509532298,
+	author = { A.   Bannari  and  D.   Morin  and  F.   Bonn  and  A. R.   Huete },
+	title = {A review of vegetation indices},
+	journal = {Remote Sensing Reviews},
+	volume = {13},
+	number = {1-2},
+	pages = {95-120},
+	year  = {1995},
+	publisher = {Taylor & Francis},
+	doi = {10.1080/02757259509532298},
+}
+
+@article{filella1995evaluating,
+	title={Evaluating wheat nitrogen status with canopy reflectance indices and discriminant analysis},
+	author={Filella, I and Serrano, L and Serra, J1 and Penuelas, J},
+	journal={Crop Science},
+	volume={35},
+	number={5},
+	pages={1400--1405},
+	year={1995},
+	publisher={Crop Science Society of America}
+}
+
+@inproceedings{Zhang2016EXTENSIONAE,
+	title={EXTENSION AND EVALUATION OF THE AGAST FEATURE DETECTOR},
+	author={Hongmou Zhang and J{\"u}rgen Wohlfeil and Denis Grie{\ss}bach},
+	year={2016}
+}
+
+@article{ali2016comparison,
+	title={A comparison of FAST, SURF, Eigen, Harris, and MSER features},
+	author={Ali, Farman and Khan, Sajid Ullah and Mahmudi, Muhammad Zarrar and Ullah, Rahmat},
+	journal={International Journal of Computer Engineering and Information Technology},
+	volume={8},
+	number={6},
+	pages={100},
+	year={2016},
+	publisher={Dorma Trading, Est. Publishing Manager}
+}
+
+@ARTICLE{8118101,
+	author={S. {Chen} and H. {Shen} and C. {Li} and J. H. {Xin}},
+	journal={IEEE Transactions on Image Processing},
+	title={Normalized Total Gradient: A New Measure for Multispectral Image Registration},
+	year={2018},
+	volume={27},
+	number={3},
+	pages={1297-1310},
+	keywords={affine transforms;image registration;optimisation;spectral analysis;multispectral image registration;multispectral image processing;difference band images;different regional intensity levels;normalized total gradient;image pyramid;local intensity variation;band images alignment;global/local optimization;affine transform;Image registration;Histograms;Optimization;Wheels;Correlation;Mutual information;Transforms;Multispectral image;multimodal image;image registration;band image;similarity measure;image gradient;normalized total gradient;affine transform;image pyramid;optimization},
+	doi={10.1109/TIP.2017.2776753},
+	ISSN={},
+	month={March},
+}
+
+@article{10.1371/journal.pone.0072736,
+	author = {Jin, Xiu-liang AND Diao, Wan-ying AND Xiao, Chun-hua AND Wang, Fang-yong AND Chen, Bing AND Wang, Ke-ru AND Li, Shao-kun},
+	journal = {PLOS ONE},
+	publisher = {Public Library of Science},
+	title = {Estimation of Wheat Agronomic Parameters using New Spectral Indices},
+	year = {2013},
+	month = {08},
+	volume = {8},
+	url = {https://doi.org/10.1371/journal.pone.0072736},
+	pages = {1-9},
+	abstract = {Crop agronomic parameters (leaf area index (LAI), nitrogen (N) uptake, total chlorophyll (Chl) content ) are very important for the prediction of crop growth. The objective of this experiment was to investigate whether the wheat LAI, N uptake, and total Chl content could be accurately predicted using spectral indices collected at different stages of wheat growth. Firstly, the product of the optimized soil-adjusted vegetation index and wheat biomass dry weight (OSAVI×BDW) were used to estimate LAI, N uptake, and total Chl content; secondly, BDW was replaced by spectral indices to establish new spectral indices (OSAVI×OSAVI, OSAVI×SIPI, OSAVI×CIred edge, OSAVI×CIgreen mode and OSAVI×EVI2); finally, we used the new spectral indices for estimating LAI, N uptake, and total Chl content. The results showed that the new spectral indices could be used to accurately estimate LAI, N uptake, and total Chl content. The highest R2 and the lowest RMSEs were 0.711 and 0.78 (OSAVI×EVI2), 0.785 and 3.98 g/m2 (OSAVI×CIred edge) and 0.846 and 0.65 g/m2 (OSAVI×CIred edge) for LAI, nitrogen uptake and total Chl content, respectively. The new spectral indices performed better than the OSAVI alone, and the problems of a lack of sensitivity at earlier growth stages and saturation at later growth stages, which are typically associated with the OSAVI, were improved. The overall results indicated that this new spectral indices provided the best approximation for the estimation of agronomic indices for all growth stages of wheat.},
+	number = {8},
+	doi = {10.1371/journal.pone.0072736}
+}
+
+@inproceedings{Bossu2007SegmentationDP,
+	title={Segmentation d’images pour la localisation d’adventices : application {\`a} la r{\'e}alisation d’un syst{\`e}me de vision pour une pulv{\'e}risation sp{\'e}cifique en temps r{\'e}el},
+	author={J{\'e}r{\'e}mie Bossu},
+	year={2007}
+}
+
+@article{Tareen2018ACA,
+	title={A comparative analysis of SIFT, SURF, KAZE, AKAZE, ORB, and BRISK},
+	author={Shaharyar Ahmed Khan Tareen and Z. Saleem},
+	journal={2018 International Conference on Computing, Mathematics and Engineering Technologies (iCoMET)},
+	year={2018},
+	pages={1-10}
+}
+
+@article{SANKARAN2015112,
+	title = "Low-altitude, high-resolution aerial imaging systems for row and field crop phenotyping: A review",
+	journal = "European Journal of Agronomy",
+	volume = "70",
+	pages = "112 - 123",
+	year = "2015",
+	issn = "1161-0301",
+	doi = "https://doi.org/10.1016/j.eja.2015.07.004",
+	url = "http://www.sciencedirect.com/science/article/pii/S1161030115300095",
+	author = "Sindhuja Sankaran and Lav R. Khot and Carlos Zúñiga Espinoza and Sanaz Jarolmasjed and Vidyasagar R. Sathuvalli and George J. Vandemark and Phillip N. Miklas and Arron H. Carter and Michael O. Pumphrey and N. Richard Knowles and Mark J. Pavek",
+	keywords = "Aerial imaging, Data mining, Crop breeding, High-throughput field phenomics",
+	abstract = "Global plant genetics research efforts have focused on developing high yielding, stress tolerant, and disease resistant row and field crop varieties that are more efficient in their use of agronomic inputs (water, nutrients, pesticides, etc.). Until recently, a key bottleneck in such research was the lack of high-throughput sensing technologies for effective and rapid evaluation of expressed phenotypes under field conditions for holistic data-driven decision making and variety selection. This review focuses on technological aspects of integrating unmanned aerial vehicles with imaging systems to enhance field phenotyping capabilities. The state-of-the-art of unmanned aerial vehicle technology for various applications including crop emergence, vigor, and characterization of yield potential of row and field crops has been reviewed. The potential of using aerial imaging to evaluate resistance/susceptibility to biotic and abiotic stress for crop breeding and precision production management has been discussed along with future perspectives and developments."
+}
+
+@InProceedings{douarre:hal-02183837,
+  author      = {Douarre, Cl{\'e}ment and Crispim-Junior, Carlos F and Gelibert, Anthony and Tougne, Laure and Rousseau, David},
+  title       = {{A strategy for multimodal canopy images registration}},
+  booktitle   = {{7th International Workshop on Image Analysis Methods in the Plant Sciences}},
+  year        = {2019},
+  month       = Jul,
+  url         = {https://hal.archives-ouvertes.fr/hal-02183837},
+  address     = {Lyon, France},
+  file        = {camera_ready_compressed.pdf:https\://hal.archives-ouvertes.fr/hal-02183837/file/camera_ready_compressed.pdf:PDF},
+  hal_id      = {hal-02183837},
+  hal_version = {v2},
+  keywords    = {Registration ; Multimodal Imaging ; Apple scab ; Infrared Imagery},
+}
+
+@article{Zitova,
+	author = {Zitová, Barbara and Flusser, Jan},
+	year = {2003},
+	month = {10},
+	pages = {977-1000},
+	title = {Image Registration Methods: A Survey},
+	volume = {21},
+	journal = {Image and Vision Computing},
+	doi = {10.1016/S0262-8856(03)00137-9}
+}
+
+@ARTICLE{sage0303,
+	AUTHOR={Sage, D. and Unser, M.},
+	TITLE={Teaching Image-Processing Programming in Java},
+	JOURNAL={IEEE Signal Processing Magazine},
+	YEAR={2003},
+	volume={20},
+	number={6},
+	pages={43--52},
+	month={November},
+	note={Using ``Student-Friendly'' ImageJ as a Pedagogical Tool}
+}
+
+@inproceedings{Kamoun,
+	author={Emna Kamoun},
+	year={2019},
+	month={july},
+	title={Image Registration: From SIFT to Deep Learning},
+	url={https://blog.sicara.com/image-registration-sift-deep-learning-3c794d794b7a},
+}
+
+@InCollection{More78,
+	Title                    = {The Levenberg-Marquardt algorithm: Implementation and theory},
+	Author                   = {Jorge J. Mor\'e},
+	Booktitle                = {Numerical Analysis},
+	Publisher                = {Springer Berlin Heidelberg},
+	Year                     = {1978},
+	Editor                   = {Watson, G.A.},
+	Pages                    = {105--116},
+	Series                   = {Lecture Notes in Mathematics},
+	Volume                   = {630},
+	
+	Optdoi                   = {10.1007/BFb0067700},
+	Optisbn                  = {978-3-540-08538-6},
+	Optlanguage              = {English},
+	Opturl                   = {http://dx.doi.org/10.1007/BFb0067700}
+}
+
+@inproceedings{zuiderveld1994contrast,
+	title={Contrast limited adaptive histogram equalization},
+	author={Zuiderveld, Karel},
+	booktitle={Graphics gems IV},
+	pages={474--485},
+	year={1994},
+	organization={Academic Press Professional, Inc.}
+}
+
+@ARTICLE{506761, 
+	author={B. S. {Reddy} and B. N. {Chatterji}}, 
+	journal={IEEE Transactions on Image Processing}, 
+	title={An FFT-based technique for translation, rotation, and scale-invariant image registration}, 
+	year={1996}, 
+	volume={5}, 
+	number={8}, 
+	pages={1266-1271}, 
+	keywords={image registration;correlation methods;fast Fourier transforms;image matching;random noise;FFT-based technique;phase correlation technique;translation invariance;rotation invariance;scaling invariance;Fourier scaling properties;Fourier rotational properties;robustness;random noise;image registration;Image registration;Fourier transforms;Frequency domain analysis;Noise robustness;Image processing;Pixel;Correlation;Optimal matching;Phase noise;Computational efficiency}, 
+	doi={10.1109/83.506761}, 
+	ISSN={1057-7149}, 
+	month={Aug},
+}
+
+@Article{rabatel:hal-01684135,
+  author              = {Rabatel, G. and Labbe, S.},
+  title               = {{Registration of visible and near infrared unmanned aerialvehicle images based on Fourier-Mellin transform}},
+  journal             = {{Precision Agriculture}},
+  year                = {2016},
+  volume              = {17},
+  number              = {5},
+  pages               = {564-587},
+  doi                 = {10.1007/s11119-016-9437-x},
+  url                 = {https://hal.archives-ouvertes.fr/hal-01684135},
+  file                = {mo2016-pub00046828.pdf:https\://hal.archives-ouvertes.fr/hal-01684135/file/mo2016-pub00046828.pdf:PDF},
+  hal_id              = {hal-01684135},
+  hal_local_reference = {PUB00046828},
+  hal_version         = {v1},
+  keywords            = {AGRICULTURE ; REMOTE SENSING ; IMAGE ANALYSIS ; multimodal image registration ; Fourier-Mellin transform ; homographic transformation ; near infrared ; NDVI ; DRONE ; TELEDETECTION ; TRAITEMENT D'IMAGE ; PROCHE INFRAROUGE},
+  publisher           = {{Springer Verlag}},
+}
+
+
+
+@ARTICLE{ThinPlateSpline,
+	author={F. L. {Bookstein}},
+	journal={IEEE Transactions on Pattern Analysis and Machine Intelligence},
+	title={Principal warps: thin-plate splines and the decomposition of deformations},
+	year={1989},
+	volume={11},
+	number={6},
+	pages={567-585},
+	keywords={biomedical engineering;computer vision;computerised pattern recognition;biomedical images;feature extraction;pattern recognition;thin-plate splines;decomposition;deformations;principal warps;curving edges;computer vision;Integral equations;Shape;Steel;Interpolation;Image analysis;Biomedical imaging;Algebra;Biological system modeling;Deformable models;Functional analysis},
+	doi={10.1109/34.24792},
+	ISSN={0162-8828},
+	month={June},
+}
+
+@Comment{jabref-meta: databaseType:biblatex;}
