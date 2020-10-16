@@ -11,13 +11,32 @@ def pair_band_iterator(k):
             yield (i,j)
 
 class SpectralImage:
-    def __init__(self, set, subset, prefix, height):
+    def __init__(self, set, subset, prefix, conf_dir, height):
         self.set = set
         self.subset = subset
         self.prefix = prefix
         self.path = set + '/' + str(subset) + '/'
-        self.loaded = [read_tiff(self.path + prefix + str(i) + 'nm.tif') for i in all_bands]
         
+        self.loaded = [None] * len(all_bands)
+        self.mtx = [None] * len(all_bands)
+        self.dist = [None] * len(all_bands)
+        self.cameramtx = [None] * len(all_bands)
+        
+        pad = 22
+        
+        try:
+            for i,b in enumerate(all_bands):
+                self.mtx[i] = np.load(conf_dir+'len_mtx_' + str(b) + '.npy')
+                self.dist[i] = np.load(conf_dir+'len_dist_' + str(b) + '.npy')
+                self.cameramtx[i] = np.load(conf_dir+'len_cameramtx_' + str(b) + '.npy')
+                self.loaded[i] = read_tiff(self.path + prefix + str(b) + 'nm.tif')
+                self.loaded[i] = cv2.undistort(self.loaded[i], self.mtx[i], self.dist[i], None, self.cameramtx[i])
+        except:
+            raise FileNotFoundError()
+            
+        self.mtx = np.vstack(self.mtx)
+        self.cameramtx = np.vstack(self.mtx)
+
         self.ground_thrust = cv2.imread(self.path + prefix + 'mask.jpg')
         
         if self.ground_thrust is None:
@@ -28,7 +47,7 @@ class SpectralImage:
         
         # nearest chessboard points if not given
         if type(height) is str:
-            self.chessboard = np.load(height).astype('float32')
+            self.chessboard = np.load(conf_dir+height).astype('float32')
         self.registred = self.loaded
         self.height = height
     pass
@@ -63,12 +82,12 @@ class SpectralImage:
             return a*x**3 + b*x**2 + c*x + d
             
         inv_model = np.array([
-            [-0.00424059    ,  0.06992566    , -0.52159131    ,  3.53416035],
-            [-2.21715358e-03,  1.04083738e-01, -1.75671654e+00,  1.21939587e+01],
-            [0.00377931     ,  0.02339037    ,  0.18219811    ,  2.27086661],
-            [-3.45198124e-03,  1.56572048e-01, -2.49924103e+00,  1.58468578e+01],
-            [2.26938044e-03 ,  1.94965085e-01,  5.72026284e+00,  5.89777906e+01],
-            [0.00356177     ,  0.05984146    ,  0.47140347    ,  3.37161168],
+            [-4.24059294e-03,  6.99256583e-02, -5.21591305e-01,  3.53416036e+00],
+            [-2.21715248e-03,  1.04083702e-01, -1.75671616e+00,  1.21939575e+01],
+            [ 3.77931305e-03,  2.33903671e-02,  1.82198111e-01,  2.27086660e+00],
+            [-3.45198089e-03,  1.56572035e-01, -2.49924089e+00,  1.58468573e+01],
+            [ 2.26938774e-03,  1.94965617e-01,  5.72027561e+00,  5.89778918e+01],
+            [ 3.56177384e-03,  5.98414660e-02,  4.71403466e-01,  3.37161167e+00],
         ])
             
         # alligne trough affine transfrom using pre-callibration
@@ -111,11 +130,23 @@ class SpectralImage:
             crop_all(self, self.registred, min_xy, max_xy)
             
             all_translation = transform[:,:,2] - centers
-            estimated = np.array([eval_inv_model(all_translation[i,0], *inv_model[i]) for i in range(len(all_bands))])
-            self.estimated_height = estimated.mean()
+            estimated_height = [eval_inv_model(all_translation[i,0], *inv_model[i]) for i in range(len(inv_model))]
+            self.estimated_height = estimated_height[1]
             
             if verbose > 0:
-                print('re-estimated height =', estimated.mean())
+                print('re-estimated height =', estimated_height)
+                
+        #mtx = np.eye(3)
+        #dist = np.zeros((1,4))
+        #cammtx = np.eye(3)
+        #cammtx[0,2] = -21
+        #cammtx[1,2] = -21
+        #cammtx[0,0] = 1.2
+        #cammtx[1,1] = 1.2
+        #
+        for i in range(len(self.registred)):
+            self.registred[i] = self.registred[i][21:-21:, 21:-21]
+            self.registred[i] = cv2.resize(self.registred[i], (1200,800))
         
         return self.registred, nb_kp
         
@@ -125,8 +156,8 @@ class SpectralImage:
         #img[:,:,0] = false_color_normalize(self.registred[0])*92  # B
         #img[:,:,1] = false_color_normalize(self.registred[1])*220 # G
         #img[:,:,2] = false_color_normalize(self.registred[2])*200 # R
-        img[:,:,0] = 40+false_color_normalize(self.registred[0])*92  # B
-        img[:,:,1] = 40+false_color_normalize(self.registred[1])*220 # G
-        img[:,:,2] = 40+false_color_normalize(self.registred[2])*200 # R
+        img[:,:,0] = 20+false_color_normalize(self.registred[0])*92  # B
+        img[:,:,1] = 20+false_color_normalize(self.registred[1])*220 # G
+        img[:,:,2] = 20+false_color_normalize(self.registred[2])*200 # R
         return img.clip(0,255).astype('uint8')
         

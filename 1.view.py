@@ -11,7 +11,7 @@ for h in height:
     start_time = time.time()
     S = SpectralImage(
         #'./data/steep-chess/', str(h), '',
-        './data/step/', str(h), '',
+        './data/step/', str(h), '', 'data/',
         h, # use linear model
         #'./data/' + str(h) + '.npy'
     )

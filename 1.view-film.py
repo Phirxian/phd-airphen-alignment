@@ -7,9 +7,9 @@ from airphen.data import *
 from airphen.spectral_image import *
 from glob import glob
 
-path = '/media/ovan/31F66DD04B004F4B/database/rose/'
-folder = 'mais2'
-height = './data/2.0.npy'
+path = '/media/ovan/31F66DD04B004F4B1/database/rose2_haricot/'
+folder = 'test'
+height = '1.8.npy'
 
 filenames = glob(path+folder+'/*_450*')
 filenames = [i.split('/')[-1] for i in filenames]
@@ -21,7 +21,7 @@ for i in range(0, len(filenames), 20):
     start_time = time.time()
     f = filenames[i]
     
-    S = SpectralImage(path, folder, f+'_', height)
+    S = SpectralImage(path, folder, f+'_', 'data/', height)
     
     loaded, nb_kp = S.spectral_registration(
         method='GFTT1',

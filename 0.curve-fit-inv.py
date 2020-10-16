@@ -62,6 +62,8 @@ fitted_y = []
 plt.figure(figsize=(10,4))
 plt.subplot(121)
 
+model = []
+
 plt.title('fitted inv curve : translation x')
 for i in range(all_transform_x.shape[1]):
     x, y = all_transform_x[:,i], height
@@ -69,9 +71,14 @@ for i in range(all_transform_x.shape[1]):
     x_resampled = np.arange(min(x), max(x), 1)
     plt.scatter(x, y, s=4, c='black', label=bands_text[i])
     plt.plot(x_resampled, func(x_resampled, *popt), label=bands_text[i])
+    model.append(popt)
+    print(popt)
     print(bands_text[i], 'x :', popt)
     
 plt.subplot(122)
+
+matrix = np.vstack(model)
+print(matrix)
 
 plt.title('fitted inv curve : translation y')
 for i in range(all_transform_y.shape[1]):

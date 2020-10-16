@@ -9,7 +9,7 @@ from airphen.spectral_image import *
 
 chessboard_shape = (13,13)
 criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 30, 0.001)
-directory = './data/step-chess/'
+directory = './data/steep-chess/'
 bands = [450, 570, 675, 710, 730, 850]
 
 height = [
@@ -24,14 +24,21 @@ for x in range(len(height)):
     h = height[x]
     print(h)
     
-    S = SpectralImage()
     imgpoints = [None] * len(bands)
     
     for s,i in enumerate(bands):
         path = directory + h + str(i) + 'nm.tif'
-        image = S.read_tiff(path)
+        image = read_tiff(path)
         #image = image / image.max()
         
+        mtx = np.load('data/len_mtx_' + str(i) + '.npy')
+        dist = np.load('data/len_dist_' + str(i) + '.npy')
+        cameramtx = np.load('data/len_cameramtx_' + str(i) + '.npy')
+        print(mtx)
+        print(dist)
+        print(cameramtx)
+        loaded = cv2.undistort(image, mtx, dist, None, cameramtx)
+
         if i == 450:
             image = image / image.max() * 0.8
         else:

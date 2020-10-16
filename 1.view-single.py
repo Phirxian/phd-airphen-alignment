@@ -5,11 +5,11 @@ import cv2
 
 from airphen.spectral_image import *
 
-if False:
-    path = '/media/ovan/31F66DD04B004F4B/database/inra2/'
-    folder = '20190416_055537'
+if True:
+    path = '/media/ovan/31F66DD04B004F4B1/database/inra2/'
+    folder = 'haricot1/'
     prefix = '0008_'
-    height = './data/2.0.npy'
+    height = '2.0.npy'
 else:
     path = '/home/javayss/Documents/code/merge/data/'
     folder = ''
@@ -18,7 +18,7 @@ else:
 pass
 
 start_time = time.time()
-S = SpectralImage(path, folder, prefix, height)
+S = SpectralImage(path, folder, prefix, 'data/', height)
     
 loaded = S.loaded
 loaded, nb_kp = S.spectral_registration(
@@ -36,11 +36,11 @@ false_color = S.compute_false_color()
 cv2.imshow('false color', false_color)
 cv2.waitKey(1)
 
-#for i,b in enumerate(loaded):
-#    b = gradient_normalize(b, 0.1)
-#    cv2.imwrite('/tmp/bands-'+str(i)+'.png', b.astype('uint8'))
-#    b = build_gradient(b, method='Ridge')
-#    cv2.imwrite('/tmp/grad-'+str(i)+'.png', b)
+for i,b in enumerate(loaded):
+    b = gradient_normalize(b, 0.1)
+    cv2.imwrite('/tmp/bands-'+str(i)+'.png', b.astype('uint8'))
+    b = build_gradient(b, method='Ridge')
+    cv2.imwrite('/tmp/grad-'+str(i)+'.png', b)
 
 while cv2.waitKey() != 27:
     pass

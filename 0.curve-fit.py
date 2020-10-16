@@ -34,7 +34,11 @@ for i in height:
   all_transform_d.append(transform[:,1,1])
   all_transform_x.append(transform[:,0,2])
   all_transform_y.append(transform[:,1,2])
+  
 pass
+
+rotation = np.vstack([all_transform_a[0], all_transform_b[0], all_transform_c[0], all_transform_d[0]])
+print(rotation.transpose())
 
 all_transform_a = np.array(all_transform_a)
 all_transform_b = np.array(all_transform_b)
@@ -62,6 +66,7 @@ fitted_y = []
 plt.figure(figsize=(10,4))
 plt.subplot(121)
 
+x_model = []
 plt.title('fitted curve : translation x')
 for i in range(all_transform_x.shape[1]):
     x, y = height, all_transform_x[:,i]
@@ -69,10 +74,12 @@ for i in range(all_transform_x.shape[1]):
     x_resampled = np.arange(min(x), max(x), 0.0025)
     plt.scatter(x, y, s=4, c='black', label=bands_text[i])
     plt.plot(x_resampled, func(x_resampled, *popt), label=bands_text[i])
+    x_model.append(popt)
     print(bands_text[i], 'x :', popt)
     
 plt.subplot(122)
 
+y_model = []
 plt.title('fitted curve : translation y')
 for i in range(all_transform_y.shape[1]):
     x, y = height, all_transform_y[:,i]
@@ -80,7 +87,13 @@ for i in range(all_transform_y.shape[1]):
     x_resampled = np.arange(min(x), max(x), 0.0025)
     plt.scatter(x, y, s=4, c='black', label=bands_text[i])
     plt.plot(x_resampled, func(x_resampled, *popt), label=bands_text[i])
+    y_model.append(popt)
     print(bands_text[i], 'y :', popt)
     
 plt.savefig('figures/affine-curve-fit.png')
 plt.show()
+
+x_matrix = np.vstack(x_model)
+y_matrix = np.vstack(y_model)
+matrix = np.hstack([x_model, y_model])
+print(matrix)
