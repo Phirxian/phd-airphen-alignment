@@ -90,7 +90,7 @@ def apply_spanning_registration(arcs, keypoints, sink, loaded, verbose):
     return loaded, np.array(bbox), keypoint_found, np.array(centers)
 
 # @ref the best reference : default=1=570 !! (maximum number of matches)
-def multiple_refine_allignement(prefix, loaded, method, iterator, sink, verbose=True):
+def multiple_refine_allignement(loaded, method, iterator, sink, verbose=True):
     ######################### image transformation
     
     img = [i.astype('float32') for i in loaded]

@@ -33,7 +33,7 @@ class SpectralImage:
                 self.loaded[i] = cv2.undistort(self.loaded[i], self.mtx[i], self.dist[i], None, self.cameramtx[i])
         except:
             raise FileNotFoundError()
-            
+    
         self.mtx = np.vstack(self.mtx)
         self.cameramtx = np.vstack(self.mtx)
 
@@ -52,24 +52,6 @@ class SpectralImage:
         self.height = height
     pass
     
-    def undistort(self):
-        try:
-            mtx = np.load(self.set + 'len_mtx.npy')
-            dist = np.load(self.set + 'len_dist.npy')
-            cam = np.load(self.set + 'len_cameramtx.npy')
-        except:
-            print('loading undist mtx error')
-            return self.registred
-            
-        self.registred = [
-            cv2.undistort(i, mtx, dist, None, cam)
-            for i in self.registred
-        ]
-        
-        self.ground_thrust = cv2.undistort(self.ground_thrust, mtx, dist, None, cam)
-        
-        return self.registred
-    pass
     
     def spectral_registration(self, method='GFTT', reference=1, verbose=0):
         self.registred = self.loaded
@@ -82,12 +64,12 @@ class SpectralImage:
             return a*x**3 + b*x**2 + c*x + d
             
         inv_model = np.array([
-            [-4.24059294e-03,  6.99256583e-02, -5.21591305e-01,  3.53416036e+00],
-            [-2.21715248e-03,  1.04083702e-01, -1.75671616e+00,  1.21939575e+01],
-            [ 3.77931305e-03,  2.33903671e-02,  1.82198111e-01,  2.27086660e+00],
-            [-3.45198089e-03,  1.56572035e-01, -2.49924089e+00,  1.58468573e+01],
-            [ 2.26938774e-03,  1.94965617e-01,  5.72027561e+00,  5.89778918e+01],
-            [ 3.56177384e-03,  5.98414660e-02,  4.71403466e-01,  3.37161167e+00],
+            [ 9.84929496e-04, -1.10817777e-02, -6.89656283e-01,  1.21915557e+01],
+            [ 8.11305726e-04,  2.14195701e-02, -5.69608997e-01,  4.60486713e+00],
+            [-1.97690865e-03, -3.43788299e-02,  3.78337961e-01,  8.63069926e+00],
+            [ 4.17226398e-03, -2.94070959e-01,  6.39283208e+00, -3.78866604e+01],
+            [-3.79161051e-03, -1.80322884e-01, -2.39035620e+00, -3.84722023e+00],
+            [-1.64459040e-03, -4.65500887e-02,  1.18723799e-01,  9.67064868e+00],
         ])
             
         # alligne trough affine transfrom using pre-callibration
@@ -121,8 +103,7 @@ class SpectralImage:
                 iterator = [(i, reference) for i in range(len(self.registred))]
                 
             self.registred, bbox, nb_kp, centers = multiple_refine_allignement(
-                self.subset+'-', self.registred,
-                method, iterator, reference, verbose
+                self.registred, method, iterator, reference, verbose
             )
             
             min_xy = np.max(bbox[:, :2], axis=0).astype('int')
@@ -130,8 +111,9 @@ class SpectralImage:
             crop_all(self, self.registred, min_xy, max_xy)
             
             all_translation = transform[:,:,2] - centers
-            estimated_height = [eval_inv_model(all_translation[i,0], *inv_model[i]) for i in range(len(inv_model))]
-            self.estimated_height = estimated_height[1]
+            estimated_height = [eval_inv_model(all_translation[i,0], *inv_model[i]) for i in range(len(inv_model)) if i != reference]
+            estimated_height = np.sort(estimated_height)
+            self.estimated_height = estimated_height[:3].mean()
             
             if verbose > 0:
                 print('re-estimated height =', estimated_height)

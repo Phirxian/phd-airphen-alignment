@@ -7,8 +7,10 @@ from airphen.data import *
 from airphen.spectral_image import *
 from glob import glob
 
-path = '/media/ovan/31F66DD04B004F4B1/database/rose2_haricot/'
-folder = 'test'
+#path = '/media/ovan/31F66DD04B004F4B1/rose/'
+#folder = '20190702_110409/'
+path = '/media/ovan/31F66DD04B004F4B1/database/rose4/'
+folder = '20200720_121239/'
 height = '1.8.npy'
 
 filenames = glob(path+folder+'/*_450*')
@@ -17,17 +19,20 @@ filenames = [i.split('_')[0] for i in filenames]
 
 print(len(filenames))
 
-for i in range(0, len(filenames), 20):
+for i in range(0, len(filenames), 3):
     start_time = time.time()
     f = filenames[i]
     
-    S = SpectralImage(path, folder, f+'_', 'data/', height)
-    
-    loaded, nb_kp = S.spectral_registration(
-        method='GFTT1',
-        reference=all_bands.index(570),
-        verbose=1
-    )
+    try:
+        S = SpectralImage(path, folder, f+'_', 'data/', height)
+        
+        loaded, nb_kp = S.spectral_registration(
+            method='GFTT1',
+            reference=all_bands.index(570),
+            verbose=1
+        )
+    except:
+        continue
     
     print('-------------------')
     print(f, 'loaded in ', time.time() - start_time)
@@ -37,6 +42,7 @@ for i in range(0, len(filenames), 20):
     mean = images.mean(axis=0)
     std = images.std(axis=0)*4
     
+    id_blue = all_bands.index(450)
     id_red = all_bands.index(675)
     id_nir = all_bands.index(850)
     ndvi = (images[id_nir]-images[id_red]) / np.maximum(images[id_red]+images[id_nir], 0.0000001)
@@ -61,26 +67,20 @@ for i in range(0, len(filenames), 20):
     false_color = S.compute_false_color()
     false_color_hsv = cv2.cvtColor(false_color, cv2.COLOR_BGR2HSV)
     
-    cv2.drawContours(false_color, contours, -1, (0,0,255), 1)
+    for i,b in enumerate(loaded):
+        b = false_color_normalize(b) * 255
+        b = b.astype('uint8')
+        cv2.imwrite('/tmp/airphen-bands-'+str(i)+'.png', b)
     
-    saturation = false_color_hsv[:,:,1]
-    saturation = saturation-saturation.min()
-    saturation = saturation/saturation.max()
-    value = false_color_hsv[:,:,2]
-    value = value-value.min()
-    value = value/value.max()
-    
-    NSDVI = abs(saturation-value) / (saturation+value)
-    NSDVI = NSDVI-NSDVI.min()
-    NSDVI = NSDVI/NSDVI.max()*255
-    NSDVI = cv2.applyColorMap(NSDVI.clip(0,255).astype('uint8'), cv2.COLORMAP_JET)
+    cv2.imwrite('/tmp/airphen-std.png', std)
+    cv2.imwrite('/tmp/airphen-ndvi.png', ndvi)
+    cv2.imwrite('/tmp/airphen-test.png', false_color)
+    #cv2.drawContours(false_color, contours, -1, (0,0,255), 1)
         
-    cv2.imshow('NSDVI', NSDVI)
     cv2.imshow('std', std)
     cv2.imshow('ndvi', ndvi)
-    cv2.imshow('test', test)
     cv2.imshow('false color', false_color)
-    cv2.imshow('false color hsv', false_color_hsv)
+    cv2.imshow('test', test)
     cv2.waitKey(1)
     
     while cv2.waitKey() != 27:

@@ -34,10 +34,7 @@ for x in range(len(height)):
         mtx = np.load('data/len_mtx_' + str(i) + '.npy')
         dist = np.load('data/len_dist_' + str(i) + '.npy')
         cameramtx = np.load('data/len_cameramtx_' + str(i) + '.npy')
-        print(mtx)
-        print(dist)
-        print(cameramtx)
-        loaded = cv2.undistort(image, mtx, dist, None, cameramtx)
+        image = cv2.undistort(image, mtx, dist, None, cameramtx)
 
         if i == 450:
             image = image / image.max() * 0.8
@@ -51,8 +48,16 @@ for x in range(len(height)):
         if ret == True:
             corners2 = cv2.cornerSubPix(image, corners, chessboard_shape, (-1,-1), criteria)
             cv2.drawChessboardCorners(image, chessboard_shape, corners2, ret)
+            # order points !!! fix rotation error
+            # because findChessboardCorners can order at 90° depending on the moon
+            corners2 = corners2[np.argsort(corners2[:,0,0]), :, :]
+            corners2 = corners2[np.argsort(corners2[:,0,1]), :, :]
             imgpoints[s] = corners2
+        else:
+            imgpoints[s] = np.zeros((169,1,2))
         pass
+        
+        print(imgpoints[s].shape)
         
         image = cv2.applyColorMap(image, cv2.COLORMAP_JET)
         
@@ -61,14 +66,6 @@ for x in range(len(height)):
     pass
     
     imgpoints = np.array(imgpoints)
-    
-    # order points !!! fix rotation error
-    # because findChessboardCorners can order at 90° depending on the moon
-    
-    for i in range(imgpoints.shape[0]):
-        imgpoints[i] = imgpoints[i, np.argsort(imgpoints[i,:,0,0]), :, :]
-        imgpoints[i] = imgpoints[i, np.argsort(imgpoints[i,:,0,1]), :, :]
-    pass
-    
+    print(imgpoints)
     np.save('data/' + h[0:-1] + '.npy', imgpoints)
 pass

@@ -15,7 +15,9 @@ all_transform_d = []
 all_transform_x = []
 all_transform_y = []
 
-for i in height:
+almost_all = [height[i] for i in range(1,len(height)-2)]
+
+for i in almost_all:
   chessboard = np.load('data/' + str(i) + '.npy')
   centroid = chessboard[:,:,0,:].mean(axis=0).astype('float32') 
   transform = [None] * len(all_bands)
@@ -24,7 +26,8 @@ for i in height:
     points = chessboard[b,:,0,:]
     if cv2.__version__[0] == '4': transform[b] = cv2.estimateAffine2D(points, centroid)[0]
     else: transform[b] = cv2.estimateRigidTransform(points, centroid, fullAffine=False)
-    #print(transform[b])
+    if transform[b] is None:
+        transform[b] = np.zeros((2,3))
   pass
   
   transform = np.array(transform)
@@ -66,14 +69,13 @@ model = []
 
 plt.title('fitted inv curve : translation x')
 for i in range(all_transform_x.shape[1]):
-    x, y = all_transform_x[:,i], height
+    x, y = all_transform_x[:,i], almost_all
     popt, pcov = curve_fit(func, x, y)
     x_resampled = np.arange(min(x), max(x), 1)
-    plt.scatter(x, y, s=4, c='black', label=bands_text[i])
+    plt.scatter(x, y, s=4, c='black')
     plt.plot(x_resampled, func(x_resampled, *popt), label=bands_text[i])
     model.append(popt)
-    print(popt)
-    print(bands_text[i], 'x :', popt)
+    plt.legend()
     
 plt.subplot(122)
 
@@ -82,12 +84,12 @@ print(matrix)
 
 plt.title('fitted inv curve : translation y')
 for i in range(all_transform_y.shape[1]):
-    x, y = all_transform_y[:,i], height
+    x, y = all_transform_y[:,i], almost_all
     popt, pcov = curve_fit(func, x, y)
     x_resampled = np.arange(min(x), max(x), 1)
-    plt.scatter(x, y, s=4, c='black', label=bands_text[i])
+    plt.scatter(x, y, s=4, c='black')
     plt.plot(x_resampled, func(x_resampled, *popt), label=bands_text[i])
-    print(bands_text[i], 'y :', popt)
+    plt.legend()
     
 plt.savefig('figures/affine-curve-inv-fit.png')
 plt.show()

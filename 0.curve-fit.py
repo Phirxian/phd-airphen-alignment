@@ -15,8 +15,11 @@ all_transform_d = []
 all_transform_x = []
 all_transform_y = []
 
-for i in height:
-  chessboard = np.load('data/' + str(i) + '.npy')
+almost_all = [height[i] for i in range(1,len(height)-2)]
+print(almost_all)
+
+for i in almost_all:
+  chessboard = np.load('data/' + str(i) + '.npy', allow_pickle=True)
   centroid = chessboard[:,:,0,:].mean(axis=0).astype('float32') 
   transform = [None] * len(all_bands)
   
@@ -24,7 +27,9 @@ for i in height:
     points = chessboard[b,:,0,:]
     if cv2.__version__[0] == '4': transform[b] = cv2.estimateAffine2D(points, centroid)[0]
     else: transform[b] = cv2.estimateRigidTransform(points, centroid, fullAffine=False)
-    #print(transform[b])
+    
+    if transform[b] is None:
+        transform[b] = np.zeros((2,3))
   pass
   
   transform = np.array(transform)
@@ -69,31 +74,31 @@ plt.subplot(121)
 x_model = []
 plt.title('fitted curve : translation x')
 for i in range(all_transform_x.shape[1]):
-    x, y = height, all_transform_x[:,i]
+    x, y = almost_all, all_transform_x[:,i]
     popt, pcov = curve_fit(func, x, y)
     x_resampled = np.arange(min(x), max(x), 0.0025)
     plt.scatter(x, y, s=4, c='black', label=bands_text[i])
     plt.plot(x_resampled, func(x_resampled, *popt), label=bands_text[i])
     x_model.append(popt)
-    print(bands_text[i], 'x :', popt)
+    #print(bands_text[i], 'x :', popt)
     
 plt.subplot(122)
 
 y_model = []
 plt.title('fitted curve : translation y')
 for i in range(all_transform_y.shape[1]):
-    x, y = height, all_transform_y[:,i]
+    x, y = almost_all, all_transform_y[:,i]
     popt, pcov = curve_fit(func, x, y)
     x_resampled = np.arange(min(x), max(x), 0.0025)
     plt.scatter(x, y, s=4, c='black', label=bands_text[i])
     plt.plot(x_resampled, func(x_resampled, *popt), label=bands_text[i])
     y_model.append(popt)
-    print(bands_text[i], 'y :', popt)
+    #print(bands_text[i], 'y :', popt)
     
-plt.savefig('figures/affine-curve-fit.png')
-plt.show()
-
 x_matrix = np.vstack(x_model)
 y_matrix = np.vstack(y_model)
 matrix = np.hstack([x_model, y_model])
 print(matrix)
+
+plt.savefig('figures/affine-curve-fit.png')
+plt.show()
