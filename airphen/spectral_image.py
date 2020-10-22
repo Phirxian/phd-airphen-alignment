@@ -113,7 +113,7 @@ class SpectralImage:
             all_translation = transform[:,:,2] - centers
             estimated_height = [eval_inv_model(all_translation[i,0], *inv_model[i]) for i in range(len(inv_model)) if i != reference]
             estimated_height = np.sort(estimated_height)
-            self.estimated_height = estimated_height[:3].mean()
+            self.estimated_height = estimated_height[1]
             
             if verbose > 0:
                 print('re-estimated height =', estimated_height)
