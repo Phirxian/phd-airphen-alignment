@@ -10,9 +10,13 @@ all_best = []
 
 for method in all_methods:
     data = np.load('figures/keypoint-reference-count-'+method+'.npy', allow_pickle=True)
-    data[data==None] = 0
-    time = data[:,:,6]#.mean()
-    data = data[:,:,:6]
+    data = np.float32(data)
+    
+    time = data[:,:,6]
+    data[data==None] = np.Inf
+    data = np.sqrt(data[:,:,:6])
+    data[np.isnan(data)] = np.Inf
+    data[data==0] = np.Inf
 
     data = np.min(data, axis=0)
     all_min = data.astype('float')
@@ -23,15 +27,17 @@ for method in all_methods:
     
     all_times.append(time.mean())
     all_best.append(best)
+    
+    print(best)
 pass
 
 all_times = np.array(all_times)
 all_best = np.array(all_best)
 value = all_best / all_times
-merged = np.vstack([all_times*10, all_best, value]).transpose()
+merged = np.vstack([all_times/100, all_best, value]).transpose()
 
 fig, axes = plt.subplots(1, 1, figsize=(10,5))
-columns = ['10x time in seconds', 'number of matches', 'matches/time']
+columns = ['1/100 time in seconds', 'number of matches', 'matches/time']
 
 df = pd.DataFrame(
     merged, index=all_methods,

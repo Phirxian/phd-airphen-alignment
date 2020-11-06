@@ -11,10 +11,12 @@ all_times = []
 
 for method in all_methods:
     data = np.load('figures/keypoint-reference-count-'+method+'.npy', allow_pickle=True)
-    data[data==None] = 0
-    print(data)
+    data = np.float32(data)
+    
     time = data[:,:,6]
-    data = data[:,:,:6]
+    data[data==None] = np.Inf
+    data = np.sqrt(data[:,:,:6])
+    data[np.isnan(data)] = np.Inf
     
     print(method + ' >> ' + str(time))
 

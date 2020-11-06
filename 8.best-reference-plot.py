@@ -7,8 +7,11 @@ from airphen.data import *
 
 for method in all_methods:
     data = np.load('figures/keypoint-reference-count-'+method+'.npy', allow_pickle=True)
-    data[data==None] = 0
-    data = data[:,:,:6]
+    data = np.float32(data)
+    data[data==None] = np.Inf
+    data = np.sqrt(data[:,:,:6])
+    data[np.isnan(data)] = np.Inf
+    print(data)
 
     data = np.min(data, axis=0)
     all_min = data.astype('float')
@@ -27,7 +30,7 @@ for method in all_methods:
                      
     df.plot(kind='bar',figsize=(10,5))
 
-    plt.ylim([-1,2000])
+    #plt.ylim([-1,2000])
     plt.ylabel('Minimum of matched features in all images (cliped to 2000)')
     plt.xlabel('The spectral band used as reference (-1 on error)')
     plt.title(

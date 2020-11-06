@@ -126,9 +126,9 @@ class SpectralImage:
         #cammtx[0,0] = 1.2
         #cammtx[1,1] = 1.2
         #
-        for i in range(len(self.registred)):
-            self.registred[i] = self.registred[i][21:-21:, 21:-21]
-            self.registred[i] = cv2.resize(self.registred[i], (1200,800))
+        #for i in range(len(self.registred)):
+            #self.registred[i] = self.registred[i][21:-21:, 21:-21]
+            #self.registred[i] = cv2.resize(self.registred[i], (1200,800))
         
         return self.registred, nb_kp
         
