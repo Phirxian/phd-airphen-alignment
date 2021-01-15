@@ -1,7 +1,9 @@
 scipy
+scikit-image
 numpy
 opencv-python
 matplotlib
 rasterio
 pandas
+pickle
 tqdm
