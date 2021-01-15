@@ -44,6 +44,7 @@ pass
 
 rotation = np.vstack([all_transform_a[0], all_transform_b[0], all_transform_c[0], all_transform_d[0]])
 print(rotation.transpose())
+np.save('data/rotation-matrix.npy', rotation.transpose())
 
 all_transform_a = np.array(all_transform_a)
 all_transform_b = np.array(all_transform_b)
@@ -98,6 +99,7 @@ for i in range(all_transform_y.shape[1]):
 x_matrix = np.vstack(x_model)
 y_matrix = np.vstack(y_model)
 matrix = np.hstack([x_model, y_model])
+np.save('data/curve-fit.npy', matrix)
 print(matrix)
 
 plt.savefig('figures/affine-curve-fit.png')

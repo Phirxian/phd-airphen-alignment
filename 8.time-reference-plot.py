@@ -37,7 +37,7 @@ value = all_best / all_times
 merged = np.vstack([all_times/100, all_best, value]).transpose()
 
 fig, axes = plt.subplots(1, 1, figsize=(10,5))
-columns = ['1/100 time in seconds', 'number of matches', 'matches/time']
+columns = ['1/100 time in seconds', 'remaining error', 'matches/time']
 
 df = pd.DataFrame(
     merged, index=all_methods,

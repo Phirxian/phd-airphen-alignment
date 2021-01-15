@@ -92,17 +92,18 @@ def apply_spanning_registration(arcs, keypoints, sink, loaded, verbose):
     return loaded, np.array(bbox), keypoint_found, np.array(centers)
 
 # @ref the best reference : default=1=570 !! (maximum number of matches)
-def multiple_refine_allignement(loaded, method, iterator, sink, verbose=True):
+def multiple_refine_allignement(loaded, config, iterator, sink):
     ######################### image transformation
     
     img = [i.astype('float32') for i in loaded]
-    img = [gradient_normalize(i, 0.1) for i in img]
-    grad = [build_gradient(i, method='Ridge') for i in img]
+    img = [gradient_normalize(i, 0.01) for i in img]
+    grad = [build_gradient(i, method=config.get('gradient-type', 'Ridge')) for i in img]
     
     ######################### keypoint detection and description
     
+    verbose = config.get('verbose', False)
     descriptor = cv2.ORB_create()
-    detector = detectors[method]()
+    detector = detectors[config.get('method', 'GFTT')]()
     
     keypoints = global_kp_extractor(grad, detector, descriptor, verbose)
     arcs = kp_graph_matching(keypoints, descriptor, iterator, verbose)

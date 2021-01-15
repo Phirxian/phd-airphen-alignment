@@ -80,8 +80,10 @@ for i in range(all_transform_x.shape[1]):
 plt.subplot(122)
 
 matrix = np.vstack(model)
+np.save('data/curve-fit-inv-x.npy', matrix)
 print(matrix)
 
+model = []
 plt.title('fitted inv curve : translation y')
 for i in range(all_transform_y.shape[1]):
     x, y = all_transform_y[:,i], almost_all
@@ -89,7 +91,12 @@ for i in range(all_transform_y.shape[1]):
     x_resampled = np.arange(min(x), max(x), 1)
     plt.scatter(x, y, s=4, c='black')
     plt.plot(x_resampled, func(x_resampled, *popt), label=bands_text[i])
+    model.append(popt)
     plt.legend()
     
 plt.savefig('figures/affine-curve-inv-fit.png')
 plt.show()
+
+matrix = np.vstack(model)
+np.save('data/curve-fit-inv-y.npy', matrix)
+print(matrix)

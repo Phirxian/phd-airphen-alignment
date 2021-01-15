@@ -24,14 +24,17 @@ for i in range(0, len(filenames), 3):
     f = filenames[i]
     
     try:
-        S = SpectralImage(path, folder, f+'_', 'data/', height)
+        S = SpectralImage(path, folder, f+'_', 'data/config.pkl', height)
         
-        loaded, nb_kp = S.spectral_registration(
-            method='GFTT1',
-            reference=all_bands.index(570),
-            verbose=1
-        )
-    except:
+        loaded, nb_kp = S.spectral_registration({
+            'reference':None,
+            'method':'GFTT1',
+            'auto-crop-resize' : True,
+            'gradient-type' : 'Ridge',
+            'verbose':1,
+        })
+    except Exception as e:
+        print(e)
         continue
     
     print('-------------------')

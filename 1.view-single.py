@@ -18,14 +18,14 @@ else:
 pass
 
 start_time = time.time()
-S = SpectralImage(path, folder, prefix, 'data/', height)
+S = SpectralImage(path, folder, prefix, 'data/config.pkl', height)
     
 loaded = S.loaded
-loaded, nb_kp = S.spectral_registration(
-    method='GFTT',
-    reference=all_bands.index(570),
-    verbose=1
-)
+loaded, nb_kp = S.spectral_registration({
+    'method'='GFTT',
+    'reference'=all_bands.index(570),
+    'verbose'=1
+})
 
 text = f"--- {time.time() - start_time} seconds ---"
 print('-' * len(text))

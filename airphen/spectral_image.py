@@ -1,4 +1,5 @@
 import cv2
+import pickle as pkl
 
 from .data import *
 from .multiple_refinement import *
@@ -11,7 +12,7 @@ def pair_band_iterator(k):
             yield (i,j)
 
 class SpectralImage:
-    def __init__(self, set, subset, prefix, conf_dir, height):
+    def __init__(self, set, subset, prefix, config, height):
         self.set = set
         self.subset = subset
         self.prefix = prefix
@@ -22,13 +23,14 @@ class SpectralImage:
         self.dist = [None] * len(all_bands)
         self.cameramtx = [None] * len(all_bands)
         
-        pad = 22
+        self.data = pkl.load(open(config, 'rb'))
+        self.inv_model = self.data['curve-fit-inv-x']
         
         try:
             for i,b in enumerate(all_bands):
-                self.mtx[i] = np.load(conf_dir+'len_mtx_' + str(b) + '.npy')
-                self.dist[i] = np.load(conf_dir+'len_dist_' + str(b) + '.npy')
-                self.cameramtx[i] = np.load(conf_dir+'len_cameramtx_' + str(b) + '.npy')
+                self.mtx[i] = self.data['len_mtx_' + str(b)]
+                self.dist[i] = self.data['len_dist_' + str(b)]
+                self.cameramtx[i] = self.data['len_cameramtx_' + str(b)]
                 self.loaded[i] = read_tiff(self.path + prefix + str(b) + 'nm.tif')
                 self.loaded[i] = cv2.undistort(self.loaded[i], self.mtx[i], self.dist[i], None, self.cameramtx[i])
         except:
@@ -46,32 +48,26 @@ class SpectralImage:
             self.ground_thrust = np.zeros((self.loaded[0].shape[0], self.loaded[0].shape[1], 3))
         
         # nearest chessboard points if not given
-        if type(height) is str:
-            self.chessboard = np.load(conf_dir+height).astype('float32')
+        self.chessboard = self.data[str(height)].astype('float32')
         self.registred = self.loaded
         self.height = height
     pass
     
     
-    def spectral_registration(self, method='GFTT', reference=1, verbose=0):
+    def spectral_registration(self, config):
         self.registred = self.loaded
         nb_kp = 0
+        
+        method = config.get('method','GFTT')
+        reference = config.get('reference',1)
+        verbose = config.get('verbose',0)
 
         if verbose > 0:
             print('affine correction ...')
             
         def eval_inv_model(x, a, b, c, d):
             return a*x**3 + b*x**2 + c*x + d
-            
-        inv_model = np.array([
-            [ 9.84929496e-04, -1.10817777e-02, -6.89656283e-01,  1.21915557e+01],
-            [ 8.11305726e-04,  2.14195701e-02, -5.69608997e-01,  4.60486713e+00],
-            [-1.97690865e-03, -3.43788299e-02,  3.78337961e-01,  8.63069926e+00],
-            [ 4.17226398e-03, -2.94070959e-01,  6.39283208e+00, -3.78866604e+01],
-            [-3.79161051e-03, -1.80322884e-01, -2.39035620e+00, -3.84722023e+00],
-            [-1.64459040e-03, -4.65500887e-02,  1.18723799e-01,  9.67064868e+00],
-        ])
-            
+        
         # alligne trough affine transfrom using pre-callibration
         if type(self.height) is str: self.registred, transform = affine_transform(self, self.registred)
         else: self.registred, transform = affine_transform_linear(self, self.registred)
@@ -95,15 +91,16 @@ class SpectralImage:
             
             if reference == None:
                 #reference, iterator = 5, [(4,5), (3,4), (2,4), (0,2), (1,2)]
-                reference, iterator = 3, [(2,3), (1,2), (5,1), (0,5), (4,5)]
+                sink, iterator = 3, [(2,3), (1,2), (5,1), (0,5), (4,5)]
             elif reference < 0:
-                reference = abs(reference)-1
+                sink = abs(reference)-1
                 iterator = pair_band_iterator(len(self.registred))
             else:
                 iterator = [(i, reference) for i in range(len(self.registred))]
+                sink = reference
                 
             self.registred, bbox, nb_kp, centers = multiple_refine_allignement(
-                self.registred, method, iterator, reference, verbose
+                self.registred, config, iterator, sink
             )
             
             min_xy = np.max(bbox[:, :2], axis=0).astype('int')
@@ -111,24 +108,25 @@ class SpectralImage:
             crop_all(self, self.registred, min_xy, max_xy)
             
             all_translation = transform[:,:,2] - centers
-            estimated_height = [eval_inv_model(all_translation[i,0], *inv_model[i]) for i in range(len(inv_model)) if i != reference]
+            estimated_height = [eval_inv_model(all_translation[i,0], *self.inv_model[i]) for i in range(len(self.inv_model)) if i != reference]
             estimated_height = np.sort(estimated_height)
             self.estimated_height = estimated_height[1]
             
             if verbose > 0:
                 print('re-estimated height =', estimated_height)
                 
-        #mtx = np.eye(3)
-        #dist = np.zeros((1,4))
-        #cammtx = np.eye(3)
-        #cammtx[0,2] = -21
-        #cammtx[1,2] = -21
-        #cammtx[0,0] = 1.2
-        #cammtx[1,1] = 1.2
-        #
-        #for i in range(len(self.registred)):
-            #self.registred[i] = self.registred[i][21:-21:, 21:-21]
-            #self.registred[i] = cv2.resize(self.registred[i], (1200,800))
+        if config.get('auto-crop-resize', False):
+            mtx = np.eye(3)
+            dist = np.zeros((1,4))
+            cammtx = np.eye(3)
+            cammtx[0,2] = -21
+            cammtx[1,2] = -21
+            cammtx[0,0] = 1.2
+            cammtx[1,1] = 1.2
+            
+            for i in range(len(self.registred)):
+                self.registred[i] = self.registred[i][21:-21:, 21:-21]
+                self.registred[i] = cv2.resize(self.registred[i], (1200,800))
         
         return self.registred, nb_kp
         

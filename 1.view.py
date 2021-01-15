@@ -10,18 +10,19 @@ from timeit import default_timer as timer
 for h in height:
     start_time = time.time()
     S = SpectralImage(
-        #'./data/steep-chess/', str(h), '',
-        './data/step/', str(h), '', 'data/',
-        h, # use linear model
-        #'./data/' + str(h) + '.npy'
+        './data/step/', str(h), '',
+        'data/config.pkl', h, # use linear model
     )
     
     start = timer()
-    loaded, nb_kp = S.spectral_registration(
-        verbose=1, method='GFTT1',
-        #reference=all_bands.index(570)
-        reference=None#-(5+1)
-    )
+    loaded, nb_kp = S.spectral_registration({
+        #'reference'=all_bands.index(570)
+        'reference':None, #-(5+1)
+        'method':'GFTT1',
+        'auto-crop-resize' : True,
+        'gradient-type' : 'Ridge',
+        'verbose':1,
+    })
     print('registration time', timer()-start)
     
     print('-------------------')

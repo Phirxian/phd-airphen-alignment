@@ -28,6 +28,18 @@ def false_color_normalize(i, q=0.01):
     i = (i-min) / (max-min)
     return i.clip(0,1)
     
+def gaussian_kernel_1d(sigma, order, radius):
+    p = np.polynomial.Polynomial([0, 0, -0.5 / (sigma * sigma)])
+    x = np.arange(-radius, radius + 1)
+    phi_x = np.exp(p(x), dtype=np.double)
+    phi_x /= phi_x.sum()
+    if order > 0:
+        q = np.polynomial.Polynomial([1])
+        p_deriv = p.deriv()
+        for _ in range(order):
+            q = q.deriv() + q * p_deriv
+        phi_x *= q(x)
+    return phi_x[np.newaxis,:]
 
 def build_gradient(img, scale = 0.15, delta=0, method='Scharr'):
     clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8,8))
@@ -35,6 +47,19 @@ def build_gradient(img, scale = 0.15, delta=0, method='Scharr'):
     if method == 'Sobel':
         grad_x = cv2.Sobel(img, cv2.CV_32F, 1, 0, scale=scale, delta=delta, borderType=cv2.BORDER_DEFAULT)
         grad_y = cv2.Sobel(img, cv2.CV_32F, 0, 1, scale=scale, delta=delta, borderType=cv2.BORDER_DEFAULT)
+        abs_grad_x = cv2.convertScaleAbs(grad_x)
+        abs_grad_y = cv2.convertScaleAbs(grad_y)
+        grad = cv2.addWeighted(abs_grad_x, 0.5, abs_grad_y, 0.5, 0)
+        grad = gradient_normalize(grad, q=0.001)
+    elif method == 'Gauss':
+        sigma = 1
+        sze = np.fix(6*sigma);
+        gauss = gaussian_kernel_1d(sigma, 0, np.int(sze)//2);
+        second = gaussian_kernel_1d(sigma, 2, np.int(sze)//2);
+        Gxx = (gauss.T * second)#[:, :, np.newaxis]
+        Gyy = (gauss * second.T)#[:, :, np.newaxis]
+        grad_x = cv2.filter2D(img, -1, Gxx)
+        grad_y = cv2.filter2D(img, -1, Gyy)
         abs_grad_x = cv2.convertScaleAbs(grad_x)
         abs_grad_y = cv2.convertScaleAbs(grad_y)
         grad = cv2.addWeighted(abs_grad_x, 0.5, abs_grad_y, 0.5, 0)
@@ -109,40 +134,12 @@ def affine_transform_linear(S, loaded):
     def eval_model(x, a, b, c, d):
         return a*x**3 + b*x**2 + c*x + d
         
-    # mean for factor $a,b,c,d$
-    rotation_scale = [
-        #[ 1.00338690e+00, -2.36790400e-04,  7.42199784e-04,  1.00322241e+00],
-        #[ 9.96668519e-01, -6.35845767e-04,  1.33195202e-03,  9.97611207e-01],
-        #[ 1.00287955e+00, -1.44683277e-04, -2.50432200e-04,  1.00280779e+00],
-        #[ 9.98396830e-01,  2.36257574e-03, -1.61286382e-03,  9.97841848e-01],
-        #[ 9.97775109e-01, -4.42514896e-04,  2.19043135e-04,  9.96903476e-01],
-        #[ 1.00091705e+00, -9.09167955e-04, -4.29086670e-04,  1.00163444e+00],
-        [ 1.00166648e+00, -5.07480271e-04,  1.86119466e-03,  1.01072014e+00],
-        [ 9.98065617e-01, -3.02441015e-04,  1.39604708e-03,  9.84364903e-01],
-        [ 1.00605485e+00,  1.43150803e-04, -4.62634090e-04,  1.00371692e+00],
-        [ 9.95644883e-01,  1.76160468e-03, -2.18545206e-03,  1.00609635e+00],
-        [ 9.96589887e-01, -1.16663007e-03,  8.57040497e-05,  9.90016350e-01],
-        [ 1.00197647e+00,  6.00443125e-05, -7.45070370e-04,  1.00547568e+00],
-    ]
-    
-    translation_model_params = [
-        #([-2.14341005e-01,  3.06476550e+00, -1.56835580e+01,  2.65363529e+01], [ 4.89008103e-02, -5.43007565e-01,  1.81760798e+00, -5.09998030e+01]),
-        #([-2.97328285e-01,  3.78134481e+00, -1.74477307e+01,  3.57275192e+01], [-4.00242147e-01,  5.23050713e+00, -2.47586203e+01,  7.91007266e+01]),
-        #([ 2.85766303e-01, -3.75413817e+00,  1.76793803e+01, -2.42718058e+01], [ 1.02607225e-02, -5.42365651e-02, -4.57016171e-02,  3.07288625e+01]),
-        #([-3.03964423e-01,  3.92977267e+00, -1.82182608e+01,  3.76066731e+01], [ 3.81823772e-01, -5.05192154e+00,  2.41896920e+01, -1.06395076e+02]),
-        #([ 2.82467733e-01, -3.64513371e+00,  1.71317668e+01, -4.89568592e+01], [ 3.46691296e-01, -4.67803690e+00,  2.30067763e+01, -2.33119194e+01]),
-        #([ 2.73308578e-01, -3.63229467e+00,  1.73784966e+01, -2.77109446e+01], [-4.10248022e-01,  5.34334908e+00, -2.51084115e+01,  7.18093591e+01]),
-        ([ 1.45231374e-01, -1.53865271e-01, -6.04457629e+00,  2.93003050e+01], [1.877406750e-01, -1.79194905e+00,  5.73067138e+00, -6.39449547e+01]),
-        ([-3.37892829e-01,  3.97680127e+00, -1.72713952e+01,  2.82637366e+01], [-4.50082205e-01,  5.57780655e+00, -2.51331559e+01,  8.49939648e+01]),
-        ([-9.33922708e-02, -4.04531546e-01,  7.88138007e+00, -2.78105057e+01], [-7.24194437e-02,  6.76124886e-01, -2.35982747e+00,  3.46986328e+01]),
-        ([ 1.58868418e-01, -2.87997447e-01, -5.38329042e+00,  3.96119093e+01], [ 4.95126108e-01, -6.02705211e+00,  2.68857988e+01, -1.12907265e+02]),
-        ([ 4.35827375e-01, -4.79335788e+00,  1.92749887e+01, -4.39302736e+01], [ 4.16267497e-01, -5.19876321e+00,  2.39572982e+01, -1.51467125e+01]),
-        ([-1.89352586e-01,  5.28746256e-01,  4.97412807e+00, -2.89374049e+01], [-5.41234152e-01,  6.47288460e+00, -2.83785174e+01,  7.00658948e+01]),
-    ]
+    rotation_scale = S.data['rotation-matrix']
+    translation_model = S.data['curve-fit']
     
     for i in range(len(loaded)):
-        x = eval_model(S.height, *translation_model_params[i][0])
-        y = eval_model(S.height, *translation_model_params[i][1])
+        x = eval_model(S.height, *translation_model[i, :4])
+        y = eval_model(S.height, *translation_model[i, 4:])
         transform[i] = np.array([
             [rotation_scale[i][0], rotation_scale[i][1], x],
             [rotation_scale[i][2], rotation_scale[i][3], y],
