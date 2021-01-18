@@ -24,7 +24,7 @@ for i in range(0, len(filenames), 3):
     f = filenames[i]
     
     try:
-        S = SpectralImage(path, folder, f+'_', 'data/config.pkl', height)
+        S = SpectralImage(path, folder, f+'_', 'data/config.pkl', height=1.8)
         
         loaded, nb_kp = S.spectral_registration({
             'reference':None,

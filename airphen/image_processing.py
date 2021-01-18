@@ -147,7 +147,7 @@ def affine_transform_linear(S, loaded):
         loaded[i] = cv2.warpAffine(loaded[i], transform[i], dsize)
     pass
     
-    print(np.array(transform))
+    #print(np.array(transform))
     
     return loaded, np.array(transform)
 pass
