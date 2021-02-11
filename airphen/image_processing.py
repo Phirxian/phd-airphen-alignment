@@ -206,5 +206,5 @@ def read_tiff(fname):
     data = geotiff.read()
     tr = geotiff.transform
     
-    return data[0]
+    return data
     

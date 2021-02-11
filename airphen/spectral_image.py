@@ -31,7 +31,7 @@ class SpectralImage:
                 self.mtx[i] = self.data['len_mtx_' + str(b)]
                 self.dist[i] = self.data['len_dist_' + str(b)]
                 self.cameramtx[i] = self.data['len_cameramtx_' + str(b)]
-                self.loaded[i] = read_tiff(self.path + prefix + str(b) + 'nm.tif')
+                self.loaded[i] = read_tiff(self.path + prefix + str(b) + 'nm.tif')[0]
                 self.loaded[i] = cv2.undistort(self.loaded[i], self.mtx[i], self.dist[i], None, self.cameramtx[i])
         except:
             raise FileNotFoundError()
