@@ -8,18 +8,18 @@ from skimage.feature import hessian_matrix, hessian_matrix_eigvals
 from numpy.fft import fft2, ifft2, fftshift
 import scipy.ndimage.interpolation as ndii
 
-def gradient_normalize(i, q=0.01):
+def gradient_normalize(i, q=0.01, clip=255):
     if q is None:
         s = math.ceil(i.shape[0]**0.4) // 2 * 2 +1
         G = cv2.GaussianBlur(i,(s,s),cv2.BORDER_DEFAULT)
         if G is None:
             raise ValueError('image or blur is None')
-        return i/(G+1)*255
+        return i/(G+1)*clip
     else:
         min = np.quantile(i, q)
         max = np.quantile(i, 1-q)
-        i = (i-min) / (max-min) * 255
-        return i.clip(0,255)
+        i = (i-min) / (max-min) * clip
+        return i.clip(0,clip)
         
 
 def false_color_normalize(i, q=0.01):
