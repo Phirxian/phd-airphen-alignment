@@ -5,6 +5,38 @@ The spatial relationships between these images can be rigid (translations and ro
 The main difficulty is that the Airphen camera took 6 spectral image (different value) without pixel alignement.
 This implies to search similaritie between image of the same scene to apply registration.
 
+# Citations
+
+```bibtex
+@inproceedings{vayssade:hal-02499730,
+  TITLE = {{Two-step multi-spectral registration via key-point detector and gradient similarity. Application to agronomic scenes for proxy-sensing}},
+  AUTHOR = {Vayssade, Jehan-Antoine and Jones, Gawain and Paoli, Jean-No{\"e}l and G{\'e}e, Christelle},
+  URL = {https://institut-agro-dijon.hal.science/hal-02499730},
+  BOOKTITLE = {{Proceedings of the 15th International Joint Conference on Computer Vision, Imaging and Computer Graphics Theory and Applications}},
+  ADDRESS = {La Valette, Malta},
+  YEAR = {2020},
+  MONTH = Feb,
+  DOI = {10.5220/0009169301030110},
+  KEYWORDS = {Registration ; Multi-spectral imagery ; Precision farming ; Feature descriptor},
+  PDF = {https://institut-agro-dijon.hal.science/hal-02499730/file/airphen-multispectral-registration-v16.pdf},
+  HAL_ID = {hal-02499730},
+  HAL_VERSION = {v1},
+}
+@phdthesis{vayssade:tel-03688127,
+  TITLE = {{Approche multi-crit{\`e}re pour la caract{\'e}risation des adventices}},
+  AUTHOR = {Vayssade, Jehan-Antoine},
+  URL = {https://theses.hal.science/tel-03688127},
+  SCHOOL = {{Universit{\'e} Bourgogne Franche-Comt{\'e}}},
+  YEAR = {2022},
+  MONTH = Mar,
+  KEYWORDS = {Statistics ; Prediction ; Precision agriculture ; Computer vision ; Image analysis ; Artificial intelligence ; Vision par ordinateur ; Analyse d'image ; Intelligence artificielle ; Statistiques ; Pr{\'e}diction ; Agriculture de pr{\'e}cision},
+  TYPE = {Theses},
+  PDF = {https://theses.hal.science/tel-03688127/file/thesis-final.pdf},
+  HAL_ID = {tel-03688127},
+  HAL_VERSION = {v1},
+}
+```
+
 ## Material
 
 The multispectral imagery was provided by the six-band multispectral camera Airphen.
